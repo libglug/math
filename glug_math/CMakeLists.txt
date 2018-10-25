@@ -7,6 +7,8 @@ list(
     APPEND
     COMMON_SOURCE
     ${INC_ROOT}/math.h
+    ${INC_ROOT}/math/vec2.h
+    ${SRC_ROOT}/vec2.c
     ${INC_ROOT}/math/vec3.h
     ${SRC_ROOT}/vec3.c
     ${INC_ROOT}/math/vec4.h
