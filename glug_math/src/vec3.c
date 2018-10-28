@@ -16,86 +16,84 @@ void GLUG_LIB_API glug_vec3_copy(struct glug_vec3 *dst, const struct glug_vec3 *
     dst->z = src->z;
 }
 
-int GLUG_LIB_API glug_vec3_equal(const struct glug_vec3 *v, const struct glug_vec3 *v2)
+int GLUG_LIB_API glug_vec3_equal(const struct glug_vec3 *a, const struct glug_vec3 *b)
 {
 
 }
 
-struct glug_vec3 GLUG_LIB_API glug_vec3_add(const struct glug_vec3 *v1, struct glug_vec3 *v2)
+struct glug_vec3 GLUG_LIB_API glug_vec3_sum(const struct glug_vec3 *a, struct glug_vec3 *b)
 {
     struct glug_vec3 dst;
-    glug_vec3_copy(&dst, v1);
-    glug_vec3_add_set(&dst, v2);
+    glug_vec3_copy(&dst, a);
+    glug_vec3_add(&dst, b);
 
     return dst;
 }
 
-struct glug_vec3 GLUG_LIB_API glug_vec3_sub(const struct glug_vec3 *v1, struct glug_vec3 *v2)
+struct glug_vec3 GLUG_LIB_API glug_vec3_diff(const struct glug_vec3 *a, struct glug_vec3 *b)
 {
     struct glug_vec3 dst;
-    glug_vec3_copy(&dst, v1);
-    glug_vec3_sub_set(&dst, v2);
+    glug_vec3_copy(&dst, a);
+    glug_vec3_sub(&dst, b);
 
     return dst;
 }
 
-struct glug_vec3 GLUG_LIB_API glug_vec3_mul(const struct glug_vec3 *v, const float scalar)
-{
-    struct glug_vec3 dst;
-    glug_vec3_copy(&dst, v);
-    glug_vec3_mul_set(&dst, scalar);
-
-    return dst;
-}
-
-struct glug_vec3 GLUG_LIB_API glug_vec3_div(const struct glug_vec3 *v, const float scalar)
+struct glug_vec3 GLUG_LIB_API glug_vec3_prod(const struct glug_vec3 *v, const float scalar)
 {
     struct glug_vec3 dst;
     glug_vec3_copy(&dst, v);
-    glug_vec3_div_set(&dst, scalar);
+    glug_vec3_mul(&dst, scalar);
 
     return dst;
 }
 
-void GLUG_LIB_API glug_vec3_add_set(struct glug_vec3 *dst, const struct glug_vec3 *v2)
+struct glug_vec3 GLUG_LIB_API glug_vec3_quot(const struct glug_vec3 *v, const float scalar)
 {
-    dst->x += v2->x;
-    dst->y += v2->y;
-    dst->z += v2->z;
+    struct glug_vec3 dst;
+    glug_vec3_copy(&dst, v);
+    glug_vec3_div(&dst, scalar);
+
+    return dst;
 }
 
-void GLUG_LIB_API glug_vec3_sub_set(struct glug_vec3 *dst, const struct glug_vec3 *v2)
+void GLUG_LIB_API glug_vec3_add(struct glug_vec3 *dst, const struct glug_vec3 *b)
 {
-    dst->x -= v2->x;
-    dst->y -= v2->y;
-    dst->z -= v2->z;
+    dst->x += b->x;
+    dst->y += b->y;
+    dst->z += b->z;
 }
 
-void GLUG_LIB_API glug_vec3_mul_set(struct glug_vec3 *dst, const float scalar)
+void GLUG_LIB_API glug_vec3_sub(struct glug_vec3 *dst, const struct glug_vec3 *b)
+{
+    dst->x -= b->x;
+    dst->y -= b->y;
+    dst->z -= b->z;
+}
+
+void GLUG_LIB_API glug_vec3_mul(struct glug_vec3 *dst, const float scalar)
 {
     dst->x *= scalar;
     dst->y *= scalar;
     dst->z *= scalar;
 }
 
-void GLUG_LIB_API glug_vec3_div_set(struct glug_vec3 *dst, const float scalar)
-{    
-    dst->x /= scalar;
-    dst->y /= scalar;
-    dst->z /= scalar;
-}
-
-float GLUG_LIB_API glug_vec3_dot(const struct glug_vec3 *v1, const struct glug_vec3 *v2)
+void GLUG_LIB_API glug_vec3_div(struct glug_vec3 *dst, const float scalar)
 {
-    return v1->x * v2->x + v1->y * v2->y + v1->z * v2->z;
+    glug_vec3_mul(dst, 1.f / scalar);
 }
 
-struct glug_vec3 GLUG_LIB_API glug_vec3_cross(const struct glug_vec3 *v1, const struct glug_vec3 *v2)
+float GLUG_LIB_API glug_vec3_dot(const struct glug_vec3 *a, const struct glug_vec3 *b)
+{
+    return a->x * b->x + a->y * b->y + a->z * b->z;
+}
+
+struct glug_vec3 GLUG_LIB_API glug_vec3_cross(const struct glug_vec3 *a, const struct glug_vec3 *b)
 {
     struct glug_vec3 dst;
-    dst.x = v1->y * v2->z - v1->z * v2->y;
-    dst.y = v1->z * v2->x - v1->x * v2->z;
-    dst.z = v1->x * v2->y - v1->y * v2->x;
+    dst.x = a->y * b->z - a->z * b->y;
+    dst.y = a->z * b->x - a->x * b->z;
+    dst.z = a->x * b->y - a->y * b->x;
 
     return dst;
 }
@@ -117,7 +115,7 @@ float GLUG_LIB_API glug_vec3_len_manhattan(const struct glug_vec3 *v)
 
 void GLUG_LIB_API glug_vec3_set_len(struct glug_vec3 *v, const float length)
 {
-    glug_vec3_mul_set(v, length / glug_vec3_len(v));
+    glug_vec3_mul(v, length / glug_vec3_len(v));
 }
 
 int GLUG_LIB_API glug_vec3_is_normal(const struct glug_vec3 *v)
@@ -125,35 +123,76 @@ int GLUG_LIB_API glug_vec3_is_normal(const struct glug_vec3 *v)
 
 }
 
+struct glug_vec3 glug_vec3_normal(const struct glug_vec3 *v)
+{
+    struct glug_vec3 dst;
+    glug_vec3_copy(&dst, v);
+    glug_vec3_div(&dst, glug_vec3_len(&dst));
+
+    return dst;
+}
+
 void GLUG_LIB_API glug_vec3_normalize(struct glug_vec3 *v)
 {
-    glug_vec3_div_set(v, glug_vec3_len(v));
+    glug_vec3_div(v, glug_vec3_len(v));
 }
 
-float GLUG_LIB_API glug_vec3_dist(const struct glug_vec3 *v1, const struct glug_vec3 *v2)
+float GLUG_LIB_API glug_vec3_dist(const struct glug_vec3 *a, const struct glug_vec3 *b)
 {
-    return sqrtf(glug_vec3_dist_squared(v1, v2));
+    return sqrtf(glug_vec3_dist_squared(a, b));
 }
 
-float GLUG_LIB_API glug_vec3_dist_squared(const struct glug_vec3 *v1, const struct glug_vec3 *v2)
+float GLUG_LIB_API glug_vec3_dist_squared(const struct glug_vec3 *a, const struct glug_vec3 *b)
 {
-    float dx = v2->x - v1->x;
-    float dy = v2->y - v1->y;
-    float dz = v2->z - v1->z;
+    float dx = b->x - a->x;
+    float dy = b->y - a->y;
+    float dz = b->z - a->z;
 
     return dx * dx + dy * dy + dz * dz;
 }
 
-float GLUG_LIB_API glug_vec3_dist_manhattan(const struct glug_vec3 *v1, const struct glug_vec3 *v2)
+float GLUG_LIB_API glug_vec3_dist_manhattan(const struct glug_vec3 *a, const struct glug_vec3 *b)
 {
-    float dx = fabsf(v2->x - v1->x);
-    float dy = fabsf(v2->y - v1->y);
-    float dz = fabsf(v2->z - v1->z);
+    float dx = fabsf(b->x - a->x);
+    float dy = fabsf(b->y - a->y);
+    float dz = fabsf(b->z - a->z);
 
     return dx + dy + dz;
 }
 
-float GLUG_LIB_API glug_vec3_angle_btw(const struct glug_vec3 *v1, const struct glug_vec3 *v2)
+float GLUG_LIB_API glug_vec3_angle_btw(const struct glug_vec3 *a, const struct glug_vec3 *b)
 {
-    return acosf(glug_vec3_dot(v1, v2) / glug_vec3_len(v1) / glug_vec3_len(v2));
+    return acosf(glug_vec3_dot(a, b) / glug_vec3_len(a) / glug_vec3_len(b));
+}
+
+struct glug_vec3 GLUG_LIB_API glug_vec3_project(const struct glug_vec3 *a, const struct glug_vec3 *b)
+{
+    struct glug_vec3 dst;
+    glug_vec3_copy(&dst, a);
+    glug_vec3_proj_onto(&dst, b);
+
+    return dst;
+}
+
+struct glug_vec3 GLUG_LIB_API glug_vec3_reject(const struct glug_vec3 *a, const struct glug_vec3 *b)
+{
+    struct glug_vec3 dst;
+    glug_vec3_copy(&dst, a);
+    glug_vec3_rej_onto(&dst, b);
+
+    return dst;
+}
+
+void GLUG_LIB_API glug_vec3_proj_onto(struct glug_vec3 *a, const struct glug_vec3 *b)
+{
+    struct glug_vec3 bh = glug_vec3_normal(b);
+    float proj_len = glug_vec3_dot(a, &bh);
+    glug_vec3_copy(a, &bh);
+    glug_vec3_mul(a, proj_len);
+}
+
+void GLUG_LIB_API glug_vec3_rej_onto(struct glug_vec3 *a, const struct glug_vec3 *b)
+{
+    struct glug_vec3 proj = glug_vec3_project(a, b);
+    glug_vec3_sub(a, &proj);
 }
