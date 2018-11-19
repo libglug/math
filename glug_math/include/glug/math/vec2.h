@@ -1,6 +1,8 @@
 #ifndef GLUG_VEC2_H
 #define GLUG_VEC2_H
 
+#include <glug/import.h>
+
 struct glug_vec2
 {
     float x, y;
