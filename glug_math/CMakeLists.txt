@@ -13,6 +13,8 @@ list(
     ${SRC_ROOT}/vec3.c
     ${INC_ROOT}/math/vec4.h
     ${SRC_ROOT}/vec4.c
+    ${INC_ROOT}/math/circle.h
+    ${SRC_ROOT}/circle.c
 )
 
 list(

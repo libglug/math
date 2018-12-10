@@ -2,7 +2,7 @@
 #include <CUnit/Basic.h>
 #include <glug/math/vec3.h>
 
-#define ADD_TEST(add_test, suite, name, fcn) if (!add_test((suite), (name), (fcn))) return NULL;
+#define ADD_TEST(suite, name, fcn) if (!CU_add_test((suite), (name), (fcn))) return NULL;
 
 static void test_set(void)
 {
@@ -376,38 +376,38 @@ CU_pSuite create_vec3_suite()
     CU_pSuite vec3_suite = CU_add_suite("vec3f", NULL, NULL);
     if (!vec3_suite) return NULL;
 
-    ADD_TEST(CU_add_test, vec3_suite, "set", test_set);
-    ADD_TEST(CU_add_test, vec3_suite, "copy", test_copy);
-    ADD_TEST(CU_add_test, vec3_suite, "equal", test_equal);
-    ADD_TEST(CU_add_test, vec3_suite, "sum", test_sum);
-    ADD_TEST(CU_add_test, vec3_suite, "difference", test_diff);
-    ADD_TEST(CU_add_test, vec3_suite, "product", test_prod);
-    ADD_TEST(CU_add_test, vec3_suite, "quotient", test_quot);
-    ADD_TEST(CU_add_test, vec3_suite, "add", test_add);
-    ADD_TEST(CU_add_test, vec3_suite, "subtract", test_sub);
-    ADD_TEST(CU_add_test, vec3_suite, "multiply", test_mul);
-    ADD_TEST(CU_add_test, vec3_suite, "divide", test_div);
-    ADD_TEST(CU_add_test, vec3_suite, "dot", test_dot);
-    ADD_TEST(CU_add_test, vec3_suite, "cross", test_cross);
-    ADD_TEST(CU_add_test, vec3_suite, "length", test_len);
-    ADD_TEST(CU_add_test, vec3_suite, "square length", test_len_sq);
-    ADD_TEST(CU_add_test, vec3_suite, "manhattan length", test_len_mh);
-    ADD_TEST(CU_add_test, vec3_suite, "set length", test_set_len);
-    ADD_TEST(CU_add_test, vec3_suite, "is normal", test_is_norm);
-    ADD_TEST(CU_add_test, vec3_suite, "normal", test_normal);
-    ADD_TEST(CU_add_test, vec3_suite, "normalize", test_normalize);
-    ADD_TEST(CU_add_test, vec3_suite, "distance", test_dist);
-    ADD_TEST(CU_add_test, vec3_suite, "square distance", test_dist_sq);
-    ADD_TEST(CU_add_test, vec3_suite, "manhattan distance", test_dist_mh);
-    ADD_TEST(CU_add_test, vec3_suite, "angle between", test_angle_to);
-    ADD_TEST(CU_add_test, vec3_suite, "projection", test_projection);
-    ADD_TEST(CU_add_test, vec3_suite, "rejection", test_rejection);
-    ADD_TEST(CU_add_test, vec3_suite, "reflection", test_reflection);
-    ADD_TEST(CU_add_test, vec3_suite, "refraction", test_refraction);
-    ADD_TEST(CU_add_test, vec3_suite, "project", test_project);
-    ADD_TEST(CU_add_test, vec3_suite, "reject", test_reject);
-    ADD_TEST(CU_add_test, vec3_suite, "reflect", test_reflect);
-    ADD_TEST(CU_add_test, vec3_suite, "refract", test_refract);
+    ADD_TEST(vec3_suite, "set", test_set);
+    ADD_TEST(vec3_suite, "copy", test_copy);
+    ADD_TEST(vec3_suite, "equal", test_equal);
+    ADD_TEST(vec3_suite, "sum", test_sum);
+    ADD_TEST(vec3_suite, "difference", test_diff);
+    ADD_TEST(vec3_suite, "product", test_prod);
+    ADD_TEST(vec3_suite, "quotient", test_quot);
+    ADD_TEST(vec3_suite, "add", test_add);
+    ADD_TEST(vec3_suite, "subtract", test_sub);
+    ADD_TEST(vec3_suite, "multiply", test_mul);
+    ADD_TEST(vec3_suite, "divide", test_div);
+    ADD_TEST(vec3_suite, "dot", test_dot);
+    ADD_TEST(vec3_suite, "cross", test_cross);
+    ADD_TEST(vec3_suite, "length", test_len);
+    ADD_TEST(vec3_suite, "square length", test_len_sq);
+    ADD_TEST(vec3_suite, "manhattan length", test_len_mh);
+    ADD_TEST(vec3_suite, "set length", test_set_len);
+    ADD_TEST(vec3_suite, "is normal", test_is_norm);
+    ADD_TEST(vec3_suite, "normal", test_normal);
+    ADD_TEST(vec3_suite, "normalize", test_normalize);
+    ADD_TEST(vec3_suite, "distance", test_dist);
+    ADD_TEST(vec3_suite, "square distance", test_dist_sq);
+    ADD_TEST(vec3_suite, "manhattan distance", test_dist_mh);
+    ADD_TEST(vec3_suite, "angle between", test_angle_to);
+    ADD_TEST(vec3_suite, "projection", test_projection);
+    ADD_TEST(vec3_suite, "rejection", test_rejection);
+    ADD_TEST(vec3_suite, "reflection", test_reflection);
+    ADD_TEST(vec3_suite, "refraction", test_refraction);
+    ADD_TEST(vec3_suite, "project", test_project);
+    ADD_TEST(vec3_suite, "reject", test_reject);
+    ADD_TEST(vec3_suite, "reflect", test_reflect);
+    ADD_TEST(vec3_suite, "refract", test_refract);
 
     return vec3_suite;
 }

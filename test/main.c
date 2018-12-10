@@ -1,5 +1,6 @@
 #include <CUnit/Basic.h>
 
+extern CU_pSuite (create_cir_suite)(void);
 extern CU_pSuite (create_vec2_suite)(void);
 extern CU_pSuite (create_vec3_suite)(void);
 extern CU_pSuite (create_vec4_suite)(void);
@@ -37,6 +38,7 @@ int main()
 
 int add_suites()
 {
+    CREATE_SUITE(create_cir_suite);
     CREATE_SUITE(create_vec2_suite);
     CREATE_SUITE(create_vec3_suite);
     CREATE_SUITE(create_vec4_suite);
