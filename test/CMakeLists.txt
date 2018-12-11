@@ -1,6 +1,11 @@
 add_subdirectory(cunit/CUnit)
 
-add_executable(UnitTests main.c)
+add_executable(
+    UnitTests
+    main.c
+    suites/vec2.c
+    suites/vec3.c
+)
 
 find_package(glug_math REQUIRED)
 

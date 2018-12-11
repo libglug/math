@@ -12,7 +12,6 @@ struct glug_vec3
     typedef struct glug_vec3 vec3;
 #endif
 
-
 void  GLUG_LIB_API glug_vec3_set(struct glug_vec3 *dst, float x, float y, float z);
 void  GLUG_LIB_API glug_vec3_copy(struct glug_vec3 *dst, const struct glug_vec3 *src);
 int   GLUG_LIB_API glug_vec3_equal(const struct glug_vec3 *a, const struct glug_vec3 *b);
@@ -33,7 +32,7 @@ struct glug_vec3 GLUG_LIB_API glug_vec3_cross(const struct glug_vec3 *a, const s
 float GLUG_LIB_API glug_vec3_len(const struct glug_vec3 *v);
 float GLUG_LIB_API glug_vec3_len_squared(const struct glug_vec3 *v);
 float GLUG_LIB_API glug_vec3_len_manhattan(const struct glug_vec3 *v);
-void  GLUG_LIB_API glug_vec3_set_len(struct glug_vec3 *v, const float length);
+void  GLUG_LIB_API glug_vec3_set_len(struct glug_vec3 *dst, const float length);
 
 int   GLUG_LIB_API glug_vec3_is_normal(const struct glug_vec3 *v);
 struct glug_vec3 glug_vec3_normal(const struct glug_vec3 *v);
@@ -48,7 +47,7 @@ float GLUG_LIB_API glug_vec3_angle_btw(const struct glug_vec3 *a, const struct g
 struct glug_vec3 GLUG_LIB_API glug_vec3_project(const struct glug_vec3 *a, const struct glug_vec3 *b);
 struct glug_vec3 GLUG_LIB_API glug_vec3_reject(const struct glug_vec3 *a, const struct glug_vec3 *b);
 
-void  GLUG_LIB_API glug_vec3_proj_onto(struct glug_vec3 *a, const struct glug_vec3 *b);
-void  GLUG_LIB_API glug_vec3_rej_onto(struct glug_vec3 *a, const struct glug_vec3 *b);
+void  GLUG_LIB_API glug_vec3_proj_onto(struct glug_vec3 *dst, const struct glug_vec3 *b);
+void  GLUG_LIB_API glug_vec3_rej_onto(struct glug_vec3 *dst, const struct glug_vec3 *b);
 
 #endif // GLUG_VEC3_H

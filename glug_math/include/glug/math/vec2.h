@@ -12,7 +12,6 @@ struct glug_vec2
     typedef struct glug_vec2 vec2;
 #endif
 
-
 void  GLUG_LIB_API glug_vec2_set(struct glug_vec2 *dst, float x, float y);
 void  GLUG_LIB_API glug_vec2_copy(struct glug_vec2 *dst, const struct glug_vec2 *src);
 int   GLUG_LIB_API glug_vec2_equal(const struct glug_vec2 *a, const struct glug_vec2 *b);
