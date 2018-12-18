@@ -1,0 +1,88 @@
+image:
+  - Visual Studio 2017
+  - Ubuntu
+
+platform:
+  - x64
+  - x86
+
+configuration:
+  - Release
+
+environment:
+  checkout_key:
+    secure: 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
+  matrix:
+    - ID: msvc 2017
+      GENERATOR: Visual Studio 15 2017 Win64
+    - ID: msvc 2017 x86
+      GENERATOR: Visual Studio 15 2017
+    - ID: mingw
+      GENERATOR: MinGW Makefiles
+      MAKE_PATH: c:\msys64\mingw64\bin
+    - ID: mingw x86
+      GENERATOR: MinGW Makefiles
+      MAKE_PATH: c:\msys64\mingw32\bin
+    - ID: gcc
+      GENERATOR: Unix Makefiles
+    # - ID: gcc x86
+    #   GENERATOR: Unix Makefiles
+    #   COMPILE_FLAGS: -m32
+
+matrix:
+  exclude:
+    - image: Visual Studio 2017
+      platform: x86
+    - image: Visual Studio 2017
+      ID: gcc
+    - image: Visual Studio 2017
+      ID: gcc x86
+    - image: Ubuntu
+      ID: mingw
+    - image: Ubuntu
+      ID: mingw x86
+    - image: Ubuntu
+      ID: msvc 2017
+    - image: Ubuntu
+      ID: msvc 2017 x86
+    - image: Ubuntu
+      platform: x86
+      ID: gcc
+    - image: Ubuntu
+      platform: x64
+      ID: gcc x86
+
+init:
+  - cmd: echo -----BEGIN RSA PRIVATE KEY----- > %USERPROFILE%\.ssh\id_rsa
+  - cmd: echo %checkout_key% >> %USERPROFILE%\.ssh\id_rsa
+  - cmd: echo -----END RSA PRIVATE KEY----- >> %USERPROFILE%\.ssh\id_rsa
+
+  - sh: echo -----BEGIN RSA PRIVATE KEY----- > ~/.ssh/id_rsa
+  - sh: echo $checkout_key >> ~/.ssh/id_rsa
+  - sh: echo -----END RSA PRIVATE KEY----- >> ~/.ssh/id_rsa
+  - sh: chmod 600 ~/.ssh/id_rsa
+  - sh: sudo apt-get --yes install cmake
+
+install:
+  - git submodule update --init --recursive
+
+before_build:
+  # http://help.appveyor.com/discussions/problems/3193-cmake-building-for-mingw-issue-with-git-shexe
+  - cmd: set PATH=%PATH:C:\Program Files\Git\usr\bin;=%
+  - cmd: set PATH=%MAKE_PATH%;%PATH%
+
+build_script:
+  - mkdir build && cd build
+  - cmd: cmake -G"%GENERATOR%" ..
+  - cmd: cmake --build . --target glug_math --config %configuration%
+  - sh: cmake -G"$GENERATOR" ..
+  - sh: cmake --build . --target glug_math --config $configuration
+
+before_test:
+  - cmd: cmake --build . --config %configuration%
+  - sh: cmake --build . --config $configuration
+  - cd test
+
+test_script:
+  - cmd: math_tests.exe
+  - sh: ./math_tests

@@ -26,6 +26,14 @@ add_custom_target(
         ${CMAKE_CURRENT_BINARY_DIR}/CUnit
 )
 
+add_custom_command(
+    TARGET
+        ${PROJECT_NAME}
+    COMMAND
+        ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${PROJECT_NAME}> ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+
 target_link_libraries(
     ${PROJECT_NAME}
     CUnit
