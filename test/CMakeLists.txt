@@ -1,7 +1,8 @@
+project(math_tests VERSION 1.0)
 add_subdirectory(cunit/CUnit)
 
 add_executable(
-    UnitTests
+    ${PROJECT_NAME}
     main.c
     suites/vec2.c
     suites/vec3.c
@@ -26,7 +27,7 @@ add_custom_target(
 )
 
 target_link_libraries(
-    UnitTests
+    ${PROJECT_NAME}
     CUnit
     glug_math
 )

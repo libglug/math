@@ -3,12 +3,13 @@
 extern CU_pSuite (create_vec2_suite)(void);
 extern CU_pSuite (create_vec3_suite)(void);
 
-#define CREATE_SUITE(create_suite) if (!create_suite()) return CUEA_FAIL;
+#define CREATE_SUITE(create_suite) if (!create_suite()) return CU_get_error();
 
 static int add_suites(void);
 
 int main()
 {
+    unsigned int failures;
     /* initialize the CUnit test registry */
     if (CU_initialize_registry() != CUE_SUCCESS)
         return CU_get_error();
@@ -22,9 +23,15 @@ int main()
 
     /* Run all tests using the console interface */
     CU_basic_set_mode(CU_BRM_VERBOSE);
-    CU_basic_run_tests();
+    if (CU_basic_run_tests() != CUE_SUCCESS)
+    {
+        CU_cleanup_registry();
+        return CU_get_error();
+    }
+
+    failures = CU_get_number_of_tests_failed();
     CU_cleanup_registry();
-    return CU_get_error();
+    return (int)failures;
 }
 
 int add_suites()
