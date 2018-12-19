@@ -1,4 +1,5 @@
 # math
+![](https://ci.appveyor.com/api/projects/status/github/libglug/math?branch=master&svg=true)
 3d maths
 
 ### Building
