@@ -79,10 +79,10 @@ build_script:
   - sh: cmake --build . --target glug_math --config $configuration
 
 before_test:
-  - cmd: cmake --build . --config %configuration%
-  - sh: cmake --build . --config $configuration
+  - cmd: cmake --build . --config %configuration% --target glug_math_tests
+  - sh: cmake --build . --config $configuration --target glug_math_tests
   - cd test
 
 test_script:
-  - cmd: math_tests.exe
-  - sh: ./math_tests
+  - cmd: glug_math_tests.exe
+  - sh: ./glug_math_tests

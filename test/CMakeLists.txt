@@ -1,4 +1,4 @@
-project(math_tests VERSION 1.0)
+project(glug_math_tests VERSION 1.0)
 add_subdirectory(cunit/CUnit)
 
 add_executable(
@@ -8,34 +8,42 @@ add_executable(
     suites/vec3.c
 )
 
-find_package(glug_math REQUIRED)
-
-add_custom_command(
-    OUTPUT
-        ${CMAKE_CURRENT_BINARY_DIR}/CUnit
-    COMMAND
-        ${CMAKE_COMMAND} -E copy $<TARGET_FILE:CUnit> ${CMAKE_CURRENT_BINARY_DIR}
-    DEPENDS
-        CUnit
-)
-
-add_custom_target(
-    copy_cunit
-    ALL
-    DEPENDS
-        ${CMAKE_CURRENT_BINARY_DIR}/CUnit
-)
-
+# copy the executable to this build directory (MSVC likes to hide it in Debug/Release folders)
 add_custom_command(
     TARGET
         ${PROJECT_NAME}
     COMMAND
-        ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${PROJECT_NAME}> ${CMAKE_CURRENT_BINARY_DIR}
+        ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:${PROJECT_NAME}> ${CMAKE_CURRENT_BINARY_DIR}
 )
 
+# copy the CUnit library to the same directory
+add_custom_command(
+    TARGET
+        ${PROJECT_NAME}
+    COMMAND
+        ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:CUnit> ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+# also copy the math library to the same directory
+add_custom_command(
+    TARGET
+        ${PROJECT_NAME}
+    COMMAND
+        ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:glug_math> ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+find_package(glug_math REQUIRED)
 
 target_link_libraries(
     ${PROJECT_NAME}
     CUnit
     glug_math
 )
+
+find_library(CMATH m)
+if (CMATH)
+    target_link_libraries(
+        ${PROJECT_NAME}
+        ${CMATH}
+    )
+endif()
