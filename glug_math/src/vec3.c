@@ -165,25 +165,34 @@ float GLUG_LIB_API glug_vec3_angle_btw(const struct glug_vec3 *a, const struct g
     return acosf(glug_vec3_dot(a, b) / glug_vec3_len(a) / glug_vec3_len(b));
 }
 
-struct glug_vec3 GLUG_LIB_API glug_vec3_project(const struct glug_vec3 *a, const struct glug_vec3 *b)
+struct glug_vec3 GLUG_LIB_API glug_vec3_projection(const struct glug_vec3 *a, const struct glug_vec3 *b)
 {
     struct glug_vec3 dst;
     glug_vec3_copy(&dst, a);
-    glug_vec3_proj_onto(&dst, b);
+    glug_vec3_project(&dst, b);
 
     return dst;
 }
 
-struct glug_vec3 GLUG_LIB_API glug_vec3_reject(const struct glug_vec3 *a, const struct glug_vec3 *b)
+struct glug_vec3 GLUG_LIB_API glug_vec3_reflection(const struct glug_vec3 *a, const struct glug_vec3 *b)
 {
     struct glug_vec3 dst;
     glug_vec3_copy(&dst, a);
-    glug_vec3_rej_onto(&dst, b);
+    glug_vec3_reflect(&dst, b);
 
     return dst;
 }
 
-void GLUG_LIB_API glug_vec3_proj_onto(struct glug_vec3 *dst, const struct glug_vec3 *b)
+struct glug_vec3 GLUG_LIB_API glug_vec3_rejection(const struct glug_vec3 *a, const struct glug_vec3 *b)
+{
+    struct glug_vec3 dst;
+    glug_vec3_copy(&dst, a);
+    glug_vec3_reject(&dst, b);
+
+    return dst;
+}
+
+void GLUG_LIB_API glug_vec3_project(struct glug_vec3 *dst, const struct glug_vec3 *b)
 {
     struct glug_vec3 bh = glug_vec3_normal(b);
     float proj_len = glug_vec3_dot(dst, &bh);
@@ -191,8 +200,15 @@ void GLUG_LIB_API glug_vec3_proj_onto(struct glug_vec3 *dst, const struct glug_v
     glug_vec3_mul(dst, proj_len);
 }
 
-void GLUG_LIB_API glug_vec3_rej_onto(struct glug_vec3 *dst, const struct glug_vec3 *b)
+void GLUG_LIB_API glug_vec3_reflect(struct glug_vec3 *dst, const struct glug_vec3 *b)
 {
-    struct glug_vec3 proj = glug_vec3_project(dst, b);
+    struct glug_vec3 rej = glug_vec3_rejection(dst, b);
+    glug_vec3_sub(dst, &rej);
+    glug_vec3_sub(dst, &rej);
+}
+
+void GLUG_LIB_API glug_vec3_reject(struct glug_vec3 *dst, const struct glug_vec3 *b)
+{
+    struct glug_vec3 proj = glug_vec3_projection(dst, b);
     glug_vec3_sub(dst, &proj);
 }

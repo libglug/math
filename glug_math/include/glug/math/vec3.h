@@ -44,10 +44,12 @@ float GLUG_LIB_API glug_vec3_dist_manhattan(const struct glug_vec3 *a, const str
 
 float GLUG_LIB_API glug_vec3_angle_btw(const struct glug_vec3 *a, const struct glug_vec3 *b);
 
-struct glug_vec3 GLUG_LIB_API glug_vec3_project(const struct glug_vec3 *a, const struct glug_vec3 *b);
-struct glug_vec3 GLUG_LIB_API glug_vec3_reject(const struct glug_vec3 *a, const struct glug_vec3 *b);
+struct glug_vec3 GLUG_LIB_API glug_vec3_projection(const struct glug_vec3 *a, const struct glug_vec3 *b);
+struct glug_vec3 GLUG_LIB_API glug_vec3_reflection(const struct glug_vec3 *a, const struct glug_vec3 *b);
+struct glug_vec3 GLUG_LIB_API glug_vec3_rejection(const struct glug_vec3 *a, const struct glug_vec3 *b);
 
-void  GLUG_LIB_API glug_vec3_proj_onto(struct glug_vec3 *dst, const struct glug_vec3 *b);
-void  GLUG_LIB_API glug_vec3_rej_onto(struct glug_vec3 *dst, const struct glug_vec3 *b);
+void GLUG_LIB_API glug_vec3_project(struct glug_vec3 *dst, const struct glug_vec3 *b);
+void GLUG_LIB_API glug_vec3_reflect(struct glug_vec3 *dst, const struct glug_vec3 *b);
+void GLUG_LIB_API glug_vec3_reject(struct glug_vec3 *dst, const struct glug_vec3 *b);
 
 #endif // GLUG_VEC3_H

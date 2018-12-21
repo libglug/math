@@ -43,11 +43,13 @@ float GLUG_LIB_API glug_vec4_dist_manhattan(const struct glug_vec4 *a, const str
 
 float GLUG_LIB_API glug_vec4_angle_btw(const struct glug_vec4 *a, const struct glug_vec4 *b);
 
-struct glug_vec4 GLUG_LIB_API glug_vec4_project(const struct glug_vec4 *a, const struct glug_vec4 *b);
-struct glug_vec4 GLUG_LIB_API glug_vec4_reject(const struct glug_vec4 *a, const struct glug_vec4 *b);
+struct glug_vec4 GLUG_LIB_API glug_vec4_projection(const struct glug_vec4 *a, const struct glug_vec4 *b);
+struct glug_vec4 GLUG_LIB_API glug_vec4_reflection(const struct glug_vec4 *a, const struct glug_vec4 *b);
+struct glug_vec4 GLUG_LIB_API glug_vec4_rejection(const struct glug_vec4 *a, const struct glug_vec4 *b);
 
-void  GLUG_LIB_API glug_vec4_proj_onto(struct glug_vec4 *a, const struct glug_vec4 *b);
-void  GLUG_LIB_API glug_vec4_rej_onto(struct glug_vec4 *a, const struct glug_vec4 *b);
+void GLUG_LIB_API glug_vec4_project(struct glug_vec4 *dst, const struct glug_vec4 *b);
+void GLUG_LIB_API glug_vec4_reflect(struct glug_vec4 *dst, const struct glug_vec4 *b);
+void GLUG_LIB_API glug_vec4_reject(struct glug_vec4 *dst, const struct glug_vec4 *b);
 
 
 #endif // GLUG_VEC4_H

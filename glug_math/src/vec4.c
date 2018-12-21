@@ -17,7 +17,7 @@ void GLUG_LIB_API glug_vec4_copy(struct glug_vec4 *dst, const struct glug_vec4 *
     dst->w = src->w;
 }
 
-int GLUG_LIB_API glug_vec4_equal(const struct glug_vec4 *v, const struct glug_vec4 *b)
+int GLUG_LIB_API glug_vec4_equal(const struct glug_vec4 *a, const struct glug_vec4 *b)
 {
 
 }
@@ -161,34 +161,50 @@ float GLUG_LIB_API glug_vec4_angle_btw(const struct glug_vec4 *a, const struct g
     return acosf(glug_vec4_dot(a, b) / glug_vec4_len(a) / glug_vec4_len(b));
 }
 
-struct glug_vec4 GLUG_LIB_API glug_vec4_project(const struct glug_vec4 *a, const struct glug_vec4 *b)
+struct glug_vec4 GLUG_LIB_API glug_vec4_projection(const struct glug_vec4 *a, const struct glug_vec4 *b)
 {
     struct glug_vec4 dst;
     glug_vec4_copy(&dst, a);
-    glug_vec4_proj_onto(&dst, b);
+    glug_vec4_project(&dst, b);
 
     return dst;
 }
 
-struct glug_vec4 GLUG_LIB_API glug_vec4_reject(const struct glug_vec4 *a, const struct glug_vec4 *b)
+struct glug_vec4 GLUG_LIB_API glug_vec4_reflection(const struct glug_vec4 *a, const struct glug_vec4 *b)
 {
     struct glug_vec4 dst;
     glug_vec4_copy(&dst, a);
-    glug_vec4_rej_onto(&dst, b);
+    glug_vec4_reflect(&dst, b);
 
     return dst;
 }
 
-void GLUG_LIB_API glug_vec4_proj_onto(struct glug_vec4 *a, const struct glug_vec4 *b)
+struct glug_vec4 GLUG_LIB_API glug_vec4_rejection(const struct glug_vec4 *a, const struct glug_vec4 *b)
+{
+    struct glug_vec4 dst;
+    glug_vec4_copy(&dst, a);
+    glug_vec4_reject(&dst, b);
+
+    return dst;
+}
+
+void GLUG_LIB_API glug_vec4_project(struct glug_vec4 *dst, const struct glug_vec4 *b)
 {
     struct glug_vec4 bh = glug_vec4_normal(b);
-    float proj_len = glug_vec4_dot(a, &bh);
-    glug_vec4_copy(a, &bh);
-    glug_vec4_prod(a, proj_len);
+    float proj_len = glug_vec4_dot(dst, &bh);
+    glug_vec4_copy(dst, &bh);
+    glug_vec4_prod(dst, proj_len);
 }
 
-void GLUG_LIB_API glug_vec4_rej_onto(struct glug_vec4 *a, const struct glug_vec4 *b)
+void GLUG_LIB_API glug_vec4_reflect(struct glug_vec4 *dst, const struct glug_vec4 *b)
 {
-    struct glug_vec4 proj = glug_vec4_project(a, b);
-    glug_vec4_diff(a, &proj);
+    struct glug_vec4 rej = glug_vec4_rejection(dst, b);
+    glug_vec4_sub(dst, &rej);
+    glug_vec4_sub(dst, &rej);
+}
+
+void GLUG_LIB_API glug_vec4_reject(struct glug_vec4 *dst, const struct glug_vec4 *b)
+{
+    struct glug_vec4 proj = glug_vec4_projection(dst, b);
+    glug_vec4_diff(dst, &proj);
 }

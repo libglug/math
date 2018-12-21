@@ -43,10 +43,12 @@ float GLUG_LIB_API glug_vec2_dist_manhattan(const struct glug_vec2 *a, const str
 
 float GLUG_LIB_API glug_vec2_angle_btw(const struct glug_vec2 *a, const struct glug_vec2 *b);
 
-struct glug_vec2 GLUG_LIB_API glug_vec2_project(const struct glug_vec2 *a, const struct glug_vec2 *b);
-struct glug_vec2 GLUG_LIB_API glug_vec2_reject(const struct glug_vec2 *a, const struct glug_vec2 *b);
+struct glug_vec2 GLUG_LIB_API glug_vec2_projection(const struct glug_vec2 *a, const struct glug_vec2 *b);
+struct glug_vec2 GLUG_LIB_API glug_vec2_reflection(const struct glug_vec2 *a, const struct glug_vec2 *b);
+struct glug_vec2 GLUG_LIB_API glug_vec2_rejection(const struct glug_vec2 *a, const struct glug_vec2 *b);
 
-void  GLUG_LIB_API glug_vec2_proj_onto(struct glug_vec2 *a, const struct glug_vec2 *b);
-void  GLUG_LIB_API glug_vec2_rej_onto(struct glug_vec2 *a, const struct glug_vec2 *b);
+void GLUG_LIB_API glug_vec2_project(struct glug_vec2 *a, const struct glug_vec2 *b);
+void GLUG_LIB_API glug_vec2_reflect(struct glug_vec2 *a, const struct glug_vec2 *b);
+void GLUG_LIB_API glug_vec2_reject(struct glug_vec2 *a, const struct glug_vec2 *b);
 
 #endif // GLUG_VEC2_H

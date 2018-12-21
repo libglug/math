@@ -105,7 +105,7 @@ void GLUG_LIB_API glug_vec2_set_len(struct glug_vec2 *v, const float length)
 
 int GLUG_LIB_API glug_vec2_is_normal(const struct glug_vec2 *v)
 {
-    return glug_vec2_len(v) == 1.f;
+
 }
 
 struct glug_vec2 glug_vec2_normal(const struct glug_vec2 *v)
@@ -148,34 +148,50 @@ float GLUG_LIB_API glug_vec2_angle_btw(const struct glug_vec2 *a, const struct g
     return acosf(glug_vec2_dot(a, b) / glug_vec2_len(a) / glug_vec2_len(b));
 }
 
-struct glug_vec2 GLUG_LIB_API glug_vec2_project(const struct glug_vec2 *a, const struct glug_vec2 *b)
+struct glug_vec2 GLUG_LIB_API glug_vec2_projection(const struct glug_vec2 *a, const struct glug_vec2 *b)
 {
     struct glug_vec2 dst;
     glug_vec2_copy(&dst, a);
-    glug_vec2_proj_onto(&dst, b);
+    glug_vec2_project(&dst, b);
 
     return dst;
 }
 
-struct glug_vec2 GLUG_LIB_API glug_vec2_reject(const struct glug_vec2 *a, const struct glug_vec2 *b)
+struct glug_vec2 GLUG_LIB_API glug_vec2_reflection(const struct glug_vec2 *a, const struct glug_vec2 *b)
 {
     struct glug_vec2 dst;
     glug_vec2_copy(&dst, a);
-    glug_vec2_rej_onto(&dst, b);
+    glug_vec2_reflect(&dst, b);
 
     return dst;
 }
 
-void GLUG_LIB_API glug_vec2_proj_onto(struct glug_vec2 *a, const struct glug_vec2 *b)
+struct glug_vec2 GLUG_LIB_API glug_vec2_rejection(const struct glug_vec2 *a, const struct glug_vec2 *b)
+{
+    struct glug_vec2 dst;
+    glug_vec2_copy(&dst, a);
+    glug_vec2_reject(&dst, b);
+
+    return dst;
+}
+
+void GLUG_LIB_API glug_vec2_project(struct glug_vec2 *dst, const struct glug_vec2 *b)
 {
     struct glug_vec2 bh = glug_vec2_normal(b);
-    float proj_len = glug_vec2_dot(a, &bh);
-    glug_vec2_copy(a, &bh);
-    glug_vec2_prod(a, proj_len);
+    float proj_len = glug_vec2_dot(dst, &bh);
+    glug_vec2_copy(dst, &bh);
+    glug_vec2_prod(dst, proj_len);
 }
 
-void GLUG_LIB_API glug_vec2_rej_onto(struct glug_vec2 *a, const struct glug_vec2 *b)
+void GLUG_LIB_API glug_vec2_reflect(struct glug_vec2 *dst, const struct glug_vec2 *b)
 {
-    struct glug_vec2 proj = glug_vec2_project(a, b);
-    glug_vec2_diff(a, &proj);
+    struct glug_vec2 rej = glug_vec2_rejection(dst, b);
+    glug_vec2_sub(dst, &rej);
+    glug_vec2_sub(dst, &rej);
+}
+
+void GLUG_LIB_API glug_vec2_reject(struct glug_vec2 *dst, const struct glug_vec2 *b)
+{
+    struct glug_vec2 proj = glug_vec2_projection(dst, b);
+    glug_vec2_diff(dst, &proj);
 }
