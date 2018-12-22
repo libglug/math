@@ -123,7 +123,7 @@ int GLUG_LIB_API glug_vec3_is_normal(const struct glug_vec3 *v)
 
 }
 
-struct glug_vec3 glug_vec3_normal(const struct glug_vec3 *v)
+struct glug_vec3 GLUG_LIB_API glug_vec3_normal(const struct glug_vec3 *v)
 {
     struct glug_vec3 dst;
     glug_vec3_copy(&dst, v);

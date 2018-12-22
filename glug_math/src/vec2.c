@@ -108,11 +108,11 @@ int GLUG_LIB_API glug_vec2_is_normal(const struct glug_vec2 *v)
 
 }
 
-struct glug_vec2 glug_vec2_normal(const struct glug_vec2 *v)
+struct glug_vec2 GLUG_LIB_API glug_vec2_normal(const struct glug_vec2 *v)
 {
     struct glug_vec2 dst;
     glug_vec2_copy(&dst, v);
-    glug_vec2_quot(&dst, glug_vec2_len(&dst));
+    glug_vec2_div(&dst, glug_vec2_len(&dst));
 
     return dst;
 }
@@ -180,7 +180,7 @@ void GLUG_LIB_API glug_vec2_project(struct glug_vec2 *dst, const struct glug_vec
     struct glug_vec2 bh = glug_vec2_normal(b);
     float proj_len = glug_vec2_dot(dst, &bh);
     glug_vec2_copy(dst, &bh);
-    glug_vec2_prod(dst, proj_len);
+    glug_vec2_mul(dst, proj_len);
 }
 
 void GLUG_LIB_API glug_vec2_reflect(struct glug_vec2 *dst, const struct glug_vec2 *b)
@@ -193,5 +193,5 @@ void GLUG_LIB_API glug_vec2_reflect(struct glug_vec2 *dst, const struct glug_vec
 void GLUG_LIB_API glug_vec2_reject(struct glug_vec2 *dst, const struct glug_vec2 *b)
 {
     struct glug_vec2 proj = glug_vec2_projection(dst, b);
-    glug_vec2_diff(dst, &proj);
+    glug_vec2_sub(dst, &proj);
 }

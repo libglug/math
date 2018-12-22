@@ -2,6 +2,7 @@
 
 extern CU_pSuite (create_vec2_suite)(void);
 extern CU_pSuite (create_vec3_suite)(void);
+extern CU_pSuite (create_vec4_suite)(void);
 
 #define CREATE_SUITE(create_suite) if (!create_suite()) return CU_get_error();
 
@@ -38,6 +39,7 @@ int add_suites()
 {
     CREATE_SUITE(create_vec2_suite);
     CREATE_SUITE(create_vec3_suite);
+    CREATE_SUITE(create_vec4_suite);
 
     return CUE_SUCCESS;
 }

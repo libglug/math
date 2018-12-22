@@ -34,7 +34,7 @@ float GLUG_LIB_API glug_vec2_len_manhattan(const struct glug_vec2 *v);
 void  GLUG_LIB_API glug_vec2_set_len(struct glug_vec2 *v, const float length);
 
 int   GLUG_LIB_API glug_vec2_is_normal(const struct glug_vec2 *v);
-struct glug_vec2 glug_vec2_normal(const struct glug_vec2 *v);
+struct glug_vec2 GLUG_LIB_API glug_vec2_normal(const struct glug_vec2 *v);
 void  GLUG_LIB_API glug_vec2_normalize(struct glug_vec2 *v);
 
 float GLUG_LIB_API glug_vec2_dist(const struct glug_vec2 *a, const struct glug_vec2 *b);
