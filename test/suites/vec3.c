@@ -287,18 +287,6 @@ static void test_projection(void)
     CU_ASSERT_DOUBLE_EQUAL(proj.z, exp.z, 0.00001f);
 }
 
-static void test_reflection(void)
-{
-    struct glug_vec3 a = { 3.f, 3.f, 3.f };
-    struct glug_vec3 b = { 1.f, -2.f, 0.f };
-    struct glug_vec3 ref = glug_vec3_reflection(&a, &b);
-    struct glug_vec3 exp = { -4.2f, -0.6f, -3.f };
-
-    CU_ASSERT_DOUBLE_EQUAL(ref.x, exp.x, 0.00001f);
-    CU_ASSERT_DOUBLE_EQUAL(ref.y, exp.y, 0.00001f);
-    CU_ASSERT_DOUBLE_EQUAL(ref.z, exp.z, 0.00001f);
-}
-
 static void test_rejection(void)
 {
     struct glug_vec3 a = { 3.f, 3.f, 3.f };
@@ -311,12 +299,48 @@ static void test_rejection(void)
     CU_ASSERT_DOUBLE_EQUAL(rej.z, exp.z, 0.00001f);
 }
 
+static void test_reflection(void)
+{
+    struct glug_vec3 a = { 3.f, 3.f, 3.f };
+    struct glug_vec3 b = { 1.f, -2.f, 0.f };
+    struct glug_vec3 ref = glug_vec3_reflection(&a, &b);
+    struct glug_vec3 exp = { -4.2f, -0.6f, -3.f };
+
+    CU_ASSERT_DOUBLE_EQUAL(ref.x, exp.x, 0.00001f);
+    CU_ASSERT_DOUBLE_EQUAL(ref.y, exp.y, 0.00001f);
+    CU_ASSERT_DOUBLE_EQUAL(ref.z, exp.z, 0.00001f);
+}
+
+static void test_refraction(void)
+{
+    struct glug_vec3 a = { 3.f, 3.f, 3.f };
+    struct glug_vec3 b = { 1.f, -2.f, 0.f };
+    struct glug_vec3 ref = glug_vec3_refraction(&a, &b, 1.f, 2.f);
+    struct glug_vec3 exp = { -0.23469f, 4.96939f, 1.49999f };
+
+    CU_ASSERT_DOUBLE_EQUAL(ref.x, exp.x, 0.00001f);
+    CU_ASSERT_DOUBLE_EQUAL(ref.y, exp.y, 0.00001f);
+    CU_ASSERT_DOUBLE_EQUAL(ref.z, exp.z, 0.00001f);
+}
+
 static void test_project(void)
 {
     struct glug_vec3 dst = { 3.f, 3.f, 3.f };
     struct glug_vec3 b = { 1.f, -2.f, 0.f };
     glug_vec3_project(&dst, &b);
     struct glug_vec3 exp = { -0.6f, 1.2f, 0.f };
+
+    CU_ASSERT_DOUBLE_EQUAL(dst.x, exp.x, 0.00001f);
+    CU_ASSERT_DOUBLE_EQUAL(dst.y, exp.y, 0.00001f);
+    CU_ASSERT_DOUBLE_EQUAL(dst.z, exp.z, 0.00001f);
+}
+
+static void test_reject(void)
+{
+    struct glug_vec3 dst = { 3.f, 3.f, 3.f };
+    struct glug_vec3 b = { 1.f, -2.f, 0.f };
+    glug_vec3_reject(&dst, &b);
+    struct glug_vec3 exp = { 3.6f, 1.8f, 3.f };
 
     CU_ASSERT_DOUBLE_EQUAL(dst.x, exp.x, 0.00001f);
     CU_ASSERT_DOUBLE_EQUAL(dst.y, exp.y, 0.00001f);
@@ -335,12 +359,12 @@ static void test_reflect(void)
     CU_ASSERT_DOUBLE_EQUAL(dst.z, exp.z, 0.00001f);
 }
 
-static void test_reject(void)
+static void test_refract(void)
 {
     struct glug_vec3 dst = { 3.f, 3.f, 3.f };
-    struct glug_vec3 b = { 1.f, -2.f, 0.f };
-    glug_vec3_reject(&dst, &b);
-    struct glug_vec3 exp = { 3.6f, 1.8f, 3.f };
+    struct glug_vec3 n = { 1.f, -2.f, 0.f };
+    glug_vec3_refract(&dst, &n, 1.f, 2.f);
+    struct glug_vec3 exp = { -0.23469f, 4.96939f, 1.49999f };
 
     CU_ASSERT_DOUBLE_EQUAL(dst.x, exp.x, 0.00001f);
     CU_ASSERT_DOUBLE_EQUAL(dst.y, exp.y, 0.00001f);
@@ -377,11 +401,13 @@ CU_pSuite create_vec3_suite()
     ADD_TEST(CU_add_test, vec3_suite, "manhattan distance", test_dist_mh);
     ADD_TEST(CU_add_test, vec3_suite, "angle between", test_angle_to);
     ADD_TEST(CU_add_test, vec3_suite, "projection", test_projection);
-    ADD_TEST(CU_add_test, vec3_suite, "reflection", test_reflection);
     ADD_TEST(CU_add_test, vec3_suite, "rejection", test_rejection);
+    ADD_TEST(CU_add_test, vec3_suite, "reflection", test_reflection);
+    ADD_TEST(CU_add_test, vec3_suite, "refraction", test_refraction);
     ADD_TEST(CU_add_test, vec3_suite, "project", test_project);
-    ADD_TEST(CU_add_test, vec3_suite, "reflect", test_reflect);
     ADD_TEST(CU_add_test, vec3_suite, "reject", test_reject);
+    ADD_TEST(CU_add_test, vec3_suite, "reflect", test_reflect);
+    ADD_TEST(CU_add_test, vec3_suite, "refract", test_refract);
 
     return vec3_suite;
 }

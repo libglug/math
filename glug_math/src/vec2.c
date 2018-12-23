@@ -21,8 +21,7 @@ int GLUG_LIB_API glug_vec2_equal(const struct glug_vec2 *v, const struct glug_ve
 
 struct glug_vec2 GLUG_LIB_API glug_vec2_sum(const struct glug_vec2 *a, struct glug_vec2 *b)
 {
-    struct glug_vec2 dst;
-    glug_vec2_copy(&dst, a);
+    struct glug_vec2 dst = *a;
     glug_vec2_add(&dst, b);
 
     return dst;
@@ -30,26 +29,23 @@ struct glug_vec2 GLUG_LIB_API glug_vec2_sum(const struct glug_vec2 *a, struct gl
 
 struct glug_vec2 GLUG_LIB_API glug_vec2_diff(const struct glug_vec2 *a, struct glug_vec2 *b)
 {
-    struct glug_vec2 dst;
-    glug_vec2_copy(&dst, a);
+    struct glug_vec2 dst = *a;
     glug_vec2_sub(&dst, b);
 
     return dst;
 }
 
-struct glug_vec2 GLUG_LIB_API glug_vec2_prod(const struct glug_vec2 *v, const float scalar)
+struct glug_vec2 GLUG_LIB_API glug_vec2_prod(const struct glug_vec2 *v, float scalar)
 {
-    struct glug_vec2 dst;
-    glug_vec2_copy(&dst, v);
+    struct glug_vec2 dst = *v;
     glug_vec2_mul(&dst, scalar);
 
     return dst;
 }
 
-struct glug_vec2 GLUG_LIB_API glug_vec2_quot(const struct glug_vec2 *v, const float scalar)
+struct glug_vec2 GLUG_LIB_API glug_vec2_quot(const struct glug_vec2 *v, float scalar)
 {
-    struct glug_vec2 dst;
-    glug_vec2_copy(&dst, v);
+    struct glug_vec2 dst = *v;
     glug_vec2_div(&dst, scalar);
 
     return dst;
@@ -67,13 +63,13 @@ void GLUG_LIB_API glug_vec2_sub(struct glug_vec2 *dst, const struct glug_vec2 *b
     dst->y -= b->y;
 }
 
-void GLUG_LIB_API glug_vec2_mul(struct glug_vec2 *dst, const float scalar)
+void GLUG_LIB_API glug_vec2_mul(struct glug_vec2 *dst, float scalar)
 {
     dst->x *= scalar;
     dst->y *= scalar;
 }
 
-void GLUG_LIB_API glug_vec2_div(struct glug_vec2 *dst, const float scalar)
+void GLUG_LIB_API glug_vec2_div(struct glug_vec2 *dst, float scalar)
 {
     glug_vec2_mul(dst, 1.f / scalar);
 }
@@ -98,7 +94,7 @@ float GLUG_LIB_API glug_vec2_len_manhattan(const struct glug_vec2 *v)
     return fabsf(v->x) + fabsf(v->y);
 }
 
-void GLUG_LIB_API glug_vec2_set_len(struct glug_vec2 *v, const float length)
+void GLUG_LIB_API glug_vec2_set_len(struct glug_vec2 *v, float length)
 {
     glug_vec2_mul(v, length / glug_vec2_len(v));
 }
@@ -110,8 +106,7 @@ int GLUG_LIB_API glug_vec2_is_normal(const struct glug_vec2 *v)
 
 struct glug_vec2 GLUG_LIB_API glug_vec2_normal(const struct glug_vec2 *v)
 {
-    struct glug_vec2 dst;
-    glug_vec2_copy(&dst, v);
+    struct glug_vec2 dst = *v;
     glug_vec2_div(&dst, glug_vec2_len(&dst));
 
     return dst;
@@ -150,27 +145,32 @@ float GLUG_LIB_API glug_vec2_angle_btw(const struct glug_vec2 *a, const struct g
 
 struct glug_vec2 GLUG_LIB_API glug_vec2_projection(const struct glug_vec2 *a, const struct glug_vec2 *b)
 {
-    struct glug_vec2 dst;
-    glug_vec2_copy(&dst, a);
+    struct glug_vec2 dst = *a;
     glug_vec2_project(&dst, b);
-
-    return dst;
-}
-
-struct glug_vec2 GLUG_LIB_API glug_vec2_reflection(const struct glug_vec2 *a, const struct glug_vec2 *b)
-{
-    struct glug_vec2 dst;
-    glug_vec2_copy(&dst, a);
-    glug_vec2_reflect(&dst, b);
 
     return dst;
 }
 
 struct glug_vec2 GLUG_LIB_API glug_vec2_rejection(const struct glug_vec2 *a, const struct glug_vec2 *b)
 {
-    struct glug_vec2 dst;
-    glug_vec2_copy(&dst, a);
+    struct glug_vec2 dst = *a;
     glug_vec2_reject(&dst, b);
+
+    return dst;
+}
+
+struct glug_vec2 GLUG_LIB_API glug_vec2_reflection(const struct glug_vec2 *a, const struct glug_vec2 *b)
+{
+    struct glug_vec2 dst = *a;
+    glug_vec2_reflect(&dst, b);
+
+    return dst;
+}
+
+struct glug_vec2 GLUG_LIB_API glug_vec2_refraction(const struct glug_vec2 *inc, const struct glug_vec2 *n, float incidx, float tranidx)
+{
+    struct glug_vec2 dst = *inc;
+    glug_vec2_refract(&dst, n, incidx, tranidx);
 
     return dst;
 }
@@ -183,6 +183,12 @@ void GLUG_LIB_API glug_vec2_project(struct glug_vec2 *dst, const struct glug_vec
     glug_vec2_mul(dst, proj_len);
 }
 
+void GLUG_LIB_API glug_vec2_reject(struct glug_vec2 *dst, const struct glug_vec2 *b)
+{
+    struct glug_vec2 proj = glug_vec2_projection(dst, b);
+    glug_vec2_sub(dst, &proj);
+}
+
 void GLUG_LIB_API glug_vec2_reflect(struct glug_vec2 *dst, const struct glug_vec2 *b)
 {
     struct glug_vec2 rej = glug_vec2_rejection(dst, b);
@@ -190,8 +196,20 @@ void GLUG_LIB_API glug_vec2_reflect(struct glug_vec2 *dst, const struct glug_vec
     glug_vec2_sub(dst, &rej);
 }
 
-void GLUG_LIB_API glug_vec2_reject(struct glug_vec2 *dst, const struct glug_vec2 *b)
+void GLUG_LIB_API glug_vec2_refract(struct glug_vec2 *dst, const struct glug_vec2 *n, float incidx, float tranidx)
 {
-    struct glug_vec2 proj = glug_vec2_projection(dst, b);
-    glug_vec2_sub(dst, &proj);
+    // (ni/nt * N.I - sqrt(1 - (ni/nt)^2 * (1 - N.I * N.I)) * N - ni/nt * I
+    float incproj, idxratio = incidx / tranidx;
+    float dstlen = glug_vec2_len(dst);
+    struct glug_vec2 norm = glug_vec2_normal(n);
+    struct glug_vec2 inc = glug_vec2_normal(dst);
+    glug_vec2_mul(&inc, -1);
+
+    incproj = glug_vec2_dot(&inc, &norm);
+    glug_vec2_mul(&inc, idxratio);
+
+    glug_vec2_copy(dst, &norm);
+    glug_vec2_mul(dst, -sqrtf(1 - idxratio * idxratio * (1 - incproj * incproj)) + idxratio * incproj);
+    glug_vec2_sub(dst, &inc);
+    glug_vec2_mul(dst, dstlen);
 }

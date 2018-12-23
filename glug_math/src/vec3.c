@@ -23,8 +23,7 @@ int GLUG_LIB_API glug_vec3_equal(const struct glug_vec3 *a, const struct glug_ve
 
 struct glug_vec3 GLUG_LIB_API glug_vec3_sum(const struct glug_vec3 *a, struct glug_vec3 *b)
 {
-    struct glug_vec3 dst;
-    glug_vec3_copy(&dst, a);
+    struct glug_vec3 dst = *a;
     glug_vec3_add(&dst, b);
 
     return dst;
@@ -32,26 +31,23 @@ struct glug_vec3 GLUG_LIB_API glug_vec3_sum(const struct glug_vec3 *a, struct gl
 
 struct glug_vec3 GLUG_LIB_API glug_vec3_diff(const struct glug_vec3 *a, struct glug_vec3 *b)
 {
-    struct glug_vec3 dst;
-    glug_vec3_copy(&dst, a);
+    struct glug_vec3 dst = *a;
     glug_vec3_sub(&dst, b);
 
     return dst;
 }
 
-struct glug_vec3 GLUG_LIB_API glug_vec3_prod(const struct glug_vec3 *v, const float scalar)
+struct glug_vec3 GLUG_LIB_API glug_vec3_prod(const struct glug_vec3 *v, float scalar)
 {
-    struct glug_vec3 dst;
-    glug_vec3_copy(&dst, v);
+    struct glug_vec3 dst = *v;
     glug_vec3_mul(&dst, scalar);
 
     return dst;
 }
 
-struct glug_vec3 GLUG_LIB_API glug_vec3_quot(const struct glug_vec3 *v, const float scalar)
+struct glug_vec3 GLUG_LIB_API glug_vec3_quot(const struct glug_vec3 *v, float scalar)
 {
-    struct glug_vec3 dst;
-    glug_vec3_copy(&dst, v);
+    struct glug_vec3 dst = *v;
     glug_vec3_div(&dst, scalar);
 
     return dst;
@@ -71,14 +67,14 @@ void GLUG_LIB_API glug_vec3_sub(struct glug_vec3 *dst, const struct glug_vec3 *b
     dst->z -= b->z;
 }
 
-void GLUG_LIB_API glug_vec3_mul(struct glug_vec3 *dst, const float scalar)
+void GLUG_LIB_API glug_vec3_mul(struct glug_vec3 *dst, float scalar)
 {
     dst->x *= scalar;
     dst->y *= scalar;
     dst->z *= scalar;
 }
 
-void GLUG_LIB_API glug_vec3_div(struct glug_vec3 *dst, const float scalar)
+void GLUG_LIB_API glug_vec3_div(struct glug_vec3 *dst, float scalar)
 {
     glug_vec3_mul(dst, 1.f / scalar);
 }
@@ -113,7 +109,7 @@ float GLUG_LIB_API glug_vec3_len_manhattan(const struct glug_vec3 *v)
     return fabsf(v->x) + fabsf(v->y) + fabsf(v->z);
 }
 
-void GLUG_LIB_API glug_vec3_set_len(struct glug_vec3 *v, const float length)
+void GLUG_LIB_API glug_vec3_set_len(struct glug_vec3 *v, float length)
 {
     glug_vec3_mul(v, length / glug_vec3_len(v));
 }
@@ -125,8 +121,7 @@ int GLUG_LIB_API glug_vec3_is_normal(const struct glug_vec3 *v)
 
 struct glug_vec3 GLUG_LIB_API glug_vec3_normal(const struct glug_vec3 *v)
 {
-    struct glug_vec3 dst;
-    glug_vec3_copy(&dst, v);
+    struct glug_vec3 dst = *v;
     glug_vec3_div(&dst, glug_vec3_len(&dst));
 
     return dst;
@@ -167,27 +162,33 @@ float GLUG_LIB_API glug_vec3_angle_btw(const struct glug_vec3 *a, const struct g
 
 struct glug_vec3 GLUG_LIB_API glug_vec3_projection(const struct glug_vec3 *a, const struct glug_vec3 *b)
 {
-    struct glug_vec3 dst;
-    glug_vec3_copy(&dst, a);
+    struct glug_vec3 dst = *a;
     glug_vec3_project(&dst, b);
-
-    return dst;
-}
-
-struct glug_vec3 GLUG_LIB_API glug_vec3_reflection(const struct glug_vec3 *a, const struct glug_vec3 *b)
-{
-    struct glug_vec3 dst;
-    glug_vec3_copy(&dst, a);
-    glug_vec3_reflect(&dst, b);
 
     return dst;
 }
 
 struct glug_vec3 GLUG_LIB_API glug_vec3_rejection(const struct glug_vec3 *a, const struct glug_vec3 *b)
 {
-    struct glug_vec3 dst;
-    glug_vec3_copy(&dst, a);
+    struct glug_vec3 dst = *a;
     glug_vec3_reject(&dst, b);
+
+    return dst;
+}
+
+
+struct glug_vec3 GLUG_LIB_API glug_vec3_reflection(const struct glug_vec3 *a, const struct glug_vec3 *b)
+{
+    struct glug_vec3 dst = *a;
+    glug_vec3_reflect(&dst, b);
+
+    return dst;
+}
+
+struct glug_vec3 GLUG_LIB_API glug_vec3_refraction(const struct glug_vec3 *inc, const struct glug_vec3 *n, float incidx, float tranidx)
+{
+    struct glug_vec3 dst = *inc;
+    glug_vec3_refract(&dst, n, incidx, tranidx);
 
     return dst;
 }
@@ -211,4 +212,22 @@ void GLUG_LIB_API glug_vec3_reject(struct glug_vec3 *dst, const struct glug_vec3
 {
     struct glug_vec3 proj = glug_vec3_projection(dst, b);
     glug_vec3_sub(dst, &proj);
+}
+
+void GLUG_LIB_API glug_vec3_refract(struct glug_vec3 *dst, const struct glug_vec3 *n, float incidx, float tranidx)
+{
+    // (ni/nt * N.I - sqrt(1 - (ni/nt)^2 * (1 - N.I * N.I)) * N - ni/nt * I
+    float incproj, idxratio = incidx / tranidx;
+    float dstlen = glug_vec3_len(dst);
+    struct glug_vec3 norm = glug_vec3_normal(n);
+    struct glug_vec3 inc = glug_vec3_normal(dst);
+    glug_vec3_mul(&inc, -1);
+
+    incproj = glug_vec3_dot(&inc, &norm);
+    glug_vec3_mul(&inc, idxratio);
+
+    glug_vec3_copy(dst, &norm);
+    glug_vec3_mul(dst, -sqrtf(1 - idxratio * idxratio * (1 - incproj * incproj)) + idxratio * incproj);
+    glug_vec3_sub(dst, &inc);
+    glug_vec3_mul(dst, dstlen);
 }

@@ -284,6 +284,19 @@ static void test_projection(void)
     CU_ASSERT_DOUBLE_EQUAL(proj.w, exp.w, 0.00001f);
 }
 
+static void test_rejection(void)
+{
+    struct glug_vec4 a = { 3.f, 3.f, 3.f, -2.f };
+    struct glug_vec4 b = { 1.f, -2.f, 0.f, -2.f };
+    struct glug_vec4 rej = glug_vec4_rejection(&a, &b);
+    struct glug_vec4 exp = { 2.88888f, 3.22222f, 3.f, -1.77777f };
+
+    CU_ASSERT_DOUBLE_EQUAL(rej.x, exp.x, 0.00001f);
+    CU_ASSERT_DOUBLE_EQUAL(rej.y, exp.y, 0.00001f);
+    CU_ASSERT_DOUBLE_EQUAL(rej.z, exp.z, 0.00001f);
+    CU_ASSERT_DOUBLE_EQUAL(rej.w, exp.w, 0.0001f);
+}
+
 static void test_reflection(void)
 {
     struct glug_vec4 a = { 3.f, 3.f, 3.f, -2.f };
@@ -297,17 +310,17 @@ static void test_reflection(void)
     CU_ASSERT_DOUBLE_EQUAL(ref.w, exp.w, 0.0001f);
 }
 
-static void test_rejection(void)
+static void test_refraction(void)
 {
-    struct glug_vec4 a = { 3.f, 3.f, 3.f, -2.f };
-    struct glug_vec4 b = { 1.f, -2.f, 0.f, -2.f };
-    struct glug_vec4 rej = glug_vec4_rejection(&a, &b);
-    struct glug_vec4 exp = { 2.88888f, 3.22222f, 3.f, -1.77777f };
+    struct glug_vec4 inc = { 3.f, 3.f, 3.f, -2.f };
+    struct glug_vec4 n = { 1.f, -2.f, 0.f, -2.f };
+    struct glug_vec4 ref = glug_vec4_refraction(&inc, &n, 1.f, 2.f);
+    struct glug_vec4 exp = { -0.16379f, 4.82758f, 1.50000f, 2.32758f };
 
-    CU_ASSERT_DOUBLE_EQUAL(rej.x, exp.x, 0.00001f);
-    CU_ASSERT_DOUBLE_EQUAL(rej.y, exp.y, 0.00001f);
-    CU_ASSERT_DOUBLE_EQUAL(rej.z, exp.z, 0.00001f);
-    CU_ASSERT_DOUBLE_EQUAL(rej.w, exp.w, 0.0001f);
+    CU_ASSERT_DOUBLE_EQUAL(ref.x, exp.x, 0.00001f);
+    CU_ASSERT_DOUBLE_EQUAL(ref.y, exp.y, 0.00001f);
+    CU_ASSERT_DOUBLE_EQUAL(ref.z, exp.z, 0.00001f);
+    CU_ASSERT_DOUBLE_EQUAL(ref.w, exp.w, 0.00001f);
 }
 
 static void test_project(void)
@@ -323,6 +336,19 @@ static void test_project(void)
     CU_ASSERT_DOUBLE_EQUAL(dst.w, exp.w, 0.00001f);
 }
 
+static void test_reject(void)
+{
+    struct glug_vec4 dst = { 3.f, 3.f, 3.f, -2.f };
+    struct glug_vec4 b = { 1.f, -2.f, 0.f, -2.f };
+    glug_vec4_reject(&dst, &b);
+    struct glug_vec4 exp = { 2.88888f, 3.22222f, 3.f, -1.77777f };
+
+    CU_ASSERT_DOUBLE_EQUAL(dst.x, exp.x, 0.00001f);
+    CU_ASSERT_DOUBLE_EQUAL(dst.y, exp.y, 0.00001f);
+    CU_ASSERT_DOUBLE_EQUAL(dst.z, exp.z, 0.00001f);
+    CU_ASSERT_DOUBLE_EQUAL(dst.w, exp.w, 0.0001f);
+}
+
 static void test_reflect(void)
 {
     struct glug_vec4 dst = { 3.f, 3.f, 3.f, -2.f };
@@ -336,17 +362,17 @@ static void test_reflect(void)
     CU_ASSERT_DOUBLE_EQUAL(dst.w, exp.w, 0.0001f);
 }
 
-static void test_reject(void)
+static void test_refract(void)
 {
     struct glug_vec4 dst = { 3.f, 3.f, 3.f, -2.f };
-    struct glug_vec4 b = { 1.f, -2.f, 0.f, -2.f };
-    glug_vec4_reject(&dst, &b);
-    struct glug_vec4 exp = { 2.88888f, 3.22222f, 3.f, -1.77777f };
+    struct glug_vec4 n = { 1.f, -2.f, 0.f, -2.f };
+    glug_vec4_refract(&dst, &n, 1.f, 2.f);
+    struct glug_vec4 exp = { -0.16379f, 4.82758f, 1.50000f, 2.32758f };
 
     CU_ASSERT_DOUBLE_EQUAL(dst.x, exp.x, 0.00001f);
     CU_ASSERT_DOUBLE_EQUAL(dst.y, exp.y, 0.00001f);
     CU_ASSERT_DOUBLE_EQUAL(dst.z, exp.z, 0.00001f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.w, exp.w, 0.0001f);
+    CU_ASSERT_DOUBLE_EQUAL(dst.w, exp.w, 0.00001f);
 }
 
 CU_pSuite create_vec4_suite()
@@ -378,11 +404,13 @@ CU_pSuite create_vec4_suite()
     ADD_TEST(CU_add_test, vec4_suite, "manhattan distance", test_dist_mh);
     ADD_TEST(CU_add_test, vec4_suite, "angle between", test_angle_to);
     ADD_TEST(CU_add_test, vec4_suite, "projection", test_projection);
-    ADD_TEST(CU_add_test, vec4_suite, "reflection", test_reflection);
     ADD_TEST(CU_add_test, vec4_suite, "rejection", test_rejection);
+    ADD_TEST(CU_add_test, vec4_suite, "reflection", test_reflection);
+    ADD_TEST(CU_add_test, vec4_suite, "refraction", test_refraction);
     ADD_TEST(CU_add_test, vec4_suite, "project", test_project);
-    ADD_TEST(CU_add_test, vec4_suite, "reflect", test_reflect);
     ADD_TEST(CU_add_test, vec4_suite, "reject", test_reject);
+    ADD_TEST(CU_add_test, vec4_suite, "reflect", test_reflect);
+    ADD_TEST(CU_add_test, vec4_suite, "refract", test_refract);
 
     return vec4_suite;
 }
