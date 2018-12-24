@@ -10,6 +10,9 @@ list(
     ${INC_ROOT}/math/circle_t.h
     ${INC_ROOT}/math/circle.h
     ${SRC_ROOT}/circle.c
+    ${INC_ROOT}/math/sphere_t.h
+    ${INC_ROOT}/math/sphere.h
+    ${SRC_ROOT}/sphere.c
     ${INC_ROOT}/math/vec2_t.h
     ${INC_ROOT}/math/vec2.h
     ${SRC_ROOT}/vec2.c

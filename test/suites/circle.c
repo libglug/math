@@ -35,6 +35,10 @@ static void test_contains_pt(void)
     int contains = glug_circle_contains_point(&c, &p);
 
     CU_ASSERT_TRUE(contains);
+
+    p.y = -1.f;
+    contains = glug_circle_contains_point(&c, &p);
+    CU_ASSERT_FALSE(contains);
 }
 
 static void test_expansion(void)
@@ -46,7 +50,7 @@ static void test_expansion(void)
     struct glug_circle expanded = glug_circle_expansion(&c, &p);
 
     CU_ASSERT_DOUBLE_EQUAL(expanded.c.x, exp.c.x, 0.0001f);
-    CU_ASSERT_DOUBLE_EQUAL(expanded.c.y, exp.c.x, 0.0001f);
+    CU_ASSERT_DOUBLE_EQUAL(expanded.c.y, exp.c.y, 0.0001f);
     CU_ASSERT_DOUBLE_EQUAL(expanded.r, exp.r, 0.0001f);
 
     c.c.x = exp.c.x = 0.5f;
@@ -79,7 +83,7 @@ static void test_expand(void)
     glug_circle_expand_to(&c, &p);
 
     CU_ASSERT_DOUBLE_EQUAL(c.c.x, exp.c.x, 0.0001f);
-    CU_ASSERT_DOUBLE_EQUAL(c.c.y, exp.c.x, 0.0001f);
+    CU_ASSERT_DOUBLE_EQUAL(c.c.y, exp.c.y, 0.0001f);
     CU_ASSERT_DOUBLE_EQUAL(c.r, exp.r, 0.0001f);
 
     c.c.x = exp.c.x = 0.5f;
@@ -127,18 +131,18 @@ static void test_clamp(void)
     CU_ASSERT_DOUBLE_EQUAL(p.y, exp.y, 0.001f);
 }
 
-CU_pSuite create_cir_suite()
+CU_pSuite create_circ_suite()
 {
-    CU_pSuite cir_suite = CU_add_suite("circle", NULL, NULL);
-    if (!cir_suite) return NULL;
+    CU_pSuite circ_suite = CU_add_suite("circle", NULL, NULL);
+    if (!circ_suite) return NULL;
 
-    ADD_TEST(cir_suite, "set", test_set);
-    ADD_TEST(cir_suite, "copy", test_copy);
-    ADD_TEST(cir_suite, "contains", test_contains_pt);
-    ADD_TEST(cir_suite, "expansion", test_expansion);
-    ADD_TEST(cir_suite, "expand", test_expand);
-    ADD_TEST(cir_suite, "clamped pt", test_clamped);
-    ADD_TEST(cir_suite, "clamp pt", test_clamp);
+    ADD_TEST(circ_suite, "set", test_set);
+    ADD_TEST(circ_suite, "copy", test_copy);
+    ADD_TEST(circ_suite, "contains", test_contains_pt);
+    ADD_TEST(circ_suite, "expansion", test_expansion);
+    ADD_TEST(circ_suite, "expand", test_expand);
+    ADD_TEST(circ_suite, "clamped pt", test_clamped);
+    ADD_TEST(circ_suite, "clamp pt", test_clamp);
 
-    return cir_suite;
+    return circ_suite;
 }
