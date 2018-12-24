@@ -2,18 +2,7 @@
 #define GLUG_CIRCLE_H
 
 #include <glug/import.h>
-
-#include <glug/math/vec2.h>
-
-struct glug_circle
-{
-    struct glug_vec2 c;
-    float r;
-};
-
-#ifdef GLUG_USE_TYPEDEFS
-    typedef struct glug_circle circle;
-#endif
+#include <glug/math/circle_t.h>
 
 void GLUG_LIB_API glug_circle_set(struct glug_circle *dst, const struct glug_vec2 *c, float r);
 void GLUG_LIB_API glug_circle_copy(struct glug_circle *dst, const struct glug_circle *src);

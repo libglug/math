@@ -2,15 +2,7 @@
 #define GLUG_VEC3_H
 
 #include <glug/import.h>
-
-struct glug_vec3
-{
-    float x, y, z;
-};
-
-#ifdef GLUG_USE_TYPEDEFS
-    typedef struct glug_vec3 vec3;
-#endif
+#include <glug/math/vec3_t.h>
 
 void  GLUG_LIB_API glug_vec3_set(struct glug_vec3 *dst, float x, float y, float z);
 void  GLUG_LIB_API glug_vec3_copy(struct glug_vec3 *dst, const struct glug_vec3 *src);

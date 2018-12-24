@@ -2,15 +2,7 @@
 #define GLUG_VEC2_H
 
 #include <glug/import.h>
-
-struct glug_vec2
-{
-    float x, y;
-};
-
-#ifdef GLUG_USE_TYPEDEFS
-    typedef struct glug_vec2 vec2;
-#endif
+#include <glug/math/vec2_t.h>
 
 void  GLUG_LIB_API glug_vec2_set(struct glug_vec2 *dst, float x, float y);
 void  GLUG_LIB_API glug_vec2_copy(struct glug_vec2 *dst, const struct glug_vec2 *src);

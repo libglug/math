@@ -2,15 +2,7 @@
 #define GLUG_VEC4_H
 
 #include <glug/import.h>
-
-struct glug_vec4
-{
-    float x, y, z, w;
-};
-
-#ifdef GLUG_USE_TYPEDEFS
-    typedef struct glug_vec4 vec4;
-#endif
+#include <glug/math/vec4_t.h>
 
 void  GLUG_LIB_API glug_vec4_set(struct glug_vec4 *dst, float x, float y, float z, float w);
 void  GLUG_LIB_API glug_vec4_copy(struct glug_vec4 *dst, const struct glug_vec4 *src);
@@ -52,6 +44,5 @@ void GLUG_LIB_API glug_vec4_project(struct glug_vec4 *dst, const struct glug_vec
 void GLUG_LIB_API glug_vec4_reject(struct glug_vec4 *dst, const struct glug_vec4 *b);
 void GLUG_LIB_API glug_vec4_reflect(struct glug_vec4 *dst, const struct glug_vec4 *b);
 void GLUG_LIB_API glug_vec4_refract(struct glug_vec4 *dst, const struct glug_vec4 *n, float incidx, float tranidx);
-
 
 #endif // GLUG_VEC4_H
