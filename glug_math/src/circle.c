@@ -56,6 +56,36 @@ void GLUG_LIB_API glug_circle_expand_to(struct glug_circle *dst, const struct gl
     glug_vec2_add(&dst->c, &far);
 }
 
+struct glug_circle GLUG_LIB_API glug_circle_union(struct glug_circle *a, struct glug_circle *b)
+{
+    struct glug_circle dst = *a;
+    glug_circle_unionize(&dst, b);
+
+    return dst;
+}
+
+void GLUG_LIB_API glug_circle_unionize(struct glug_circle *dst, struct glug_circle *b)
+{
+    struct glug_vec2 dc = glug_vec2_diff(&b->c, &dst->c);
+    struct glug_vec2 r = dc;
+    float cdiff = glug_vec2_len(&dc);
+
+    // dst fully encompasses b, "return" dst
+    if (cdiff + b->r <= dst->r) return;
+    // b fully encompsses dst, "return" b
+    if (cdiff + dst->r <= b->r)
+    {
+        glug_circle_copy(dst, b);
+        return;
+    }
+
+    glug_vec2_set_len(&r, dst->r);
+    dst->r = 0.5f * (cdiff + dst->r + b->r);
+    glug_vec2_add(&dst->c, &dc);
+    glug_vec2_add(&dst->c, &r);
+}
+
+
 struct glug_vec2 GLUG_LIB_API glug_circle_clamped_point(const struct glug_circle *c, const struct glug_vec2 *p)
 {
     struct glug_vec2 dst = *p;
@@ -72,4 +102,3 @@ void GLUG_LIB_API glug_circle_clamp_point(const struct glug_circle *c, struct gl
     glug_vec2_set_len(dst, c->r);
     glug_vec2_add(dst, &c->c);
 }
-

@@ -56,6 +56,35 @@ void GLUG_LIB_API glug_sphere_expand_to(struct glug_sphere *dst, const struct gl
     glug_vec3_add(&dst->c, &far);
 }
 
+struct glug_sphere GLUG_LIB_API glug_sphere_union(struct glug_sphere *a, struct glug_sphere *b)
+{
+    struct glug_sphere dst = *a;
+    glug_sphere_unionize(&dst, b);
+
+    return dst;
+}
+
+void GLUG_LIB_API glug_sphere_unionize(struct glug_sphere *dst, struct glug_sphere *b)
+{
+    struct glug_vec3 dc = glug_vec3_diff(&b->c, &dst->c);
+    struct glug_vec3 r = dc;
+    float cdiff = glug_vec3_len(&dc);
+
+    // dst fully encompasses b, "return" dst
+    if (cdiff + b->r <= dst->r) return;
+    // b fully encompsses dst, "return" b
+    if (cdiff + dst->r <= b->r)
+    {
+        glug_sphere_copy(dst, b);
+        return;
+    }
+
+    glug_vec3_set_len(&r, dst->r);
+    dst->r = 0.5f * (cdiff + dst->r + b->r);
+    glug_vec3_add(&dst->c, &dc);
+    glug_vec3_add(&dst->c, &r);
+}
+
 struct glug_vec3 GLUG_LIB_API glug_sphere_clamped_point(const struct glug_sphere *c, const struct glug_vec3 *p)
 {
     struct glug_vec3 dst = *p;

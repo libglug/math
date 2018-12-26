@@ -119,6 +119,88 @@ static void test_expand(void)
     CU_ASSERT_DOUBLE_EQUAL(c.c.y, exp.c.y, 0.0001f);
     CU_ASSERT_DOUBLE_EQUAL(c.c.z, exp.c.z, 0.0001f);
     CU_ASSERT_DOUBLE_EQUAL(c.r, exp.r, 0.0001f);
+
+    c.c.x = c.c.y = c.c.z = 0.f;
+    c.r = 1.f;
+    p.x = -2.f;
+    p.y = 0.f;
+    p.z = 0.f;
+    glug_sphere_expand_to(&c, &p);
+
+    CU_ASSERT_DOUBLE_EQUAL(c.c.x, -0.5f, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(c.c.y, 0.f, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(c.c.z, 0.f, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(c.r, 1.5f, 0.f);
+}
+
+static void test_union(void)
+{
+    struct glug_sphere c1 = { { 0.f, 0.f, 0.f }, 0.5f };
+    struct glug_sphere c2 = { { 0.f, 0.f, 0.f }, 1.f };
+    struct glug_sphere exp = { { 0.f, 0.f, 0.f }, 1.f };
+
+    // c1 fully encompassed by c2
+    struct glug_sphere dst = glug_sphere_union(&c1, &c2);
+
+    CU_ASSERT_DOUBLE_EQUAL(dst.c.x, exp.c.x, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(dst.c.y, exp.c.y, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(dst.c.z, exp.c.z, 0.f);
+
+    c1.c.x = -0.5f;
+    c1.c.y = 1.f;
+    c1.c.z = 3.f;
+    c1.r = 1.f;
+    c2.c.x = 1.f;
+    c2.c.y = 1.5f;
+    c2.c.z = -0.5f;
+    exp.c.x = 1.3905f;
+    exp.c.y = 1.6301f;
+    exp.c.z = -1.4113f;
+    exp.r = 2.9202f;
+
+    dst = glug_sphere_union(&c1, &c2);
+    CU_ASSERT_DOUBLE_EQUAL(dst.c.x, exp.c.x, 0.0001f);
+    CU_ASSERT_DOUBLE_EQUAL(dst.c.y, exp.c.y, 0.0001f);
+    CU_ASSERT_DOUBLE_EQUAL(dst.c.z, exp.c.z, 0.0001f);
+}
+
+static void test_unionize(void)
+{
+    struct glug_sphere dst = { { 0.f, 0.f, 0.f }, 1.f };
+    struct glug_sphere c1 = { { 0.f, 0.f, 0.f }, 0.5f };
+    struct glug_sphere c2 = { { 0.f, 0.f, 0.f }, 1.f };
+    struct glug_sphere exp = { { 0.f, 0.f, 0.f }, 1.f };
+
+    // dst fully encompasses c1
+    glug_sphere_unionize(&dst, &c1);
+
+    CU_ASSERT_DOUBLE_EQUAL(dst.c.x, exp.c.x, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(dst.c.y, exp.c.y, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(dst.c.z, exp.c.z, 0.f);
+
+    // dst fully encompassed by c2
+    glug_sphere_copy(&dst, &c1);
+    glug_sphere_unionize(&dst, &c2);
+
+    CU_ASSERT_DOUBLE_EQUAL(dst.c.x, exp.c.x, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(dst.c.y, exp.c.y, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(dst.c.z, exp.c.z, 0.f);
+
+    dst.c.x = -0.5f;
+    dst.c.y = 1.f;
+    dst.c.z = 3.f;
+    c2.c.x = 1.f;
+    c2.c.y = 1.5f;
+    c2.c.z = -0.5f;
+    exp.c.x = 1.3905f;
+    exp.c.y = 1.6301f;
+    exp.c.z = -1.4113f;
+    exp.r = 2.9202f;
+
+    glug_sphere_unionize(&dst, &c2);
+    CU_ASSERT_DOUBLE_EQUAL(dst.c.x, exp.c.x, 0.0001f);
+    CU_ASSERT_DOUBLE_EQUAL(dst.c.y, exp.c.y, 0.0001f);
+    CU_ASSERT_DOUBLE_EQUAL(dst.c.z, exp.c.z, 0.0001f);
 }
 
 static void test_clamped(void)
@@ -157,6 +239,8 @@ CU_pSuite create_sphr_suite()
     ADD_TEST(sphr_suite, "contains", test_contains_pt);
     ADD_TEST(sphr_suite, "expansion", test_expansion);
     ADD_TEST(sphr_suite, "expand", test_expand);
+    ADD_TEST(sphr_suite, "union", test_union);
+    ADD_TEST(sphr_suite, "unionize", test_unionize);
     ADD_TEST(sphr_suite, "clamped pt", test_clamped);
     ADD_TEST(sphr_suite, "clamp pt", test_clamp);
 

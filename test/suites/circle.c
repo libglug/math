@@ -105,6 +105,75 @@ static void test_expand(void)
     CU_ASSERT_DOUBLE_EQUAL(c.c.x, exp.c.x, 0.f);
     CU_ASSERT_DOUBLE_EQUAL(c.c.y, exp.c.y, 0.f);
     CU_ASSERT_DOUBLE_EQUAL(c.r, exp.r, 0.f);
+
+    c.c.x = c.c.y = 0.f;
+    c.r = 1.f;
+    p.x = -2.f;
+    p.y = 0.f;
+    glug_circle_expand_to(&c, &p);
+
+    CU_ASSERT_DOUBLE_EQUAL(c.c.x, -0.5f, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(c.c.y, 0.f, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(c.r, 1.5f, 0.f);
+}
+
+static void test_union(void)
+{
+    struct glug_circle c1 = { { 0.f, 0.f }, 0.5f };
+    struct glug_circle c2 = { { 0.f, 0.f }, 1.f };
+    struct glug_circle exp = { { 0.f, 0.f }, 1.f };
+
+    // c1 fully encompassed by c2
+    struct glug_circle dst = glug_circle_union(&c1, &c2);
+
+    CU_ASSERT_DOUBLE_EQUAL(dst.c.x, exp.c.x, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(dst.c.y, exp.c.y, 0.f);
+
+    c1.c.x = -0.5f;
+    c1.c.y = 1.f;
+    c1.r = 1.f;
+    c2.c.x = 1.f;
+    c2.c.y = 1.5f;
+    exp.c.x = 1.9486f;
+    exp.c.y = 1.8162f;
+    exp.r = 1.7905f;
+
+    dst = glug_circle_union(&c1, &c2);
+    CU_ASSERT_DOUBLE_EQUAL(dst.c.x, exp.c.x, 0.0001f);
+    CU_ASSERT_DOUBLE_EQUAL(dst.c.y, exp.c.y, 0.0001f);
+}
+
+static void test_unionize(void)
+{
+    struct glug_circle dst = { { 0.f, 0.f }, 1.f };
+    struct glug_circle c1 = { { 0.f, 0.f }, 0.5f };
+    struct glug_circle c2 = { { 0.f, 0.f }, 1.f };
+    struct glug_circle exp = { { 0.f, 0.f }, 1.f };
+
+    // dst fully encompasses c1
+    glug_circle_unionize(&dst, &c1);
+
+    CU_ASSERT_DOUBLE_EQUAL(dst.c.x, exp.c.x, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(dst.c.y, exp.c.y, 0.f);
+
+    // dst fully encompassed by c2
+    glug_circle_copy(&dst, &c1);
+    glug_circle_unionize(&dst, &c2);
+
+    CU_ASSERT_DOUBLE_EQUAL(dst.c.x, exp.c.x, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(dst.c.y, exp.c.y, 0.f);
+
+    dst.c.x = -0.5f;
+    dst.c.y = 1.f;
+    c2.c.x = 1.f;
+    c2.c.y = 1.5f;
+    exp.c.x = 1.9486f;
+    exp.c.y = 1.8162f;
+    exp.r = 1.7905f;
+
+    glug_circle_unionize(&dst, &c2);
+    CU_ASSERT_DOUBLE_EQUAL(dst.c.x, exp.c.x, 0.0001f);
+    CU_ASSERT_DOUBLE_EQUAL(dst.c.y, exp.c.y, 0.0001f);
 }
 
 static void test_clamped(void)
@@ -141,6 +210,8 @@ CU_pSuite create_circ_suite()
     ADD_TEST(circ_suite, "contains", test_contains_pt);
     ADD_TEST(circ_suite, "expansion", test_expansion);
     ADD_TEST(circ_suite, "expand", test_expand);
+    ADD_TEST(circ_suite, "union", test_union);
+    ADD_TEST(circ_suite, "unionize", test_unionize);
     ADD_TEST(circ_suite, "clamped pt", test_clamped);
     ADD_TEST(circ_suite, "clamp pt", test_clamp);
 
