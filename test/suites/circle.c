@@ -117,6 +117,19 @@ static void test_expand(void)
     CU_ASSERT_DOUBLE_EQUAL(c.r, 1.5f, 0.f);
 }
 
+static void test_intersects(void)
+{
+    struct glug_circle c1 = { { 0.f, 1.f }, 2.5f };
+    struct glug_circle c2 = { { -1.f, -2.f }, 0.5f };
+
+    int intersect = glug_circle_intersects_circle(&c1, &c2);
+    CU_ASSERT_FALSE(intersect);
+
+    c2.r = 0.67f;
+    intersect = glug_circle_intersects_circle(&c1, &c2);
+    CU_ASSERT_TRUE(intersect);
+}
+
 static void test_union(void)
 {
     struct glug_circle c1 = { { 0.f, 0.f }, 0.5f };
@@ -210,6 +223,7 @@ CU_pSuite create_circ_suite()
     ADD_TEST(circ_suite, "contains", test_contains_pt);
     ADD_TEST(circ_suite, "expansion", test_expansion);
     ADD_TEST(circ_suite, "expand", test_expand);
+    ADD_TEST(circ_suite, "intersects", test_intersects);
     ADD_TEST(circ_suite, "union", test_union);
     ADD_TEST(circ_suite, "unionize", test_unionize);
     ADD_TEST(circ_suite, "clamped pt", test_clamped);

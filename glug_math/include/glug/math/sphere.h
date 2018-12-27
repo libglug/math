@@ -12,8 +12,9 @@ int  GLUG_LIB_API glug_sphere_contains_point(const struct glug_sphere *cir, cons
 struct glug_sphere GLUG_LIB_API glug_sphere_expansion(const struct glug_sphere *c, const struct glug_vec3 *p);
 void GLUG_LIB_API glug_sphere_expand_to(struct glug_sphere *dst, const struct glug_vec3 *p);
 
-struct glug_sphere GLUG_LIB_API glug_sphere_union(struct glug_sphere *a, struct glug_sphere *b);
-void GLUG_LIB_API glug_sphere_unionize(struct glug_sphere *dst, struct glug_sphere *b);
+int GLUG_LIB_API glug_sphere_intersects_sphere(const struct glug_sphere *a, const struct glug_sphere *b);
+struct glug_sphere GLUG_LIB_API glug_sphere_union(const struct glug_sphere *a, const struct glug_sphere *b);
+void GLUG_LIB_API glug_sphere_unionize(struct glug_sphere *dst, const struct glug_sphere *b);
 
 // TODO: move out of the sphere header
 struct glug_vec3 GLUG_LIB_API glug_sphere_clamped_point(const struct glug_sphere *c, const struct glug_vec3 *p);

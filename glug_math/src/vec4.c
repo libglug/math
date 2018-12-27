@@ -22,7 +22,7 @@ int GLUG_LIB_API glug_vec4_equal(const struct glug_vec4 *a, const struct glug_ve
 
 }
 
-struct glug_vec4 GLUG_LIB_API glug_vec4_sum(const struct glug_vec4 *a, struct glug_vec4 *b)
+struct glug_vec4 GLUG_LIB_API glug_vec4_sum(const struct glug_vec4 *a, const struct glug_vec4 *b)
 {
     struct glug_vec4 dst = *a;
     glug_vec4_add(&dst, b);
@@ -30,7 +30,7 @@ struct glug_vec4 GLUG_LIB_API glug_vec4_sum(const struct glug_vec4 *a, struct gl
     return dst;
 }
 
-struct glug_vec4 GLUG_LIB_API glug_vec4_diff(const struct glug_vec4 *a, struct glug_vec4 *b)
+struct glug_vec4 GLUG_LIB_API glug_vec4_diff(const struct glug_vec4 *a, const struct glug_vec4 *b)
 {
     struct glug_vec4 dst = *a;
     glug_vec4_sub(&dst, b);

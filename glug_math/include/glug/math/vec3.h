@@ -8,8 +8,8 @@ void  GLUG_LIB_API glug_vec3_set(struct glug_vec3 *dst, float x, float y, float 
 void  GLUG_LIB_API glug_vec3_copy(struct glug_vec3 *dst, const struct glug_vec3 *src);
 int   GLUG_LIB_API glug_vec3_equal(const struct glug_vec3 *a, const struct glug_vec3 *b);
 
-struct glug_vec3 GLUG_LIB_API glug_vec3_sum (const struct glug_vec3 *a, struct glug_vec3 *b);
-struct glug_vec3 GLUG_LIB_API glug_vec3_diff(const struct glug_vec3 *a, struct glug_vec3 *b);
+struct glug_vec3 GLUG_LIB_API glug_vec3_sum (const struct glug_vec3 *a, const struct glug_vec3 *b);
+struct glug_vec3 GLUG_LIB_API glug_vec3_diff(const struct glug_vec3 *a, const struct glug_vec3 *b);
 struct glug_vec3 GLUG_LIB_API glug_vec3_prod(const struct glug_vec3 *v, float scalar);
 struct glug_vec3 GLUG_LIB_API glug_vec3_quot(const struct glug_vec3 *v, float scalar);
 

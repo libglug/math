@@ -56,7 +56,14 @@ void GLUG_LIB_API glug_circle_expand_to(struct glug_circle *dst, const struct gl
     glug_vec2_add(&dst->c, &far);
 }
 
-struct glug_circle GLUG_LIB_API glug_circle_union(struct glug_circle *a, struct glug_circle *b)
+int GLUG_LIB_API glug_circle_intersects_circle(const struct glug_circle *a, const struct glug_circle *b)
+{
+    struct glug_vec2 dc = glug_vec2_diff(&a->c, &b->c);
+
+    return glug_vec2_len_squared(&dc) <= (a->r + b->r) * (a->r + b->r);
+}
+
+struct glug_circle GLUG_LIB_API glug_circle_union(const struct glug_circle *a, const struct glug_circle *b)
 {
     struct glug_circle dst = *a;
     glug_circle_unionize(&dst, b);
@@ -64,7 +71,7 @@ struct glug_circle GLUG_LIB_API glug_circle_union(struct glug_circle *a, struct 
     return dst;
 }
 
-void GLUG_LIB_API glug_circle_unionize(struct glug_circle *dst, struct glug_circle *b)
+void GLUG_LIB_API glug_circle_unionize(struct glug_circle *dst, const struct glug_circle *b)
 {
     struct glug_vec2 dc = glug_vec2_diff(&b->c, &dst->c);
     struct glug_vec2 r = dc;

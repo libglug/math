@@ -133,6 +133,19 @@ static void test_expand(void)
     CU_ASSERT_DOUBLE_EQUAL(c.r, 1.5f, 0.f);
 }
 
+static void test_intersects(void)
+{
+    struct glug_sphere c1 = { { 0.f, 1.f, 2.f }, 2.5f };
+    struct glug_sphere c2 = { { -1.f, -2.f, -3.f }, 0.75f };
+
+    int intersect = glug_sphere_intersects_sphere(&c1, &c2);
+    CU_ASSERT_FALSE(intersect);
+
+    c2.r = 3.42f;
+    intersect = glug_sphere_intersects_sphere(&c1, &c2);
+    CU_ASSERT_TRUE(intersect);
+}
+
 static void test_union(void)
 {
     struct glug_sphere c1 = { { 0.f, 0.f, 0.f }, 0.5f };
@@ -239,6 +252,7 @@ CU_pSuite create_sphr_suite()
     ADD_TEST(sphr_suite, "contains", test_contains_pt);
     ADD_TEST(sphr_suite, "expansion", test_expansion);
     ADD_TEST(sphr_suite, "expand", test_expand);
+    ADD_TEST(sphr_suite, "intersects", test_intersects);
     ADD_TEST(sphr_suite, "union", test_union);
     ADD_TEST(sphr_suite, "unionize", test_unionize);
     ADD_TEST(sphr_suite, "clamped pt", test_clamped);
