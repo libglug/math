@@ -18,6 +18,14 @@ void  GLUG_LIB_API glug_vec3_sub(struct glug_vec3 *dst, const struct glug_vec3 *
 void  GLUG_LIB_API glug_vec3_mul(struct glug_vec3 *dst, float scalar);
 void  GLUG_LIB_API glug_vec3_div(struct glug_vec3 *dst, float scalar);
 
+struct glug_vec3 GLUG_LIB_API glug_vec3_max(const struct glug_vec3 *a, const struct glug_vec3 *b);
+struct glug_vec3 GLUG_LIB_API glug_vec3_min(const struct glug_vec3 *a, const struct glug_vec3 *b);
+struct glug_vec3 GLUG_LIB_API glug_vec3_clamped(const struct glug_vec3 *a, const struct glug_vec3 *min, const struct glug_vec3 *max);
+
+void GLUG_LIB_API glug_vec3_maximize(struct glug_vec3 *dst, const struct glug_vec3 *b);
+void GLUG_LIB_API glug_vec3_minimize(struct glug_vec3 *dst, const struct glug_vec3 *b);
+void GLUG_LIB_API glug_vec3_clamp(struct glug_vec3 *dst, const struct glug_vec3 *min, const struct glug_vec3 *max);
+
 float GLUG_LIB_API glug_vec3_dot(const struct glug_vec3 *v, const struct glug_vec3 *b);
 struct glug_vec3 GLUG_LIB_API glug_vec3_cross(const struct glug_vec3 *a, const struct glug_vec3 *b);
 

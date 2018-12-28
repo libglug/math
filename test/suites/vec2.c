@@ -117,6 +117,95 @@ static void test_div(void)
     CU_ASSERT_DOUBLE_EQUAL(dst.y, exp.y, 0.000001f);
 }
 
+static void test_max(void)
+{
+    struct glug_vec2 v1 = { -2.f, 2.f };
+    struct glug_vec2 v2 = { 1.f, -1.f };
+    struct glug_vec2 exp = { 1.f, 2.f };
+
+    struct glug_vec2 dst = glug_vec2_max(&v1, &v2);
+
+    CU_ASSERT_DOUBLE_EQUAL(dst.x, exp.x, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(dst.y, exp.y, 0.f);
+
+    dst = glug_vec2_max(&v2, &v1);
+    CU_ASSERT_DOUBLE_EQUAL(dst.x, exp.x, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(dst.y, exp.y, 0.f);
+}
+
+static void test_min(void)
+{
+    struct glug_vec2 v1 = { -2.f, 2.f };
+    struct glug_vec2 v2 = { 1.f, -1.f };
+    struct glug_vec2 exp = { -2.f, -1.f };
+
+    struct glug_vec2 dst = glug_vec2_min(&v1, &v2);
+    CU_ASSERT_DOUBLE_EQUAL(dst.x, exp.x, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(dst.y, exp.y, 0.f);
+
+    dst = glug_vec2_min(&v2, &v1);
+    CU_ASSERT_DOUBLE_EQUAL(dst.x, exp.x, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(dst.y, exp.y, 0.f);
+}
+
+static void test_clamped(void)
+{
+    struct glug_vec2 v1 = { -2.f, 2.f };
+    struct glug_vec2 min = { -1.f, -1.f };
+    struct glug_vec2 max = { 1.f, 1.f };
+    struct glug_vec2 exp = { -1.f, 1.f };
+
+    struct glug_vec2 dst = glug_vec2_clamped(&v1, &min, &max);
+    CU_ASSERT_DOUBLE_EQUAL(dst.x, exp.x, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(dst.y, exp.y, 0.f);
+}
+
+static void test_maximize(void)
+{
+    struct glug_vec2 v1 = { -2.f, 2.f };
+    struct glug_vec2 v2 = { 1.f, -1.f };
+    struct glug_vec2 dst = v1;
+    struct glug_vec2 exp = { 1.f, 2.f };
+
+    glug_vec2_maximize(&dst, &v2);
+    CU_ASSERT_DOUBLE_EQUAL(dst.x, exp.x, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(dst.y, exp.y, 0.f);
+
+    dst = v2;
+    glug_vec2_maximize(&dst, &v1);
+    CU_ASSERT_DOUBLE_EQUAL(dst.x, exp.x, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(dst.y, exp.y, 0.f);
+}
+
+static void test_minimize(void)
+{
+    struct glug_vec2 v1 = { -2.f, 2.f };
+    struct glug_vec2 v2 = { 1.f, -1.f };
+    struct glug_vec2 dst = v1;
+    struct glug_vec2 exp = { -2.f, -1.f };
+
+    glug_vec2_minimize(&dst, &v2);
+    CU_ASSERT_DOUBLE_EQUAL(dst.x, exp.x, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(dst.y, exp.y, 0.f);
+
+    dst = v2;
+    glug_vec2_minimize(&dst, &v1);
+    CU_ASSERT_DOUBLE_EQUAL(dst.x, exp.x, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(dst.y, exp.y, 0.f);
+}
+
+static void test_clamp(void)
+{
+    struct glug_vec2 dst = { -2.f, 2.f };
+    struct glug_vec2 min = { -1.f, -1.f };
+    struct glug_vec2 max = { 1.f, 1.f };
+    struct glug_vec2 exp = { -1.f, 1.f };
+
+    glug_vec2_clamp(&dst, &min, &max);
+    CU_ASSERT_DOUBLE_EQUAL(dst.x, exp.x, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(dst.y, exp.y, 0.f);
+}
+
 static void test_dot(void)
 {
     struct glug_vec2 v1 = { -5.6f, -7.5f };
@@ -349,6 +438,12 @@ CU_pSuite create_vec2_suite()
     ADD_TEST(vec2_suite, "multiply", test_mul);
     ADD_TEST(vec2_suite, "divide", test_div);
     ADD_TEST(vec2_suite, "dot", test_dot);
+    ADD_TEST(vec2_suite, "max", test_max);
+    ADD_TEST(vec2_suite, "min", test_min);
+    ADD_TEST(vec2_suite, "clamped", test_clamped);
+    ADD_TEST(vec2_suite, "maximize", test_maximize);
+    ADD_TEST(vec2_suite, "minimize", test_minimize);
+    ADD_TEST(vec2_suite, "clamp", test_clamp);
     ADD_TEST(vec2_suite, "length", test_len);
     ADD_TEST(vec2_suite, "square length", test_len_sq);
     ADD_TEST(vec2_suite, "manhattan length", test_len_mh);

@@ -18,6 +18,14 @@ void  GLUG_LIB_API glug_vec4_sub(struct glug_vec4 *dst, const struct glug_vec4 *
 void  GLUG_LIB_API glug_vec4_mul(struct glug_vec4 *dst, float scalar);
 void  GLUG_LIB_API glug_vec4_div(struct glug_vec4 *dst, float scalar);
 
+struct glug_vec4 GLUG_LIB_API glug_vec4_max(const struct glug_vec4 *a, const struct glug_vec4 *b);
+struct glug_vec4 GLUG_LIB_API glug_vec4_min(const struct glug_vec4 *a, const struct glug_vec4 *b);
+struct glug_vec4 GLUG_LIB_API glug_vec4_clamped(const struct glug_vec4 *a, const struct glug_vec4 *min, const struct glug_vec4 *max);
+
+void GLUG_LIB_API glug_vec4_maximize(struct glug_vec4 *dst, const struct glug_vec4 *b);
+void GLUG_LIB_API glug_vec4_minimize(struct glug_vec4 *dst, const struct glug_vec4 *b);
+void GLUG_LIB_API glug_vec4_clamp(struct glug_vec4 *dst, const struct glug_vec4 *min, const struct glug_vec4 *max);
+
 float GLUG_LIB_API glug_vec4_dot(const struct glug_vec4 *a, const struct glug_vec4 *b);
 
 float GLUG_LIB_API glug_vec4_len(const struct glug_vec4 *v);

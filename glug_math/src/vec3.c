@@ -79,6 +79,50 @@ void GLUG_LIB_API glug_vec3_div(struct glug_vec3 *dst, float scalar)
     glug_vec3_mul(dst, 1.f / scalar);
 }
 
+struct glug_vec3 GLUG_LIB_API glug_vec3_max(const struct glug_vec3 *a, const struct glug_vec3 *b)
+{
+    struct glug_vec3 dst = *a;
+    glug_vec3_maximize(&dst, b);
+
+    return dst;
+}
+
+struct glug_vec3 GLUG_LIB_API glug_vec3_min(const struct glug_vec3 *a, const struct glug_vec3 *b)
+{
+    struct glug_vec3 dst = *a;
+    glug_vec3_minimize(&dst, b);
+
+    return dst;
+}
+
+struct glug_vec3 GLUG_LIB_API glug_vec3_clamped(const struct glug_vec3 *a, const struct glug_vec3 *min, const struct glug_vec3 *max)
+{
+    struct glug_vec3 dst = *a;
+    glug_vec3_clamp(&dst, min, max);
+
+    return dst;
+}
+
+void GLUG_LIB_API glug_vec3_maximize(struct glug_vec3 *dst, const struct glug_vec3 *b)
+{
+    dst->x = fmaxf(dst->x, b->x);
+    dst->y = fmaxf(dst->y, b->y);
+    dst->z = fmaxf(dst->z, b->z);
+}
+
+void GLUG_LIB_API glug_vec3_minimize(struct glug_vec3 *dst, const struct glug_vec3 *b)
+{
+    dst->x = fminf(dst->x, b->x);
+    dst->y = fminf(dst->y, b->y);
+    dst->z = fminf(dst->z, b->z);
+}
+
+void GLUG_LIB_API glug_vec3_clamp(struct glug_vec3 *dst, const struct glug_vec3 *min, const struct glug_vec3 *max)
+{
+    glug_vec3_maximize(dst, min);
+    glug_vec3_minimize(dst, max);
+}
+
 float GLUG_LIB_API glug_vec3_dot(const struct glug_vec3 *a, const struct glug_vec3 *b)
 {
     return a->x * b->x + a->y * b->y + a->z * b->z;

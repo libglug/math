@@ -13,10 +13,18 @@ struct glug_vec2 GLUG_LIB_API glug_vec2_diff(const struct glug_vec2 *a, const st
 struct glug_vec2 GLUG_LIB_API glug_vec2_prod(const struct glug_vec2 *v, float scalar);
 struct glug_vec2 GLUG_LIB_API glug_vec2_quot(const struct glug_vec2 *v, float scalar);
 
-void  GLUG_LIB_API glug_vec2_add(struct glug_vec2 *dst, const struct glug_vec2 *b);
-void  GLUG_LIB_API glug_vec2_sub(struct glug_vec2 *dst, const struct glug_vec2 *b);
-void  GLUG_LIB_API glug_vec2_mul(struct glug_vec2 *dst, float scalar);
-void  GLUG_LIB_API glug_vec2_div(struct glug_vec2 *dst, float scalar);
+void GLUG_LIB_API glug_vec2_add(struct glug_vec2 *dst, const struct glug_vec2 *b);
+void GLUG_LIB_API glug_vec2_sub(struct glug_vec2 *dst, const struct glug_vec2 *b);
+void GLUG_LIB_API glug_vec2_mul(struct glug_vec2 *dst, float scalar);
+void GLUG_LIB_API glug_vec2_div(struct glug_vec2 *dst, float scalar);
+
+struct glug_vec2 GLUG_LIB_API glug_vec2_max(const struct glug_vec2 *a, const struct glug_vec2 *b);
+struct glug_vec2 GLUG_LIB_API glug_vec2_min(const struct glug_vec2 *a, const struct glug_vec2 *b);
+struct glug_vec2 GLUG_LIB_API glug_vec2_clamped(const struct glug_vec2 *a, const struct glug_vec2 *min, const struct glug_vec2 *max);
+
+void GLUG_LIB_API glug_vec2_maximize(struct glug_vec2 *dst, const struct glug_vec2 *b);
+void GLUG_LIB_API glug_vec2_minimize(struct glug_vec2 *dst, const struct glug_vec2 *b);
+void GLUG_LIB_API glug_vec2_clamp(struct glug_vec2 *dst, const struct glug_vec2 *min, const struct glug_vec2 *max);
 
 float GLUG_LIB_API glug_vec2_dot(const struct glug_vec2 *v, const struct glug_vec2 *b);
 
