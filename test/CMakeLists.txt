@@ -5,6 +5,7 @@ add_executable(
     ${PROJECT_NAME}
     main.c
     suites/circle.c
+    suites/rect.c
     suites/sphere.c
     suites/vec2.c
     suites/vec3.c
