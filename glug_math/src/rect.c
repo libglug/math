@@ -17,9 +17,17 @@ int GLUG_LIB_API glug_rect_equal(const struct glug_rect *a, const struct glug_re
 
 }
 
+int GLUG_LIB_API glug_rect_is_empty(const struct glug_rect *r)
+{
+    struct glug_vec2 dim = glug_vec2_diff(&r->max, &r->min);
+
+    return dim.x < 0 || dim.y < 0;
+}
+
 int GLUG_LIB_API glug_rect_contains_point(const struct glug_rect *r, const struct glug_vec2 *p)
 {
-    return p->x <= r->max.x && p->y <= r->max.y && p->x >= r->min.x && p->y >= r->min.y;
+    return r->min.x <= p->x && p->x <= r->max.x &&
+           r->min.y <= p->y && p->y <= r->max.y;
 }
 
 struct glug_rect GLUG_LIB_API glug_rect_expansion(const struct glug_rect *r, const struct glug_vec2 *p)

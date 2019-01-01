@@ -36,6 +36,19 @@ static void test_equal(void)
 
 }
 
+static void test_is_empty(void)
+{
+    struct glug_rect r2, r1 = { { 1.5, 1.5f }, { 4.f, 3.f } };
+
+    int empty = glug_rect_is_empty(&r1);
+    CU_ASSERT_FALSE(empty);
+
+    r2.max = r1.min;
+    r2.min = r1.max;
+    empty = glug_rect_is_empty(&r2);
+    CU_ASSERT_TRUE(empty);
+}
+
 static void test_contains_pt(void)
 {
     struct glug_rect r = { { -1.f, -2.f }, { 2.f, 3.f } };
@@ -203,6 +216,7 @@ CU_pSuite create_rect_suite()
     ADD_TEST(rect_suite, "set", test_set);
     ADD_TEST(rect_suite, "copy", test_copy);
     ADD_TEST(rect_suite, "equal", test_equal);
+    ADD_TEST(rect_suite, "is empty", test_is_empty);
     ADD_TEST(rect_suite, "contains", test_contains_pt);
     ADD_TEST(rect_suite, "expansion", test_expansion);
     ADD_TEST(rect_suite, "expand", test_expand);

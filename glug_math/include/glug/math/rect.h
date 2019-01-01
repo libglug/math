@@ -8,7 +8,9 @@ void GLUG_LIB_API glug_rect_set(struct glug_rect *dst, const struct glug_vec2 *m
 void GLUG_LIB_API glug_rect_copy(struct glug_rect *dst, const struct glug_rect *src);
 int  GLUG_LIB_API glug_rect_equal(const struct glug_rect *a, const struct glug_rect *b);
 
-int  GLUG_LIB_API glug_rect_contains_point(const struct glug_rect *r, const struct glug_vec2 *p);
+int GLUG_LIB_API glug_rect_is_empty(const struct glug_rect *r);
+
+int GLUG_LIB_API glug_rect_contains_point(const struct glug_rect *r, const struct glug_vec2 *p);
 struct glug_rect GLUG_LIB_API glug_rect_expansion(const struct glug_rect *r, const struct glug_vec2 *p);
 void GLUG_LIB_API glug_rect_expand_to(struct glug_rect *dst, const struct glug_vec2 *p);
 
