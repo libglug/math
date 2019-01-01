@@ -1,5 +1,6 @@
 #include <CUnit/Basic.h>
 
+extern CU_pSuite (create_box_suite)(void);
 extern CU_pSuite (create_circ_suite)(void);
 extern CU_pSuite (create_rect_suite)(void);
 extern CU_pSuite (create_sphr_suite)(void);
@@ -40,6 +41,7 @@ int main()
 
 int add_suites()
 {
+    CREATE_SUITE(create_box_suite);
     CREATE_SUITE(create_circ_suite);
     CREATE_SUITE(create_rect_suite);
     CREATE_SUITE(create_vec2_suite);

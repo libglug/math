@@ -7,6 +7,9 @@ list(
     APPEND
     COMMON_SOURCE
     ${INC_ROOT}/math.h
+    ${INC_ROOT}/math/box_t.h
+    ${INC_ROOT}/math/box.h
+    ${SRC_ROOT}/box.c
     ${INC_ROOT}/math/circle_t.h
     ${INC_ROOT}/math/circle.h
     ${SRC_ROOT}/circle.c
