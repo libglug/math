@@ -26,6 +26,8 @@ int GLUG_LIB_API glug_rect_is_empty(const struct glug_rect *r)
 
 int GLUG_LIB_API glug_rect_contains_point(const struct glug_rect *r, const struct glug_vec2 *p)
 {
+    if (glug_rect_is_empty(r)) return 0;
+
     return r->min.x <= p->x && p->x <= r->max.x &&
            r->min.y <= p->y && p->y <= r->max.y;
 }
@@ -40,14 +42,20 @@ struct glug_rect GLUG_LIB_API glug_rect_expansion(const struct glug_rect *r, con
 
 void GLUG_LIB_API glug_rect_expand_to(struct glug_rect *dst, const struct glug_vec2 *p)
 {
+    if (glug_rect_is_empty(dst)) return;
+
     glug_vec2_maximize(&dst->max, p);
     glug_vec2_minimize(&dst->min, p);
 }
 
 int GLUG_LIB_API glug_rect_intersects_rect(const struct glug_rect *a, const struct glug_rect *b)
 {
-    struct glug_vec2 dmax = glug_vec2_diff(&a->max, &b->min);
-    struct glug_vec2 dmin = glug_vec2_diff(&a->min, &b->max);
+    struct glug_vec2 dmax, dmin;
+
+    if (glug_rect_is_empty(a) || glug_rect_is_empty(b)) return 0;
+
+    dmax = glug_vec2_diff(&a->max, &b->min);
+    dmin = glug_vec2_diff(&a->min, &b->max);
 
     return glug_vec2_dot(&dmax, &dmin) <= 0;
 }
@@ -62,6 +70,8 @@ struct glug_rect GLUG_LIB_API glug_rect_intersection(const struct glug_rect *a, 
 
 void GLUG_LIB_API glug_rect_intersect(struct glug_rect *dst, const struct glug_rect *b)
 {
+    if (glug_rect_is_empty(dst)) return;
+
     glug_vec2_minimize(&dst->max, &b->max);
     glug_vec2_maximize(&dst->min, &b->min);
 }
@@ -76,6 +86,8 @@ struct glug_rect GLUG_LIB_API glug_rect_union(const struct glug_rect *a, const s
 
 void GLUG_LIB_API glug_rect_unionize(struct glug_rect *dst, const struct glug_rect *b)
 {
+    if (glug_rect_is_empty(dst)) return;
+
     glug_vec2_maximize(&dst->max, &b->max);
     glug_vec2_minimize(&dst->min, &b->min);
 }
@@ -90,6 +102,8 @@ struct glug_vec2 GLUG_LIB_API glug_rect_clamped_point(const struct glug_rect *r,
 
 void GLUG_LIB_API glug_rect_clamp_point(const struct glug_rect *r, struct glug_vec2 *dst)
 {
+    if (glug_rect_is_empty(r)) return;
+
     glug_vec2_minimize(dst, &r->max);
     glug_vec2_maximize(dst, &r->min);
 }

@@ -26,6 +26,8 @@ int GLUG_LIB_API glug_box_is_empty(const struct glug_box *b)
 
 int GLUG_LIB_API glug_box_contains_point(const struct glug_box *b, const struct glug_vec3 *p)
 {
+    if (glug_box_is_empty(b)) return 0;
+
     return b->min.x <= p->x && p->x <= b->max.x &&
            b->min.y <= p->y && p->y <= b->max.y &&
            b->min.z <= p->z && p->z <= b->max.z;
@@ -41,14 +43,20 @@ struct glug_box GLUG_LIB_API glug_box_expansion(const struct glug_box *r, const 
 
 void GLUG_LIB_API glug_box_expand_to(struct glug_box *dst, const struct glug_vec3 *p)
 {
+    if (glug_box_is_empty(dst)) return;
+
     glug_vec3_maximize(&dst->max, p);
     glug_vec3_minimize(&dst->min, p);
 }
 
 int GLUG_LIB_API glug_box_intersects_box(const struct glug_box *a, const struct glug_box *b)
 {
-    struct glug_vec3 dmax = glug_vec3_diff(&a->max, &b->min);
-    struct glug_vec3 dmin = glug_vec3_diff(&a->min, &b->max);
+    struct glug_vec3 dmax, dmin;
+
+    if (glug_box_is_empty(a) || glug_box_is_empty(b)) return 0;
+
+    dmax = glug_vec3_diff(&a->max, &b->min);
+    dmin = glug_vec3_diff(&a->min, &b->max);
 
     return glug_vec3_dot(&dmax, &dmin) <= 0;
 }
@@ -63,6 +71,8 @@ struct glug_box GLUG_LIB_API glug_box_intersection(const struct glug_box *a, con
 
 void GLUG_LIB_API glug_box_intersect(struct glug_box *dst, const struct glug_box *b)
 {
+    if (glug_box_is_empty(dst)) return;
+
     glug_vec3_minimize(&dst->max, &b->max);
     glug_vec3_maximize(&dst->min, &b->min);
 }
@@ -77,6 +87,8 @@ struct glug_box GLUG_LIB_API glug_box_union(const struct glug_box *a, const stru
 
 void GLUG_LIB_API glug_box_unionize(struct glug_box *dst, const struct glug_box *b)
 {
+    if (glug_box_is_empty(dst)) return;
+
     glug_vec3_maximize(&dst->max, &b->max);
     glug_vec3_minimize(&dst->min, &b->min);
 }
@@ -91,6 +103,8 @@ struct glug_vec3 GLUG_LIB_API glug_box_clamped_point(const struct glug_box *b, c
 
 void GLUG_LIB_API glug_box_clamp_point(const struct glug_box *b, struct glug_vec3 *dst)
 {
+    if (glug_box_is_empty(b)) return;
+
     glug_vec3_minimize(dst, &b->max);
     glug_vec3_maximize(dst, &b->min);
 }
