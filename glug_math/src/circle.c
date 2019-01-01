@@ -3,7 +3,7 @@
 
 void GLUG_LIB_API glug_circle_set(struct glug_circle *dst, const struct glug_vec2 *c, float r)
 {
-    glug_vec2_copy(&dst->c, c);
+    dst->c = *c;
     dst->r = r;
 }
 

@@ -3,8 +3,8 @@
 
 void GLUG_LIB_API glug_rect_set(struct glug_rect *dst, const struct glug_vec2 *min, const struct glug_vec2 *max)
 {
-    glug_vec2_copy(&dst->min, min);
-    glug_vec2_copy(&dst->max, max);
+    dst->min = *min;
+    dst->max = *max;
 }
 
 void GLUG_LIB_API glug_rect_copy(struct glug_rect *dst, const struct glug_rect *src)

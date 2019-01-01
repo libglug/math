@@ -11,10 +11,7 @@ void GLUG_LIB_API glug_vec4_set(struct glug_vec4 *dst, float x, float y, float z
 }
 void GLUG_LIB_API glug_vec4_copy(struct glug_vec4 *dst, const struct glug_vec4 *src)
 {
-    dst->x = src->x;
-    dst->y = src->y;
-    dst->z = src->z;
-    dst->w = src->w;
+    glug_vec4_set(dst, src->x, src->y, src->z, src->w);
 }
 
 int GLUG_LIB_API glug_vec4_equal(const struct glug_vec4 *a, const struct glug_vec4 *b)

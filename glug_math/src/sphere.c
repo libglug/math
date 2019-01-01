@@ -3,7 +3,7 @@
 
 void GLUG_LIB_API glug_sphere_set(struct glug_sphere *dst, const struct glug_vec3 *c, float r)
 {
-    glug_vec3_copy(&dst->c, c);
+    dst->c = *c;
     dst->r = r;
 }
 
