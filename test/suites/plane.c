@@ -105,9 +105,33 @@ static void test_equal(void)
 
 }
 
+static void test_normalize(void)
+{
+    struct glug_plane dst = { { 3.f, -4.f, 5.f }, 24.7487f };
+    struct glug_plane exp = { { 0.4242f, -0.5656f, 0.7071f }, 3.5f };
+
+    glug_plane_normalize(&dst);
+
+    CU_ASSERT_DOUBLE_EQUAL(dst.normal.x, exp.normal.x, 0.0001f);
+    CU_ASSERT_DOUBLE_EQUAL(dst.normal.y, exp.normal.y, 0.0001f);
+    CU_ASSERT_DOUBLE_EQUAL(dst.normal.z, exp.normal.z, 0.0001f);
+    CU_ASSERT_DOUBLE_EQUAL(dst.offset, exp.offset, 0.0001f);
+}
+
 static void test_contains_point(void)
 {
 
+}
+
+static void test_distance(void)
+{
+    struct glug_plane p = { { 0.4242f, -0.5656f, 0.7071f }, 3.5f };
+    struct glug_vec3 r = { 5.f, 6.f, 7.f };
+    float exp = 0.1770f;
+
+    float d = glug_plane_distance_to_point(&p, &r);
+
+    CU_ASSERT_DOUBLE_EQUAL(d, exp, 0.0001f);
 }
 
 static void test_closest_point(void)
@@ -148,7 +172,9 @@ CU_pSuite create_plane_suite()
     ADD_TEST(plane_suite, set);
     ADD_TEST(plane_suite, copy);
     ADD_TEST(plane_suite, equal);
+    ADD_TEST(plane_suite, normalize);
     ADD_TEST(plane_suite, contains_point);
+    ADD_TEST(plane_suite, distance);
     ADD_TEST(plane_suite, closest_point);
     ADD_TEST(plane_suite, project_point);
 
