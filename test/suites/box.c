@@ -1,8 +1,7 @@
 #include <CUnit/Assert.h>
 #include <CUnit/Basic.h>
 #include <glug/math/box.h>
-
-#define ADD_TEST(suite, name, fcn) if (!CU_add_test((suite), (name), (fcn))) return NULL;
+#include "add_test.h"
 
 static void test_set(void)
 {
@@ -314,20 +313,20 @@ CU_pSuite create_box_suite()
     CU_pSuite box_suite = CU_add_suite("box", NULL, NULL);
     if (!box_suite) return NULL;
 
-    ADD_TEST(box_suite, "set", test_set);
-    ADD_TEST(box_suite, "copy", test_copy);
-    ADD_TEST(box_suite, "equal", test_equal);
-    ADD_TEST(box_suite, "is empty", test_is_empty);
-    ADD_TEST(box_suite, "contains", test_contains_pt);
-    ADD_TEST(box_suite, "expansion", test_expansion);
-    ADD_TEST(box_suite, "expand", test_expand);
-    ADD_TEST(box_suite, "intersects", test_intersects);
-    ADD_TEST(box_suite, "intersection", test_intersection);
-    ADD_TEST(box_suite, "intersect", test_intersect);
-    ADD_TEST(box_suite, "union", test_union);
-    ADD_TEST(box_suite, "unionize", test_unionize);
-    ADD_TEST(box_suite, "clamped pt", test_clamped);
-    ADD_TEST(box_suite, "clamp pt", test_clamp);
+    ADD_TEST(box_suite, set);
+    ADD_TEST(box_suite, copy);
+    ADD_TEST(box_suite, equal);
+    ADD_TEST(box_suite, is_empty);
+    ADD_TEST(box_suite, contains_pt);
+    ADD_TEST(box_suite, expansion);
+    ADD_TEST(box_suite, expand);
+    ADD_TEST(box_suite, intersects);
+    ADD_TEST(box_suite, intersection);
+    ADD_TEST(box_suite, intersect);
+    ADD_TEST(box_suite, union);
+    ADD_TEST(box_suite, unionize);
+    ADD_TEST(box_suite, clamped);
+    ADD_TEST(box_suite, clamp);
 
     return box_suite;
 }

@@ -1,8 +1,7 @@
 #include <CUnit/Assert.h>
 #include <CUnit/Basic.h>
 #include <glug/math/vec2.h>
-
-#define ADD_TEST(suite, name, fcn) if (!CU_add_test((suite), (name), (fcn))) return NULL;
+#include "add_test.h"
 
 static void test_set(void)
 {
@@ -426,43 +425,43 @@ CU_pSuite create_vec2_suite()
     CU_pSuite vec2_suite = CU_add_suite("vec2f", NULL, NULL);
     if (!vec2_suite) return NULL;
 
-    ADD_TEST(vec2_suite, "set", test_set);
-    ADD_TEST(vec2_suite, "copy", test_copy);
-    ADD_TEST(vec2_suite, "equal", test_equal);
-    ADD_TEST(vec2_suite, "sum", test_sum);
-    ADD_TEST(vec2_suite, "difference", test_diff);
-    ADD_TEST(vec2_suite, "product", test_prod);
-    ADD_TEST(vec2_suite, "quotient", test_quot);
-    ADD_TEST(vec2_suite, "add", test_add);
-    ADD_TEST(vec2_suite, "subtract", test_sub);
-    ADD_TEST(vec2_suite, "multiply", test_mul);
-    ADD_TEST(vec2_suite, "divide", test_div);
-    ADD_TEST(vec2_suite, "dot", test_dot);
-    ADD_TEST(vec2_suite, "max", test_max);
-    ADD_TEST(vec2_suite, "min", test_min);
-    ADD_TEST(vec2_suite, "clamped", test_clamped);
-    ADD_TEST(vec2_suite, "maximize", test_maximize);
-    ADD_TEST(vec2_suite, "minimize", test_minimize);
-    ADD_TEST(vec2_suite, "clamp", test_clamp);
-    ADD_TEST(vec2_suite, "length", test_len);
-    ADD_TEST(vec2_suite, "square length", test_len_sq);
-    ADD_TEST(vec2_suite, "manhattan length", test_len_mh);
-    ADD_TEST(vec2_suite, "set length", test_set_len);
-    ADD_TEST(vec2_suite, "is normal", test_is_norm);
-    ADD_TEST(vec2_suite, "normal", test_normal);
-    ADD_TEST(vec2_suite, "normalize", test_normalize);
-    ADD_TEST(vec2_suite, "distance", test_dist);
-    ADD_TEST(vec2_suite, "square distance", test_dist_sq);
-    ADD_TEST(vec2_suite, "manhattan distance", test_dist_mh);
-    ADD_TEST(vec2_suite, "angle between", test_angle_to);
-    ADD_TEST(vec2_suite, "projection", test_projection);
-    ADD_TEST(vec2_suite, "rejection", test_rejection);
-    ADD_TEST(vec2_suite, "reflection", test_reflection);
-    ADD_TEST(vec2_suite, "refraction", test_refraction);
-    ADD_TEST(vec2_suite, "project", test_project);
-    ADD_TEST(vec2_suite, "reject", test_reject);
-    ADD_TEST(vec2_suite, "reflect", test_reflect);
-    ADD_TEST(vec2_suite, "refract", test_refract);
+    ADD_TEST(vec2_suite, set);
+    ADD_TEST(vec2_suite, copy);
+    ADD_TEST(vec2_suite, equal);
+    ADD_TEST(vec2_suite, sum);
+    ADD_TEST(vec2_suite, diff);
+    ADD_TEST(vec2_suite, prod);
+    ADD_TEST(vec2_suite, quot);
+    ADD_TEST(vec2_suite, add);
+    ADD_TEST(vec2_suite, sub);
+    ADD_TEST(vec2_suite, mul);
+    ADD_TEST(vec2_suite, div);
+    ADD_TEST(vec2_suite, dot);
+    ADD_TEST(vec2_suite, max);
+    ADD_TEST(vec2_suite, min);
+    ADD_TEST(vec2_suite, clamped);
+    ADD_TEST(vec2_suite, maximize);
+    ADD_TEST(vec2_suite, minimize);
+    ADD_TEST(vec2_suite, clamp);
+    ADD_TEST(vec2_suite, len);
+    ADD_TEST(vec2_suite, len_sq);
+    ADD_TEST(vec2_suite, len_mh);
+    ADD_TEST(vec2_suite, set_len);
+    ADD_TEST(vec2_suite, is_norm);
+    ADD_TEST(vec2_suite, normal);
+    ADD_TEST(vec2_suite, normalize);
+    ADD_TEST(vec2_suite, dist);
+    ADD_TEST(vec2_suite, dist_sq);
+    ADD_TEST(vec2_suite, dist_mh);
+    ADD_TEST(vec2_suite, angle_to);
+    ADD_TEST(vec2_suite, projection);
+    ADD_TEST(vec2_suite, rejection);
+    ADD_TEST(vec2_suite, reflection);
+    ADD_TEST(vec2_suite, refraction);
+    ADD_TEST(vec2_suite, project);
+    ADD_TEST(vec2_suite, reject);
+    ADD_TEST(vec2_suite, reflect);
+    ADD_TEST(vec2_suite, refract);
 
     return vec2_suite;
 }

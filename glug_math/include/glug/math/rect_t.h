@@ -5,8 +5,7 @@
 
 struct glug_rect
 {
-    struct glug_vec2 min;
-    struct glug_vec2 max;
+    struct glug_vec2 min, max;
 };
 
 #ifdef GLUG_USE_TYPEDEFS

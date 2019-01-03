@@ -5,8 +5,8 @@
 
 struct glug_circle
 {
-    struct glug_vec2 c;
-    float r;
+    struct glug_vec2 center;
+    float radius;
 };
 
 #ifdef GLUG_USE_TYPEDEFS

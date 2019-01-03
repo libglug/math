@@ -5,8 +5,8 @@
 
 struct glug_sphere
 {
-    struct glug_vec3 c;
-    float r;
+    struct glug_vec3 center;
+    float radius;
 };
 
 #ifdef GLUG_USE_TYPEDEFS

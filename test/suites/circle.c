@@ -1,8 +1,7 @@
 #include <CUnit/Assert.h>
 #include <CUnit/Basic.h>
 #include <glug/math/circle.h>
-
-#define ADD_TEST(suite, name, fcn) if (!CU_add_test((suite), (name), (fcn))) return NULL;
+#include "add_test.h"
 
 static void test_set(void)
 {
@@ -12,9 +11,9 @@ static void test_set(void)
 
     glug_circle_set(&cir, &c, r);
 
-    CU_ASSERT_DOUBLE_EQUAL(cir.r, r, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(cir.c.x, c.x, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(cir.c.y, c.y, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(cir.radius, r, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(cir.center.x, c.x, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(cir.center.y, c.y, 0.f);
 }
 
 static void test_copy(void)
@@ -23,9 +22,9 @@ static void test_copy(void)
     struct glug_circle cir2 = { { 7.77f, 9.12f }, 1.74f };
     glug_circle_copy(&cir1, &cir2);
 
-    CU_ASSERT_DOUBLE_EQUAL(cir1.r, cir2.r, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(cir1.c.x, cir2.c.x, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(cir1.c.y, cir2.c.y, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(cir1.radius, cir2.radius, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(cir1.center.x, cir2.center.x, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(cir1.center.y, cir2.center.y, 0.f);
 }
 
 static void test_contains_pt(void)
@@ -49,29 +48,29 @@ static void test_expansion(void)
 
     struct glug_circle expanded = glug_circle_expansion(&c, &p);
 
-    CU_ASSERT_DOUBLE_EQUAL(expanded.c.x, exp.c.x, 0.0001f);
-    CU_ASSERT_DOUBLE_EQUAL(expanded.c.y, exp.c.y, 0.0001f);
-    CU_ASSERT_DOUBLE_EQUAL(expanded.r, exp.r, 0.0001f);
+    CU_ASSERT_DOUBLE_EQUAL(expanded.center.x, exp.center.x, 0.0001f);
+    CU_ASSERT_DOUBLE_EQUAL(expanded.center.y, exp.center.y, 0.0001f);
+    CU_ASSERT_DOUBLE_EQUAL(expanded.radius, exp.radius, 0.0001f);
 
-    c.c.x = exp.c.x = 0.5f;
-    c.c.y = exp.c.y = 1.f;
-    c.r = exp.r = 1.5f;
+    c.center.x = exp.center.x = 0.5f;
+    c.center.y = exp.center.y = 1.f;
+    c.radius = exp.radius = 1.5f;
     expanded = glug_circle_expansion(&c, &p);
 
-    CU_ASSERT_DOUBLE_EQUAL(expanded.c.x, exp.c.x, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(expanded.c.y, exp.c.y, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(expanded.r, exp.r, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(expanded.center.x, exp.center.x, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(expanded.center.y, exp.center.y, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(expanded.radius, exp.radius, 0.f);
 
     p.x = 5.f;
     p.y = 1.f;
-    exp.c.x = 2.f;
-    exp.c.y = 1.f;
-    exp.r = 3.f;
+    exp.center.x = 2.f;
+    exp.center.y = 1.f;
+    exp.radius = 3.f;
     expanded = glug_circle_expansion(&c, &p);
 
-    CU_ASSERT_DOUBLE_EQUAL(expanded.c.x, exp.c.x, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(expanded.c.y, exp.c.y, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(expanded.r, exp.r, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(expanded.center.x, exp.center.x, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(expanded.center.y, exp.center.y, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(expanded.radius, exp.radius, 0.f);
 }
 
 static void test_expand(void)
@@ -82,39 +81,39 @@ static void test_expand(void)
 
     glug_circle_expand_to(&c, &p);
 
-    CU_ASSERT_DOUBLE_EQUAL(c.c.x, exp.c.x, 0.0001f);
-    CU_ASSERT_DOUBLE_EQUAL(c.c.y, exp.c.y, 0.0001f);
-    CU_ASSERT_DOUBLE_EQUAL(c.r, exp.r, 0.0001f);
+    CU_ASSERT_DOUBLE_EQUAL(c.center.x, exp.center.x, 0.0001f);
+    CU_ASSERT_DOUBLE_EQUAL(c.center.y, exp.center.y, 0.0001f);
+    CU_ASSERT_DOUBLE_EQUAL(c.radius, exp.radius, 0.0001f);
 
-    c.c.x = exp.c.x = 0.5f;
-    c.c.y = exp.c.y = 1.f;
-    c.r = exp.r = 1.5f;
+    c.center.x = exp.center.x = 0.5f;
+    c.center.y = exp.center.y = 1.f;
+    c.radius = exp.radius = 1.5f;
     glug_circle_expand_to(&c, &p);
 
-    CU_ASSERT_DOUBLE_EQUAL(c.c.x, exp.c.x, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(c.c.y, exp.c.y, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(c.r, exp.r, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(c.center.x, exp.center.x, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(c.center.y, exp.center.y, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(c.radius, exp.radius, 0.f);
 
     p.x = 5.f;
     p.y = 1.f;
-    exp.c.x = 2.f;
-    exp.c.y = 1.f;
-    exp.r = 3.f;
+    exp.center.x = 2.f;
+    exp.center.y = 1.f;
+    exp.radius = 3.f;
     glug_circle_expand_to(&c, &p);
 
-    CU_ASSERT_DOUBLE_EQUAL(c.c.x, exp.c.x, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(c.c.y, exp.c.y, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(c.r, exp.r, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(c.center.x, exp.center.x, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(c.center.y, exp.center.y, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(c.radius, exp.radius, 0.f);
 
-    c.c.x = c.c.y = 0.f;
-    c.r = 1.f;
+    c.center.x = c.center.y = 0.f;
+    c.radius = 1.f;
     p.x = -2.f;
     p.y = 0.f;
     glug_circle_expand_to(&c, &p);
 
-    CU_ASSERT_DOUBLE_EQUAL(c.c.x, -0.5f, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(c.c.y, 0.f, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(c.r, 1.5f, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(c.center.x, -0.5f, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(c.center.y, 0.f, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(c.radius, 1.5f, 0.f);
 }
 
 static void test_intersects(void)
@@ -125,7 +124,7 @@ static void test_intersects(void)
     int intersect = glug_circle_intersects_circle(&c1, &c2);
     CU_ASSERT_FALSE(intersect);
 
-    c2.r = 0.67f;
+    c2.radius = 0.67f;
     intersect = glug_circle_intersects_circle(&c1, &c2);
     CU_ASSERT_TRUE(intersect);
 }
@@ -139,21 +138,21 @@ static void test_union(void)
     // c1 fully encompassed by c2
     struct glug_circle dst = glug_circle_union(&c1, &c2);
 
-    CU_ASSERT_DOUBLE_EQUAL(dst.c.x, exp.c.x, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.c.y, exp.c.y, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(dst.center.x, exp.center.x, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(dst.center.y, exp.center.y, 0.f);
 
-    c1.c.x = -0.5f;
-    c1.c.y = 1.f;
-    c1.r = 1.f;
-    c2.c.x = 1.f;
-    c2.c.y = 1.5f;
-    exp.c.x = 1.9486f;
-    exp.c.y = 1.8162f;
-    exp.r = 1.7905f;
+    c1.center.x = -0.5f;
+    c1.center.y = 1.f;
+    c1.radius = 1.f;
+    c2.center.x = 1.f;
+    c2.center.y = 1.5f;
+    exp.center.x = 1.9486f;
+    exp.center.y = 1.8162f;
+    exp.radius = 1.7905f;
 
     dst = glug_circle_union(&c1, &c2);
-    CU_ASSERT_DOUBLE_EQUAL(dst.c.x, exp.c.x, 0.0001f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.c.y, exp.c.y, 0.0001f);
+    CU_ASSERT_DOUBLE_EQUAL(dst.center.x, exp.center.x, 0.0001f);
+    CU_ASSERT_DOUBLE_EQUAL(dst.center.y, exp.center.y, 0.0001f);
 }
 
 static void test_unionize(void)
@@ -166,27 +165,27 @@ static void test_unionize(void)
     // dst fully encompasses c1
     glug_circle_unionize(&dst, &c1);
 
-    CU_ASSERT_DOUBLE_EQUAL(dst.c.x, exp.c.x, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.c.y, exp.c.y, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(dst.center.x, exp.center.x, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(dst.center.y, exp.center.y, 0.f);
 
     // dst fully encompassed by c2
     glug_circle_copy(&dst, &c1);
     glug_circle_unionize(&dst, &c2);
 
-    CU_ASSERT_DOUBLE_EQUAL(dst.c.x, exp.c.x, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.c.y, exp.c.y, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(dst.center.x, exp.center.x, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(dst.center.y, exp.center.y, 0.f);
 
-    dst.c.x = -0.5f;
-    dst.c.y = 1.f;
-    c2.c.x = 1.f;
-    c2.c.y = 1.5f;
-    exp.c.x = 1.9486f;
-    exp.c.y = 1.8162f;
-    exp.r = 1.7905f;
+    dst.center.x = -0.5f;
+    dst.center.y = 1.f;
+    c2.center.x = 1.f;
+    c2.center.y = 1.5f;
+    exp.center.x = 1.9486f;
+    exp.center.y = 1.8162f;
+    exp.radius = 1.7905f;
 
     glug_circle_unionize(&dst, &c2);
-    CU_ASSERT_DOUBLE_EQUAL(dst.c.x, exp.c.x, 0.0001f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.c.y, exp.c.y, 0.0001f);
+    CU_ASSERT_DOUBLE_EQUAL(dst.center.x, exp.center.x, 0.0001f);
+    CU_ASSERT_DOUBLE_EQUAL(dst.center.y, exp.center.y, 0.0001f);
 }
 
 static void test_clamped(void)
@@ -218,16 +217,16 @@ CU_pSuite create_circ_suite()
     CU_pSuite circ_suite = CU_add_suite("circle", NULL, NULL);
     if (!circ_suite) return NULL;
 
-    ADD_TEST(circ_suite, "set", test_set);
-    ADD_TEST(circ_suite, "copy", test_copy);
-    ADD_TEST(circ_suite, "contains", test_contains_pt);
-    ADD_TEST(circ_suite, "expansion", test_expansion);
-    ADD_TEST(circ_suite, "expand", test_expand);
-    ADD_TEST(circ_suite, "intersects", test_intersects);
-    ADD_TEST(circ_suite, "union", test_union);
-    ADD_TEST(circ_suite, "unionize", test_unionize);
-    ADD_TEST(circ_suite, "clamped pt", test_clamped);
-    ADD_TEST(circ_suite, "clamp pt", test_clamp);
+    ADD_TEST(circ_suite, set);
+    ADD_TEST(circ_suite, copy);
+    ADD_TEST(circ_suite, contains_pt);
+    ADD_TEST(circ_suite, expansion);
+    ADD_TEST(circ_suite, expand);
+    ADD_TEST(circ_suite, intersects);
+    ADD_TEST(circ_suite, union);
+    ADD_TEST(circ_suite, unionize);
+    ADD_TEST(circ_suite, clamped);
+    ADD_TEST(circ_suite, clamp);
 
     return circ_suite;
 }

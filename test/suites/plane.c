@@ -11,18 +11,18 @@ static void test_from_points(void)
     struct glug_plane p = glug_plane_from_points(&o, &x, &y);
     struct glug_plane exp = { { 0.f, 0.f, 1.f }, 0.f };
 
-    CU_ASSERT_DOUBLE_EQUAL(p.n.x, exp.n.x, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(p.n.y, exp.n.y, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(p.n.z, exp.n.z, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(p.d, exp.d, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(p.normal.x, exp.normal.x, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(p.normal.y, exp.normal.y, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(p.normal.z, exp.normal.z, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(p.offset, exp.offset, 0.f);
 
     p = glug_plane_from_points(&o, &y, &x);
-    exp.n.z = -1.f;
+    exp.normal.z = -1.f;
 
-    CU_ASSERT_DOUBLE_EQUAL(p.n.x, exp.n.x, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(p.n.y, exp.n.y, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(p.n.z, exp.n.z, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(p.d, exp.d, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(p.normal.x, exp.normal.x, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(p.normal.y, exp.normal.y, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(p.normal.z, exp.normal.z, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(p.offset, exp.offset, 0.f);
 }
 
 static void test_from_normal(void)
@@ -32,10 +32,10 @@ static void test_from_normal(void)
     struct glug_plane p = glug_plane_from_normal(&n, &r);
     struct glug_plane exp = { { 0.4082f, 0.81649f, -0.4082f  }, - 2.4494f };
 
-    CU_ASSERT_DOUBLE_EQUAL(p.n.x, exp.n.x, 0.0001f);
-    CU_ASSERT_DOUBLE_EQUAL(p.n.y, exp.n.y, 0.0001f);
-    CU_ASSERT_DOUBLE_EQUAL(p.n.z, exp.n.z, 0.0001f);
-    CU_ASSERT_DOUBLE_EQUAL(p.d, exp.d, 0.0001f);
+    CU_ASSERT_DOUBLE_EQUAL(p.normal.x, exp.normal.x, 0.0001f);
+    CU_ASSERT_DOUBLE_EQUAL(p.normal.y, exp.normal.y, 0.0001f);
+    CU_ASSERT_DOUBLE_EQUAL(p.normal.z, exp.normal.z, 0.0001f);
+    CU_ASSERT_DOUBLE_EQUAL(p.offset, exp.offset, 0.0001f);
 }
 
 static void test_set_by_points(void)
@@ -47,18 +47,18 @@ static void test_set_by_points(void)
     struct glug_plane exp = { { 0.f, 0.f, 1.f }, 0.f };
 
     glug_plane_set_by_points(&dst, &o, &x, &y);
-    CU_ASSERT_DOUBLE_EQUAL(dst.n.x, exp.n.x, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.n.y, exp.n.y, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.n.z, exp.n.z, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.d, exp.d, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(dst.normal.x, exp.normal.x, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(dst.normal.y, exp.normal.y, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(dst.normal.z, exp.normal.z, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(dst.offset, exp.offset, 0.f);
 
     glug_plane_set_by_points(&dst, &o, &y, &x);
-    exp.n.z = -1.f;
+    exp.normal.z = -1.f;
 
-    CU_ASSERT_DOUBLE_EQUAL(dst.n.x, exp.n.x, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.n.y, exp.n.y, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.n.z, exp.n.z, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.d, exp.d, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(dst.normal.x, exp.normal.x, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(dst.normal.y, exp.normal.y, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(dst.normal.z, exp.normal.z, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(dst.offset, exp.offset, 0.f);
 }
 
 static void test_set_by_normal(void)
@@ -69,10 +69,10 @@ static void test_set_by_normal(void)
     struct glug_plane exp = { { 0.4082f, 0.81649f, -0.4082f  }, - 2.4494f };
     glug_plane_set_by_normal(&dst, &n, &r);
 
-    CU_ASSERT_DOUBLE_EQUAL(dst.n.x, exp.n.x, 0.0001f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.n.y, exp.n.y, 0.0001f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.n.z, exp.n.z, 0.0001f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.d, exp.d, 0.0001f);
+    CU_ASSERT_DOUBLE_EQUAL(dst.normal.x, exp.normal.x, 0.0001f);
+    CU_ASSERT_DOUBLE_EQUAL(dst.normal.y, exp.normal.y, 0.0001f);
+    CU_ASSERT_DOUBLE_EQUAL(dst.normal.z, exp.normal.z, 0.0001f);
+    CU_ASSERT_DOUBLE_EQUAL(dst.offset, exp.offset, 0.0001f);
 }
 
 static void test_set(void)
@@ -82,10 +82,10 @@ static void test_set(void)
     float d = -1.2f;
     glug_plane_set(&p, &n, d);
 
-    CU_ASSERT_DOUBLE_EQUAL(p.n.x, n.x, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(p.n.y, n.y, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(p.n.z, n.z, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(p.d, d, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(p.normal.x, n.x, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(p.normal.y, n.y, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(p.normal.z, n.z, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(p.offset, d, 0.f);
 }
 
 static void test_copy(void)
@@ -94,10 +94,10 @@ static void test_copy(void)
     struct glug_plane p2 = { { 7.77f, 9.12f, 10.2f }, 1.74f };
     glug_plane_copy(&p1, &p2);
 
-    CU_ASSERT_DOUBLE_EQUAL(p1.n.x, p2.n.x, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(p1.n.y, p2.n.y, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(p1.n.z, p2.n.z, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(p1.d, p2.d, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(p1.normal.x, p2.normal.x, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(p1.normal.y, p2.normal.y, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(p1.normal.z, p2.normal.z, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(p1.offset, p2.offset, 0.f);
 }
 
 static void test_equal(void)

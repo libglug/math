@@ -5,8 +5,8 @@
 
 struct glug_plane
 {
-    struct glug_vec3 n;
-    float d;
+    struct glug_vec3 normal;
+    float offset;
 };
 
 #ifdef GLUG_USE_TYPEDEFS

@@ -5,8 +5,7 @@
 
 struct glug_box
 {
-    struct glug_vec3 min;
-    struct glug_vec3 max;
+    struct glug_vec3 min, max;
 };
 
 #ifdef GLUG_USE_TYPEDEFS
