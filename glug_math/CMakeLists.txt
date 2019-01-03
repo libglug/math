@@ -13,6 +13,9 @@ list(
     ${INC_ROOT}/math/circle_t.h
     ${INC_ROOT}/math/circle.h
     ${SRC_ROOT}/circle.c
+    ${INC_ROOT}/math/plane_t.h
+    ${INC_ROOT}/math/plane.h
+    ${SRC_ROOT}/plane.c
     ${INC_ROOT}/math/rect_t.h
     ${INC_ROOT}/math/rect.h
     ${SRC_ROOT}/rect.c

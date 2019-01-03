@@ -2,6 +2,7 @@
 
 extern CU_pSuite (create_box_suite)(void);
 extern CU_pSuite (create_circ_suite)(void);
+extern CU_pSuite (create_plane_suite)(void);
 extern CU_pSuite (create_rect_suite)(void);
 extern CU_pSuite (create_sphr_suite)(void);
 extern CU_pSuite (create_vec2_suite)(void);
@@ -43,11 +44,12 @@ int add_suites()
 {
     CREATE_SUITE(create_box_suite);
     CREATE_SUITE(create_circ_suite);
+    CREATE_SUITE(create_plane_suite);
     CREATE_SUITE(create_rect_suite);
+    CREATE_SUITE(create_sphr_suite);
     CREATE_SUITE(create_vec2_suite);
     CREATE_SUITE(create_vec3_suite);
     CREATE_SUITE(create_vec4_suite);
-    CREATE_SUITE(create_sphr_suite);
 
     return CUE_SUCCESS;
 }
