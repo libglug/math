@@ -16,6 +16,9 @@ list(
     ${INC_ROOT}/math/line2_t.h
     ${INC_ROOT}/math/line2.h
     ${SRC_ROOT}/line2.c
+    ${INC_ROOT}/math/line3_t.h
+    ${INC_ROOT}/math/line3.h
+    ${SRC_ROOT}/line3.c
     ${INC_ROOT}/math/plane_t.h
     ${INC_ROOT}/math/plane.h
     ${SRC_ROOT}/plane.c
