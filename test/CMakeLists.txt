@@ -6,6 +6,7 @@ add_executable(
     main.c
     suites/box.c
     suites/circle.c
+    suites/line2.c
     suites/plane.c
     suites/rect.c
     suites/sphere.c
