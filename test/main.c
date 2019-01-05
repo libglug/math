@@ -7,6 +7,8 @@ extern CU_pSuite (create_line3_suite)(void);
 extern CU_pSuite (create_plane_suite)(void);
 extern CU_pSuite (create_rect_suite)(void);
 extern CU_pSuite (create_sphr_suite)(void);
+extern CU_pSuite (create_tri2_suite)(void);
+extern CU_pSuite (create_tri3_suite)(void);
 extern CU_pSuite (create_vec2_suite)(void);
 extern CU_pSuite (create_vec3_suite)(void);
 extern CU_pSuite (create_vec4_suite)(void);
@@ -51,6 +53,8 @@ int add_suites()
     CREATE_SUITE(create_plane_suite);
     CREATE_SUITE(create_rect_suite);
     CREATE_SUITE(create_sphr_suite);
+    CREATE_SUITE(create_tri2_suite);
+    CREATE_SUITE(create_tri3_suite);
     CREATE_SUITE(create_vec2_suite);
     CREATE_SUITE(create_vec3_suite);
     CREATE_SUITE(create_vec4_suite);

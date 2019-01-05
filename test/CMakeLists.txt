@@ -4,6 +4,7 @@ add_subdirectory(cunit/CUnit)
 add_executable(
     ${PROJECT_NAME}
     main.c
+    suites/add_test.h
     suites/box.c
     suites/circle.c
     suites/line2.c
@@ -11,6 +12,8 @@ add_executable(
     suites/plane.c
     suites/rect.c
     suites/sphere.c
+    suites/tri2.c
+    suites/tri3.c
     suites/vec2.c
     suites/vec3.c
     suites/vec4.c

@@ -28,6 +28,12 @@ list(
     ${INC_ROOT}/math/sphere_t.h
     ${INC_ROOT}/math/sphere.h
     ${SRC_ROOT}/sphere.c
+    ${INC_ROOT}/math/triangle2_t.h
+    ${INC_ROOT}/math/triangle2.h
+    ${SRC_ROOT}/triangle2.c
+    ${INC_ROOT}/math/triangle3_t.h
+    ${INC_ROOT}/math/triangle3.h
+    ${SRC_ROOT}/triangle3.c
     ${INC_ROOT}/math/vec2_t.h
     ${INC_ROOT}/math/vec2.h
     ${SRC_ROOT}/vec2.c
