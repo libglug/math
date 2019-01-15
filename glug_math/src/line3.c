@@ -20,13 +20,8 @@ void GLUG_LIB_API glug_line3_set_by_points(struct glug_line3 *l, const struct gl
 
 void GLUG_LIB_API glug_line3_set(struct glug_line3 *dst, const struct glug_vec3 *v, const struct glug_vec3 *r0)
 {
-    glug_vec3_copy(&dst->v, v);
-    glug_vec3_copy(&dst->r0, r0);
-}
-
-void GLUG_LIB_API glug_line3_copy(struct glug_line3 *dst, const struct glug_line3 *src)
-{
-    glug_line3_set(dst, &src->v, &src->r0);
+    dst->v = *v;
+    dst->r0 = *r0;
 }
 
 int GLUG_LIB_API glug_line3_equal(const struct glug_line3 *a, const struct glug_line3 *b)

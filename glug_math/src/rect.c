@@ -7,11 +7,6 @@ void GLUG_LIB_API glug_rect_set(struct glug_rect *dst, const struct glug_vec2 *m
     dst->max = *max;
 }
 
-void GLUG_LIB_API glug_rect_copy(struct glug_rect *dst, const struct glug_rect *src)
-{
-    glug_rect_set(dst, &src->min, &src->max);
-}
-
 int GLUG_LIB_API glug_rect_equal(const struct glug_rect *a, const struct glug_rect *b)
 {
 

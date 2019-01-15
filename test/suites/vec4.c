@@ -15,18 +15,6 @@ static void test_set(void)
     CU_ASSERT_DOUBLE_EQUAL(v3.w, w, 0.f);
 }
 
-static void test_copy(void)
-{
-    struct glug_vec4 v1 = { 0, 0, 0 };
-    struct glug_vec4 v2 = { 4.f, 5.f, 10.f, 13.f };
-    glug_vec4_copy(&v1, &v2);
-
-    CU_ASSERT_DOUBLE_EQUAL(v1.x, v2.x, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(v1.y, v2.y, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(v1.z, v2.z, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(v1.w, v2.w, 0.f);
-}
-
 static void test_equal(void)
 {
 
@@ -489,7 +477,6 @@ CU_pSuite create_vec4_suite()
     if (!vec4_suite) return NULL;
 
     ADD_TEST(vec4_suite, set);
-    ADD_TEST(vec4_suite, copy);
     ADD_TEST(vec4_suite, equal);
     ADD_TEST(vec4_suite, sum);
     ADD_TEST(vec4_suite, diff);

@@ -5,7 +5,6 @@
 #include <glug/math/sphere_t.h>
 
 void GLUG_LIB_API glug_sphere_set(struct glug_sphere *dst, const struct glug_vec3 *c, float r);
-void GLUG_LIB_API glug_sphere_copy(struct glug_sphere *dst, const struct glug_sphere *src);
 int  GLUG_LIB_API glug_sphere_equal(const struct glug_sphere *a, const struct glug_sphere *b);
 
 int  GLUG_LIB_API glug_sphere_contains_point(const struct glug_sphere *cir, const struct glug_vec3 *p);

@@ -11,7 +11,6 @@ void GLUG_LIB_API glug_line2_set_by_points(struct glug_line2 *l, const struct gl
 void GLUG_LIB_API glug_line2_set_by_slope(struct glug_line2 *l, float m, float b);
 
 void GLUG_LIB_API glug_line2_set(struct glug_line2 *dst, const struct glug_vec2 *v, const struct glug_vec2 *r0);
-void GLUG_LIB_API glug_line2_copy(struct glug_line2 *dst, const struct glug_line2 *src);
 int  GLUG_LIB_API glug_line2_equal(const struct glug_line2 *a, const struct glug_line2 *b);
 
 struct glug_vec2 GLUG_LIB_API glug_line2_at_t(const struct glug_line2 *l, float t);

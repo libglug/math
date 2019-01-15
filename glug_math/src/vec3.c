@@ -9,11 +9,6 @@ void GLUG_LIB_API glug_vec3_set(struct glug_vec3 *dst, float x, float y, float z
     dst->z = z;
 }
 
-void GLUG_LIB_API glug_vec3_copy(struct glug_vec3 *dst, const struct glug_vec3 *src)
-{
-    glug_vec3_set(dst, src->x, src->y, src->z);
-}
-
 int GLUG_LIB_API glug_vec3_equal(const struct glug_vec3 *a, const struct glug_vec3 *b)
 {
 
@@ -239,7 +234,7 @@ void GLUG_LIB_API glug_vec3_project(struct glug_vec3 *dst, const struct glug_vec
 {
     struct glug_vec3 bh = glug_vec3_normal(b);
     float proj_len = glug_vec3_dot(dst, &bh);
-    glug_vec3_copy(dst, &bh);
+    *dst = bh;
     glug_vec3_mul(dst, proj_len);
 }
 
@@ -268,7 +263,7 @@ void GLUG_LIB_API glug_vec3_refract(struct glug_vec3 *dst, const struct glug_vec
     incproj = glug_vec3_dot(&inc, &norm);
     glug_vec3_mul(&inc, idxratio);
 
-    glug_vec3_copy(dst, &norm);
+    *dst = norm;
     glug_vec3_mul(dst, -sqrtf(1 - idxratio * idxratio * (1 - incproj * incproj)) + idxratio * incproj);
     glug_vec3_sub(dst, &inc);
     glug_vec3_mul(dst, dstlen);

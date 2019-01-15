@@ -19,21 +19,6 @@ static void test_set(void)
     CU_ASSERT_DOUBLE_EQUAL(b.max.z, max.z, 0.f);
 }
 
-static void test_copy(void)
-{
-    struct glug_box b1 = { { 1.5, 1.5f, 1.5f }, { 4.f, 3.f, 2.f } };
-    struct glug_box b2 = { { 0.5f, 0.3f, 0.1f }, { 3.14f, 2.718f, 1.618f } };
-
-    glug_box_copy(&b1, &b2);
-
-    CU_ASSERT_DOUBLE_EQUAL(b1.min.x, b2.min.x, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(b1.min.y, b2.min.y, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(b1.min.z, b2.min.z, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(b1.max.x, b2.max.x, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(b1.max.y, b2.max.y, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(b1.max.z, b2.max.z, 0.f);
-}
-
 static void test_equal(void)
 {
 
@@ -314,7 +299,6 @@ CU_pSuite create_box_suite()
     if (!box_suite) return NULL;
 
     ADD_TEST(box_suite, set);
-    ADD_TEST(box_suite, copy);
     ADD_TEST(box_suite, equal);
     ADD_TEST(box_suite, is_empty);
     ADD_TEST(box_suite, contains_pt);

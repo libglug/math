@@ -40,11 +40,6 @@ void glug_plane_set(struct glug_plane *dst, const struct glug_vec3 *n, float d)
     dst->offset = d;
 }
 
-void glug_plane_copy(struct glug_plane *dst, const struct glug_plane *src)
-{
-    glug_plane_set(dst, &src->normal, src->offset);
-}
-
 int glug_plane_equal(const struct glug_plane *a, const struct glug_plane *b)
 {
 

@@ -17,19 +17,6 @@ static void test_set(void)
     CU_ASSERT_DOUBLE_EQUAL(r.max.y, max.y, 0.f);
 }
 
-static void test_copy(void)
-{
-    struct glug_rect r1 = { { 1.5, 1.5f }, { 4.f, 3.f } };
-    struct glug_rect r2 = { { 0.5f, 0.3f }, { 3.14f, 2.718f } };
-
-    glug_rect_copy(&r1, &r2);
-
-    CU_ASSERT_DOUBLE_EQUAL(r1.min.x, r2.min.x, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(r1.min.y, r2.min.y, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(r1.max.x, r2.max.x, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(r1.max.y, r2.max.y, 0.f);
-}
-
 static void test_equal(void)
 {
 
@@ -277,7 +264,6 @@ CU_pSuite create_rect_suite()
     if (!rect_suite) return NULL;
 
     ADD_TEST(rect_suite, set);
-    ADD_TEST(rect_suite, copy);
     ADD_TEST(rect_suite, equal);
     ADD_TEST(rect_suite, is_empty);
     ADD_TEST(rect_suite, contains_pt);

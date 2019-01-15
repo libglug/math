@@ -16,17 +16,6 @@ static void test_set(void)
     CU_ASSERT_DOUBLE_EQUAL(cir.center.y, c.y, 0.f);
 }
 
-static void test_copy(void)
-{
-    struct glug_circle cir1 = { { 1.f, 1.f }, 1.f };
-    struct glug_circle cir2 = { { 7.77f, 9.12f }, 1.74f };
-    glug_circle_copy(&cir1, &cir2);
-
-    CU_ASSERT_DOUBLE_EQUAL(cir1.radius, cir2.radius, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(cir1.center.x, cir2.center.x, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(cir1.center.y, cir2.center.y, 0.f);
-}
-
 static void test_contains_pt(void)
 {
     struct glug_circle c = { { 0.f, 1.f }, 1.5f };
@@ -169,7 +158,7 @@ static void test_unionize(void)
     CU_ASSERT_DOUBLE_EQUAL(dst.center.y, exp.center.y, 0.f);
 
     // dst fully encompassed by c2
-    glug_circle_copy(&dst, &c1);
+    dst = c1;
     glug_circle_unionize(&dst, &c2);
 
     CU_ASSERT_DOUBLE_EQUAL(dst.center.x, exp.center.x, 0.f);
@@ -218,7 +207,6 @@ CU_pSuite create_circ_suite()
     if (!circ_suite) return NULL;
 
     ADD_TEST(circ_suite, set);
-    ADD_TEST(circ_suite, copy);
     ADD_TEST(circ_suite, contains_pt);
     ADD_TEST(circ_suite, expansion);
     ADD_TEST(circ_suite, expand);

@@ -5,7 +5,6 @@
 #include <glug/math/box_t.h>
 
 void GLUG_LIB_API glug_box_set(struct glug_box *dst, const struct glug_vec3 *min, const struct glug_vec3 *max);
-void GLUG_LIB_API glug_box_copy(struct glug_box *dst, const struct glug_box *src);
 int  GLUG_LIB_API glug_box_equal(const struct glug_box *a, const struct glug_box *b);
 
 int GLUG_LIB_API glug_box_is_empty(const struct glug_box *b);

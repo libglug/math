@@ -5,7 +5,6 @@
 #include <glug/math/vec4_t.h>
 
 void  GLUG_LIB_API glug_vec4_set(struct glug_vec4 *dst, float x, float y, float z, float w);
-void  GLUG_LIB_API glug_vec4_copy(struct glug_vec4 *dst, const struct glug_vec4 *src);
 int   GLUG_LIB_API glug_vec4_equal(const struct glug_vec4 *a, const struct glug_vec4 *b);
 
 struct glug_vec4 GLUG_LIB_API glug_vec4_sum(const struct glug_vec4 *a, const struct glug_vec4 *b);

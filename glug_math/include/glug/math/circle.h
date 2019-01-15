@@ -5,7 +5,6 @@
 #include <glug/math/circle_t.h>
 
 void GLUG_LIB_API glug_circle_set(struct glug_circle *dst, const struct glug_vec2 *c, float r);
-void GLUG_LIB_API glug_circle_copy(struct glug_circle *dst, const struct glug_circle *src);
 int  GLUG_LIB_API glug_circle_equal(const struct glug_circle *a, const struct glug_circle *b);
 
 int  GLUG_LIB_API glug_circle_contains_point(const struct glug_circle *cir, const struct glug_vec2 *p);

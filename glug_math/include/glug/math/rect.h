@@ -5,7 +5,6 @@
 #include <glug/math/rect_t.h>
 
 void GLUG_LIB_API glug_rect_set(struct glug_rect *dst, const struct glug_vec2 *min, const struct glug_vec2 *max);
-void GLUG_LIB_API glug_rect_copy(struct glug_rect *dst, const struct glug_rect *src);
 int  GLUG_LIB_API glug_rect_equal(const struct glug_rect *a, const struct glug_rect *b);
 
 int GLUG_LIB_API glug_rect_is_empty(const struct glug_rect *r);

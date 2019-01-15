@@ -11,7 +11,6 @@ void GLUG_LIB_API glug_plane_set_by_points(struct glug_plane *dst, const struct 
 void GLUG_LIB_API glug_plane_set_by_normal(struct glug_plane *dst, const struct glug_vec3 *n, const struct glug_vec3 *r);
 
 void GLUG_LIB_API glug_plane_set(struct glug_plane *dst, const struct glug_vec3 *n, float d);
-void GLUG_LIB_API glug_plane_copy(struct glug_plane *dst, const struct glug_plane *src);
 int  GLUG_LIB_API glug_plane_equal(const struct glug_plane *a, const struct glug_plane *b);
 
 void GLUG_LIB_API glug_plane_normalize(struct glug_plane *dst);

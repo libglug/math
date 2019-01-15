@@ -7,11 +7,6 @@ void GLUG_LIB_API glug_circle_set(struct glug_circle *dst, const struct glug_vec
     dst->radius = r;
 }
 
-void GLUG_LIB_API glug_circle_copy(struct glug_circle *dst, const struct glug_circle *src)
-{
-    glug_circle_set(dst, &src->center, src->radius);
-}
-
 int GLUG_LIB_API glug_circle_equal(const struct glug_circle *a, const struct glug_circle *b)
 {
 
@@ -43,7 +38,7 @@ void GLUG_LIB_API glug_circle_expand_to(struct glug_circle *dst, const struct gl
     span = glug_vec2_diff(p, &dst->center);
 
     // far = -direction of span w/ length r
-    glug_vec2_copy(&far, &span);
+    far = span;
     glug_vec2_set_len(&far, -dst->radius);
     glug_vec2_sub(&span, &far);
 
@@ -82,7 +77,7 @@ void GLUG_LIB_API glug_circle_unionize(struct glug_circle *dst, const struct glu
     // b fully encompsses dst, "return" b
     if (cdiff + dst->radius <= b->radius)
     {
-        glug_circle_copy(dst, b);
+        *dst = *b;
         return;
     }
 

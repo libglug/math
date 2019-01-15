@@ -88,18 +88,6 @@ static void test_set(void)
     CU_ASSERT_DOUBLE_EQUAL(p.offset, d, 0.f);
 }
 
-static void test_copy(void)
-{
-    struct glug_plane p1 = { { 1.f, 1.f, 1.f }, 1.f };
-    struct glug_plane p2 = { { 7.77f, 9.12f, 10.2f }, 1.74f };
-    glug_plane_copy(&p1, &p2);
-
-    CU_ASSERT_DOUBLE_EQUAL(p1.normal.x, p2.normal.x, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(p1.normal.y, p2.normal.y, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(p1.normal.z, p2.normal.z, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(p1.offset, p2.offset, 0.f);
-}
-
 static void test_equal(void)
 {
 
@@ -170,7 +158,6 @@ CU_pSuite create_plane_suite()
     ADD_TEST(plane_suite, set_by_points);
     ADD_TEST(plane_suite, set_by_normal);
     ADD_TEST(plane_suite, set);
-    ADD_TEST(plane_suite, copy);
     ADD_TEST(plane_suite, equal);
     ADD_TEST(plane_suite, normalize);
     ADD_TEST(plane_suite, contains_point);
