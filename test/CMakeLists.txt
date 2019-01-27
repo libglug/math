@@ -5,10 +5,13 @@ add_executable(
     ${PROJECT_NAME}
     main.c
     suites/add_test.h
+    suites/asserts.h
+    suites/asserts.c
     suites/box.c
     suites/circle.c
     suites/line2.c
     suites/line3.c
+    suites/mat2.c
     suites/plane.c
     suites/rect.c
     suites/sphere.c

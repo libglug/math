@@ -7,6 +7,8 @@ list(
     APPEND
     COMMON_SOURCE
     ${INC_ROOT}/math.h
+    ${INC_ROOT}/math/float.h
+    ${SRC_ROOT}/float.c
     ${INC_ROOT}/math/box_t.h
     ${INC_ROOT}/math/box.h
     ${SRC_ROOT}/box.c
@@ -19,6 +21,9 @@ list(
     ${INC_ROOT}/math/line3_t.h
     ${INC_ROOT}/math/line3.h
     ${SRC_ROOT}/line3.c
+    ${INC_ROOT}/math/mat2_t.h
+    ${INC_ROOT}/math/mat2.h
+    ${SRC_ROOT}/mat2.c
     ${INC_ROOT}/math/plane_t.h
     ${INC_ROOT}/math/plane.h
     ${SRC_ROOT}/plane.c

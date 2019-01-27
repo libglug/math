@@ -1,9 +1,11 @@
 #include <CUnit/Basic.h>
+#include <glug/math/mat2_t.h>
 
 extern CU_pSuite (create_box_suite)(void);
 extern CU_pSuite (create_circ_suite)(void);
 extern CU_pSuite (create_line2_suite)(void);
 extern CU_pSuite (create_line3_suite)(void);
+extern CU_pSuite (create_mat2_suite)(void);
 extern CU_pSuite (create_plane_suite)(void);
 extern CU_pSuite (create_rect_suite)(void);
 extern CU_pSuite (create_sphr_suite)(void);
@@ -50,6 +52,7 @@ int add_suites()
     CREATE_SUITE(create_circ_suite);
     CREATE_SUITE(create_line2_suite);
     CREATE_SUITE(create_line3_suite);
+    CREATE_SUITE(create_mat2_suite);
     CREATE_SUITE(create_plane_suite);
     CREATE_SUITE(create_rect_suite);
     CREATE_SUITE(create_sphr_suite);
