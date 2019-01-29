@@ -2,17 +2,16 @@
 #include <CUnit/Basic.h>
 #include <glug/math/vec4.h>
 #include "add_test.h"
+#include "asserts.h"
 
 static void test_set(void)
 {
-    struct glug_vec4 v3;
+    struct glug_vec4 v4;
     float x = 5.f, y = 6.f, z = 7.f, w= 8.f;
-    glug_vec4_set(&v3, x, y, z, w);
+    struct glug_vec4 exp = { x, y, z, w };
 
-    CU_ASSERT_DOUBLE_EQUAL(v3.x, x, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(v3.y, y, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(v3.z, z, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(v3.w, w, 0.f);
+    glug_vec4_set(&v4, x, y, z, w);
+    ASSERT_VEC4_EQUAL(&v4, &exp, 0.f);
 }
 
 static void test_equal(void)
@@ -27,10 +26,7 @@ static void test_sum(void)
     struct glug_vec4 exp = { -0.01f, 3.4f, 29.1f, -2.6f };
     struct glug_vec4 sum = glug_vec4_sum(&v1, &v2);
 
-    CU_ASSERT_DOUBLE_EQUAL(sum.x, exp.x, 0.001f);
-    CU_ASSERT_DOUBLE_EQUAL(sum.y, exp.y, 0.001f);
-    CU_ASSERT_DOUBLE_EQUAL(sum.z, exp.z, 0.001f);
-    CU_ASSERT_DOUBLE_EQUAL(sum.w, exp.w, 0.001f);
+    ASSERT_VEC4_EQUAL(&sum, &exp, 0.001f);
 }
 
 static void test_diff(void)
@@ -40,10 +36,7 @@ static void test_diff(void)
     struct glug_vec4 exp = { 9.17f, 10.8f, 60.303f, 39.9f };
     struct glug_vec4 diff = glug_vec4_diff(&v1, &v2);
 
-    CU_ASSERT_DOUBLE_EQUAL(diff.x, exp.x, .001f);
-    CU_ASSERT_DOUBLE_EQUAL(diff.y, exp.y, .001f);
-    CU_ASSERT_DOUBLE_EQUAL(diff.z, exp.z, .0001f);
-    CU_ASSERT_DOUBLE_EQUAL(diff.w, exp.w, .0001f);
+    ASSERT_VEC4_EQUAL(&diff, &exp, 0.0001f);
 }
 
 static void test_prod(void)
@@ -53,10 +46,7 @@ static void test_prod(void)
     struct glug_vec4 exp = { 16.4f, 20.5f, 41.f, -135.3f };
     struct glug_vec4 prod = glug_vec4_prod(&v, scalar);
 
-    CU_ASSERT_DOUBLE_EQUAL(prod.x, exp.x, 0.01f);
-    CU_ASSERT_DOUBLE_EQUAL(prod.y, exp.y, 0.01f);
-    CU_ASSERT_DOUBLE_EQUAL(prod.z, exp.z, 0.01f);
-    CU_ASSERT_DOUBLE_EQUAL(prod.w, exp.w, 0.01f);
+    ASSERT_VEC4_EQUAL(&prod, &exp, 0.001f);
 }
 
 static void test_quot(void)
@@ -66,10 +56,7 @@ static void test_quot(void)
     struct glug_vec4 exp = { 2.222065f, 1.922206f, 1.144271f, -3.827439f };
     struct glug_vec4 quot = glug_vec4_quot(&v, scalar);
 
-    CU_ASSERT_DOUBLE_EQUAL(quot.x, exp.x, 0.000001f);
-    CU_ASSERT_DOUBLE_EQUAL(quot.y, exp.y, 0.000001f);
-    CU_ASSERT_DOUBLE_EQUAL(quot.z, exp.z, 0.000001f);
-    CU_ASSERT_DOUBLE_EQUAL(quot.w, exp.w, 0.000001f);
+    ASSERT_VEC4_EQUAL(&quot, &exp, 0.000001f);
 }
 
 static void test_add(void)
@@ -77,12 +64,9 @@ static void test_add(void)
     struct glug_vec4 dst = { 1.f, 8.9f, 10.f, 0.7f };
     struct glug_vec4 v2 = { -1.01f, -5.5f, 19.1f, -3.3f };
     struct glug_vec4 exp = { -0.01f, 3.4f, 29.1f, -2.6f };
-    glug_vec4_add(&dst, &v2);
 
-    CU_ASSERT_DOUBLE_EQUAL(dst.x, exp.x, 0.001f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.y, exp.y, 0.001f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.z, exp.z, 0.001f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.w, exp.w, 0.001f);
+    glug_vec4_add(&dst, &v2);
+    ASSERT_VEC4_EQUAL(&dst, &exp, 0.001f);
 }
 
 static void test_sub(void)
@@ -90,12 +74,9 @@ static void test_sub(void)
     struct glug_vec4 dst = { 17.17f, 19.8f, 79.f, 32.f };
     struct glug_vec4 v2 = { 8.f, 9.f, 18.697f, -7.9f };
     struct glug_vec4 exp = { 9.17f, 10.8f, 60.303f, 39.9f };
-    glug_vec4_sub(&dst, &v2);
 
-    CU_ASSERT_DOUBLE_EQUAL(dst.x, exp.x, 0.001f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.y, exp.y, 0.001f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.z, exp.z, 0.001f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.w, exp.w, 0.001f);
+    glug_vec4_sub(&dst, &v2);
+    ASSERT_VEC4_EQUAL(&dst, &exp, 0.001f);
 }
 
 static void test_mul(void)
@@ -103,12 +84,9 @@ static void test_mul(void)
     struct glug_vec4 dst = { 4.f, 5.f, 10.f, -33.f };
     float scalar = 4.1f;
     struct glug_vec4 exp = { 16.4f, 20.5f, 41.f, -135.3f };
-    glug_vec4_mul(&dst, scalar);
 
-    CU_ASSERT_DOUBLE_EQUAL(dst.x, exp.x, 0.01f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.y, exp.y, 0.01f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.z, exp.z, 0.01f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.w, exp.w, 0.001f);
+    glug_vec4_mul(&dst, scalar);
+    ASSERT_VEC4_EQUAL(&dst, &exp, 0.001f);
 }
 
 static void test_div(void)
@@ -116,12 +94,9 @@ static void test_div(void)
     struct glug_vec4 dst = { 3.142f, 2.718f, 1.618f, -5.412f };
     float scalar = 1.414f;
     struct glug_vec4 exp = { 2.222065f, 1.922206f, 1.144271f, -3.827439f };
-    glug_vec4_div(&dst, scalar);
 
-    CU_ASSERT_DOUBLE_EQUAL(dst.x, exp.x, 0.000001f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.y, exp.y, 0.000001f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.z, exp.z, 0.000001f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.w, exp.w, 0.000001f);
+    glug_vec4_div(&dst, scalar);
+    ASSERT_VEC4_EQUAL(&dst, &exp, 0.000001f);
 }
 
 static void test_max(void)
@@ -131,17 +106,10 @@ static void test_max(void)
     struct glug_vec4 exp = { 1.f, 2.f, 1.f, 2.f };
 
     struct glug_vec4 dst = glug_vec4_max(&v1, &v2);
-
-    CU_ASSERT_DOUBLE_EQUAL(dst.x, exp.x, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.y, exp.y, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.z, exp.z, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.w, exp.w, 0.f);
+    ASSERT_VEC4_EQUAL(&dst, &exp, 0.f);
 
     dst = glug_vec4_max(&v2, &v1);
-    CU_ASSERT_DOUBLE_EQUAL(dst.x, exp.x, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.y, exp.y, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.z, exp.z, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.w, exp.w, 0.f);
+    ASSERT_VEC4_EQUAL(&dst, &exp, 0.f);
 }
 
 static void test_min(void)
@@ -151,16 +119,10 @@ static void test_min(void)
     struct glug_vec4 exp = { -2.f, -1.f, -2.f, -1.f };
 
     struct glug_vec4 dst = glug_vec4_min(&v1, &v2);
-    CU_ASSERT_DOUBLE_EQUAL(dst.x, exp.x, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.y, exp.y, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.z, exp.z, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.w, exp.w, 0.f);
+    ASSERT_VEC4_EQUAL(&dst, &exp, 0.f);
 
     dst = glug_vec4_min(&v2, &v1);
-    CU_ASSERT_DOUBLE_EQUAL(dst.x, exp.x, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.y, exp.y, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.z, exp.z, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.w, exp.w, 0.f);
+    ASSERT_VEC4_EQUAL(&dst, &exp, 0.f);
 }
 
 static void test_clamped(void)
@@ -171,10 +133,7 @@ static void test_clamped(void)
     struct glug_vec4 exp = { -1.f, 1.f, -1.f, 1.f };
 
     struct glug_vec4 dst = glug_vec4_clamped(&v1, &min, &max);
-    CU_ASSERT_DOUBLE_EQUAL(dst.x, exp.x, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.y, exp.y, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.z, exp.z, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.w, exp.w, 0.f);
+    ASSERT_VEC4_EQUAL(&dst, &exp, 0.f);
 }
 
 static void test_maximize(void)
@@ -185,17 +144,11 @@ static void test_maximize(void)
     struct glug_vec4 exp = { 1.f, 2.f, 1.f, 2.f };
 
     glug_vec4_maximize(&dst, &v2);
-    CU_ASSERT_DOUBLE_EQUAL(dst.x, exp.x, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.y, exp.y, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.z, exp.z, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.w, exp.w, 0.f);
+    ASSERT_VEC4_EQUAL(&dst, &exp, 0.f);
 
     dst = v2;
     glug_vec4_maximize(&dst, &v1);
-    CU_ASSERT_DOUBLE_EQUAL(dst.x, exp.x, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.y, exp.y, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.z, exp.z, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.w, exp.w, 0.f);
+    ASSERT_VEC4_EQUAL(&dst, &exp, 0.f);
 }
 
 static void test_minimize(void)
@@ -206,17 +159,11 @@ static void test_minimize(void)
     struct glug_vec4 exp = { -2.f, -1.f, -2.f, -1.f };
 
     glug_vec4_minimize(&dst, &v2);
-    CU_ASSERT_DOUBLE_EQUAL(dst.x, exp.x, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.y, exp.y, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.z, exp.z, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.w, exp.w, 0.f);
+    ASSERT_VEC4_EQUAL(&dst, &exp, 0.f);
 
     dst = v2;
     glug_vec4_minimize(&dst, &v1);
-    CU_ASSERT_DOUBLE_EQUAL(dst.x, exp.x, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.y, exp.y, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.z, exp.z, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.w, exp.w, 0.f);
+    ASSERT_VEC4_EQUAL(&dst, &exp, 0.f);
 }
 
 static void test_clamp(void)
@@ -227,10 +174,7 @@ static void test_clamp(void)
     struct glug_vec4 exp = { -1.f, 1.f, -1.f, 1.f };
 
     glug_vec4_clamp(&dst, &min, &max);
-    CU_ASSERT_DOUBLE_EQUAL(dst.x, exp.x, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.y, exp.y, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.z, exp.z, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.w, exp.w, 0.f);
+    ASSERT_VEC4_EQUAL(&dst, &exp, 0.f);
 }
 
 static void test_dot(void)
@@ -287,12 +231,9 @@ static void test_set_len(void)
     struct glug_vec4 v = { 0.8f, -1.f, -0.1f, 3.5f };
     float newlen = 2.3f;
     struct glug_vec4 exp = { 0.493f, -0.616f, -0.0616f, 2.159f };
-    glug_vec4_set_len(&v, newlen);
 
-    CU_ASSERT_DOUBLE_EQUAL(v.x, exp.x, 0.001f);
-    CU_ASSERT_DOUBLE_EQUAL(v.y, exp.y, 0.001f);
-    CU_ASSERT_DOUBLE_EQUAL(v.z, exp.z, 0.001f);
-    CU_ASSERT_DOUBLE_EQUAL(v.w, exp.w, 0.001f);
+    glug_vec4_set_len(&v, newlen);
+    ASSERT_VEC4_EQUAL(&v, &exp, 0.001f);
     CU_ASSERT_DOUBLE_EQUAL(glug_vec4_len(&v), newlen, 0.001f);
 }
 
@@ -308,10 +249,7 @@ static void test_normal(void)
     struct glug_vec4 exp = { 0.5f, 0.5f, -0.5f, -0.5f };
 
     CU_ASSERT_DOUBLE_EQUAL(glug_vec4_len(&n), 1.f, 0.0001f);
-    CU_ASSERT_DOUBLE_EQUAL(n.x, exp.x, 0.00001f);
-    CU_ASSERT_DOUBLE_EQUAL(n.y, exp.y, 0.00001f);
-    CU_ASSERT_DOUBLE_EQUAL(n.z, exp.z, 0.00001f);
-    CU_ASSERT_DOUBLE_EQUAL(n.w, exp.w, 0.00001f);
+    ASSERT_VEC4_EQUAL(&n, &exp, 0.00001f);
 }
 
 static void test_normalize(void)
@@ -321,10 +259,7 @@ static void test_normalize(void)
     glug_vec4_normalize(&dst);
 
     CU_ASSERT_DOUBLE_EQUAL(glug_vec4_len(&dst), 1.f, 0.0001f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.x, exp.x, 0.00001f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.y, exp.y, 0.00001f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.z, exp.z, 0.00001f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.w, exp.w, 0.00001f);
+    ASSERT_VEC4_EQUAL(&dst, &exp, 0.00001f);
 }
 
 static void test_dist(void)
@@ -361,10 +296,10 @@ static void test_angle_to(void)
 {
     struct glug_vec4 a = { -1.0f, 0.f, 0.f, 0.f };
     struct glug_vec4 b = { 0.f, 0.f, 0.f, 1.f };
-    float dist = glug_vec4_angle_btw(&a, &b);
+    float ang = glug_vec4_angle_btw(&a, &b);
     float exp = 1.5707f;
 
-    CU_ASSERT_DOUBLE_EQUAL(dist, exp, 0.0001f);
+    CU_ASSERT_DOUBLE_EQUAL(ang, exp, 0.0001f);
 }
 
 static void test_projection(void)
@@ -374,10 +309,7 @@ static void test_projection(void)
     struct glug_vec4 proj = glug_vec4_projection(&a, &b);
     struct glug_vec4 exp = { 0.11111f, -0.22222f, 0, -0.22222f };
 
-    CU_ASSERT_DOUBLE_EQUAL(proj.x, exp.x, 0.00001f);
-    CU_ASSERT_DOUBLE_EQUAL(proj.y, exp.y, 0.00001f);
-    CU_ASSERT_DOUBLE_EQUAL(proj.z, exp.z, 0.00001f);
-    CU_ASSERT_DOUBLE_EQUAL(proj.w, exp.w, 0.00001f);
+    ASSERT_VEC4_EQUAL(&proj, &exp, 0.00001f);
 }
 
 static void test_rejection(void)
@@ -387,10 +319,7 @@ static void test_rejection(void)
     struct glug_vec4 rej = glug_vec4_rejection(&a, &b);
     struct glug_vec4 exp = { 2.88888f, 3.22222f, 3.f, -1.77777f };
 
-    CU_ASSERT_DOUBLE_EQUAL(rej.x, exp.x, 0.00001f);
-    CU_ASSERT_DOUBLE_EQUAL(rej.y, exp.y, 0.00001f);
-    CU_ASSERT_DOUBLE_EQUAL(rej.z, exp.z, 0.00001f);
-    CU_ASSERT_DOUBLE_EQUAL(rej.w, exp.w, 0.0001f);
+    ASSERT_VEC4_EQUAL(&rej, &exp, 0.00001f);
 }
 
 static void test_reflection(void)
@@ -400,10 +329,7 @@ static void test_reflection(void)
     struct glug_vec4 ref = glug_vec4_reflection(&a, &b);
     struct glug_vec4 exp = { -2.77777f, -3.44444f, -3.f, 1.55555f };
 
-    CU_ASSERT_DOUBLE_EQUAL(ref.x, exp.x, 0.0001f);
-    CU_ASSERT_DOUBLE_EQUAL(ref.y, exp.y, 0.0001f);
-    CU_ASSERT_DOUBLE_EQUAL(ref.z, exp.z, 0.0001f);
-    CU_ASSERT_DOUBLE_EQUAL(ref.w, exp.w, 0.0001f);
+    ASSERT_VEC4_EQUAL(&ref, &exp, 0.00001f);
 }
 
 static void test_refraction(void)
@@ -413,62 +339,47 @@ static void test_refraction(void)
     struct glug_vec4 ref = glug_vec4_refraction(&inc, &n, 1.f, 2.f);
     struct glug_vec4 exp = { -0.16379f, 4.82758f, 1.50000f, 2.32758f };
 
-    CU_ASSERT_DOUBLE_EQUAL(ref.x, exp.x, 0.00001f);
-    CU_ASSERT_DOUBLE_EQUAL(ref.y, exp.y, 0.00001f);
-    CU_ASSERT_DOUBLE_EQUAL(ref.z, exp.z, 0.00001f);
-    CU_ASSERT_DOUBLE_EQUAL(ref.w, exp.w, 0.00001f);
+    ASSERT_VEC4_EQUAL(&ref, &exp, 0.00001f);
 }
 
 static void test_project(void)
 {
     struct glug_vec4 dst = { 3.f, 3.f, 3.f, -2.f };
     struct glug_vec4 b = { 1.f, -2.f, 0.f, -2.f };
-    glug_vec4_project(&dst, &b);
     struct glug_vec4 exp = { 0.11111f, -0.22222f, 0, -0.22222f };
 
-    CU_ASSERT_DOUBLE_EQUAL(dst.x, exp.x, 0.00001f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.y, exp.y, 0.00001f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.z, exp.z, 0.00001f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.w, exp.w, 0.00001f);
+    glug_vec4_project(&dst, &b);
+    ASSERT_VEC4_EQUAL(&dst, &exp, 0.00001f);
 }
 
 static void test_reject(void)
 {
     struct glug_vec4 dst = { 3.f, 3.f, 3.f, -2.f };
     struct glug_vec4 b = { 1.f, -2.f, 0.f, -2.f };
-    glug_vec4_reject(&dst, &b);
     struct glug_vec4 exp = { 2.88888f, 3.22222f, 3.f, -1.77777f };
 
-    CU_ASSERT_DOUBLE_EQUAL(dst.x, exp.x, 0.00001f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.y, exp.y, 0.00001f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.z, exp.z, 0.00001f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.w, exp.w, 0.0001f);
+    glug_vec4_reject(&dst, &b);
+    ASSERT_VEC4_EQUAL(&dst, &exp, 0.00001f);
 }
 
 static void test_reflect(void)
 {
     struct glug_vec4 dst = { 3.f, 3.f, 3.f, -2.f };
     struct glug_vec4 b = { 1.f, -2.f, 0.f, -2.f };
-    glug_vec4_reflect(&dst, &b);
     struct glug_vec4 exp = { -2.77777f, -3.44444f, -3.f, 1.55555f };
 
-    CU_ASSERT_DOUBLE_EQUAL(dst.x, exp.x, 0.0001f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.y, exp.y, 0.0001f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.z, exp.z, 0.0001f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.w, exp.w, 0.0001f);
+    glug_vec4_reflect(&dst, &b);
+    ASSERT_VEC4_EQUAL(&dst, &exp, 0.00001f);
 }
 
 static void test_refract(void)
 {
     struct glug_vec4 dst = { 3.f, 3.f, 3.f, -2.f };
     struct glug_vec4 n = { 1.f, -2.f, 0.f, -2.f };
-    glug_vec4_refract(&dst, &n, 1.f, 2.f);
     struct glug_vec4 exp = { -0.16379f, 4.82758f, 1.50000f, 2.32758f };
 
-    CU_ASSERT_DOUBLE_EQUAL(dst.x, exp.x, 0.00001f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.y, exp.y, 0.00001f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.z, exp.z, 0.00001f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.w, exp.w, 0.00001f);
+    glug_vec4_refract(&dst, &n, 1.f, 2.f);
+    ASSERT_VEC4_EQUAL(&dst, &exp, 0.00001f);
 }
 
 CU_pSuite create_vec4_suite()

@@ -2,6 +2,7 @@
 #include <CUnit/Basic.h>
 #include <glug/math/plane.h>
 #include "add_test.h"
+#include "asserts.h"
 
 static void test_from_points(void)
 {
@@ -11,18 +12,11 @@ static void test_from_points(void)
     struct glug_plane p = glug_plane_from_points(&o, &x, &y);
     struct glug_plane exp = { { 0.f, 0.f, 1.f }, 0.f };
 
-    CU_ASSERT_DOUBLE_EQUAL(p.normal.x, exp.normal.x, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(p.normal.y, exp.normal.y, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(p.normal.z, exp.normal.z, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(p.offset, exp.offset, 0.f);
+    ASSERT_PLANE_EQUAL(&p, &exp, 0.f);
 
-    p = glug_plane_from_points(&o, &y, &x);
     exp.normal.z = -1.f;
-
-    CU_ASSERT_DOUBLE_EQUAL(p.normal.x, exp.normal.x, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(p.normal.y, exp.normal.y, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(p.normal.z, exp.normal.z, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(p.offset, exp.offset, 0.f);
+    p = glug_plane_from_points(&o, &y, &x);
+    ASSERT_PLANE_EQUAL(&p, &exp, 0.f);
 }
 
 static void test_from_normal(void)
@@ -30,12 +24,9 @@ static void test_from_normal(void)
     struct glug_vec3 n = { 1.f, 2.f, -1.f };
     struct glug_vec3 r = { -2.f, 0.5f, 5.f };
     struct glug_plane p = glug_plane_from_normal(&n, &r);
-    struct glug_plane exp = { { 0.4082f, 0.81649f, -0.4082f  }, - 2.4494f };
+    struct glug_plane exp = { { 0.4082f, 0.81649f, -0.4082f  }, -2.4494f };
 
-    CU_ASSERT_DOUBLE_EQUAL(p.normal.x, exp.normal.x, 0.0001f);
-    CU_ASSERT_DOUBLE_EQUAL(p.normal.y, exp.normal.y, 0.0001f);
-    CU_ASSERT_DOUBLE_EQUAL(p.normal.z, exp.normal.z, 0.0001f);
-    CU_ASSERT_DOUBLE_EQUAL(p.offset, exp.offset, 0.0001f);
+    ASSERT_PLANE_EQUAL(&p, &exp, 0.0001f);
 }
 
 static void test_set_by_points(void)
@@ -47,18 +38,11 @@ static void test_set_by_points(void)
     struct glug_plane exp = { { 0.f, 0.f, 1.f }, 0.f };
 
     glug_plane_set_by_points(&dst, &o, &x, &y);
-    CU_ASSERT_DOUBLE_EQUAL(dst.normal.x, exp.normal.x, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.normal.y, exp.normal.y, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.normal.z, exp.normal.z, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.offset, exp.offset, 0.f);
+    ASSERT_PLANE_EQUAL(&dst, &exp, 0.f);
 
-    glug_plane_set_by_points(&dst, &o, &y, &x);
     exp.normal.z = -1.f;
-
-    CU_ASSERT_DOUBLE_EQUAL(dst.normal.x, exp.normal.x, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.normal.y, exp.normal.y, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.normal.z, exp.normal.z, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.offset, exp.offset, 0.f);
+    glug_plane_set_by_points(&dst, &o, &y, &x);
+    ASSERT_PLANE_EQUAL(&dst, &exp, 0.f);
 }
 
 static void test_set_by_normal(void)
@@ -67,12 +51,9 @@ static void test_set_by_normal(void)
     struct glug_vec3 r = { -2.f, 0.5f, 5.f };
     struct glug_plane dst;
     struct glug_plane exp = { { 0.4082f, 0.81649f, -0.4082f  }, - 2.4494f };
-    glug_plane_set_by_normal(&dst, &n, &r);
 
-    CU_ASSERT_DOUBLE_EQUAL(dst.normal.x, exp.normal.x, 0.0001f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.normal.y, exp.normal.y, 0.0001f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.normal.z, exp.normal.z, 0.0001f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.offset, exp.offset, 0.0001f);
+    glug_plane_set_by_normal(&dst, &n, &r);
+    ASSERT_PLANE_EQUAL(&dst, &exp, 0.0001f);
 }
 
 static void test_set(void)
@@ -80,12 +61,10 @@ static void test_set(void)
     struct glug_plane p = { { 1.f, 1.f, 1.f }, 1.f };
     struct glug_vec3 n = { 7.77f, 9.12f, 10.2f };
     float d = -1.2f;
-    glug_plane_set(&p, &n, d);
+    struct glug_plane exp = { n, d };
 
-    CU_ASSERT_DOUBLE_EQUAL(p.normal.x, n.x, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(p.normal.y, n.y, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(p.normal.z, n.z, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(p.offset, d, 0.f);
+    glug_plane_set(&p, &n, d);
+    ASSERT_PLANE_EQUAL(&p, &exp, 0.f);
 }
 
 static void test_equal(void)
@@ -99,11 +78,7 @@ static void test_normalize(void)
     struct glug_plane exp = { { 0.4242f, -0.5656f, 0.7071f }, 3.5f };
 
     glug_plane_normalize(&dst);
-
-    CU_ASSERT_DOUBLE_EQUAL(dst.normal.x, exp.normal.x, 0.0001f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.normal.y, exp.normal.y, 0.0001f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.normal.z, exp.normal.z, 0.0001f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.offset, exp.offset, 0.0001f);
+    ASSERT_PLANE_EQUAL(&dst, &exp, 0.0001f);
 }
 
 static void test_contains_point(void)
@@ -129,10 +104,7 @@ static void test_closest_point(void)
     struct glug_vec3 exp = { 4.9249f, 6.1001f, 6.8748f };
 
     struct glug_vec3 dst = glug_plane_closest_point(&p, &r);
-
-    CU_ASSERT_DOUBLE_EQUAL(dst.x, exp.x, 0.0001f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.y, exp.y, 0.0001f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.z, exp.z, 0.0001f);
+    ASSERT_VEC3_EQUAL(&dst, &exp, 0.0001f);
 }
 
 static void test_project_point(void)
@@ -142,10 +114,7 @@ static void test_project_point(void)
     struct glug_vec3 exp = { 4.9249f, 6.1001f, 6.8748f };
 
     glug_plane_project_point(&p, &dst);
-
-    CU_ASSERT_DOUBLE_EQUAL(dst.x, exp.x, 0.0001f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.y, exp.y, 0.0001f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.z, exp.z, 0.0001f);
+    ASSERT_VEC3_EQUAL(&dst, &exp, 0.0001f);
 }
 
 CU_pSuite create_plane_suite()

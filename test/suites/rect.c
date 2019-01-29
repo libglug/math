@@ -2,19 +2,17 @@
 #include <CUnit/Basic.h>
 #include <glug/math/rect.h>
 #include "add_test.h"
+#include "asserts.h"
 
 static void test_set(void)
 {
     struct glug_rect r = { { 1.5, 1.5f }, { 4.f, 3.f } };
     struct glug_vec2 min = { 0.5f, 0.3f };
     struct glug_vec2 max = { 3.14f, 2.718f };
+    struct glug_rect exp = { min, max };
 
     glug_rect_set(&r, &min, &max);
-
-    CU_ASSERT_DOUBLE_EQUAL(r.min.x, min.x, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(r.min.y, min.y, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(r.max.x, max.x, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(r.max.y, max.y, 0.f);
+    ASSERT_RECT_EQUAL(&r, &exp, 0.f);
 }
 
 static void test_equal(void)
@@ -62,24 +60,15 @@ static void test_expansion(void)
     struct glug_rect empty = { r.max, r.min };
 
     struct glug_rect dst = glug_rect_expansion(&r, &p);
-    CU_ASSERT_DOUBLE_EQUAL(dst.min.x, exp.min.x, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.min.y, exp.min.y, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.max.x, exp.max.x, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.max.y, exp.max.y, 0.f);
+    ASSERT_RECT_EQUAL(&dst, &exp, 0.f);
 
     p.x = exp.min.x = -2.f;
     p.y = exp.max.y = 5.f;
     dst = glug_rect_expansion(&dst, &p);
-    CU_ASSERT_DOUBLE_EQUAL(dst.min.x, exp.min.x, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.min.y, exp.min.y, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.max.x, exp.max.x, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.max.y, exp.max.y, 0.f);
+    ASSERT_RECT_EQUAL(&dst, &exp, 0.f);
 
     dst = glug_rect_expansion(&empty, &p);
-    CU_ASSERT_DOUBLE_EQUAL(dst.min.x, empty.min.x, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.min.y, empty.min.y, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.max.x, empty.max.x, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.max.y, empty.max.y, 0.f);
+    ASSERT_RECT_EQUAL(&dst, &empty, 0.f);
 }
 
 static void test_expand(void)
@@ -90,26 +79,18 @@ static void test_expand(void)
     struct glug_rect empty;
 
     glug_rect_expand_to(&dst, &p);
-    CU_ASSERT_DOUBLE_EQUAL(dst.min.x, exp.min.x, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.min.y, exp.min.y, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.max.x, exp.max.x, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.max.y, exp.max.y, 0.f);
+    ASSERT_RECT_EQUAL(&dst, &exp, 0.f);
 
     p.x = exp.min.x = -2.f;
     p.y = exp.max.y = 5.f;
     glug_rect_expand_to(&dst, &p);
-    CU_ASSERT_DOUBLE_EQUAL(dst.min.x, exp.min.x, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.min.y, exp.min.y, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.max.x, exp.max.x, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.max.y, exp.max.y, 0.f);
+    ASSERT_RECT_EQUAL(&dst, &exp, 0.f);
 
     empty.min = dst.max;
     empty.max = dst.min;
     glug_rect_expand_to(&empty, &p);
-    CU_ASSERT_DOUBLE_EQUAL(empty.min.x, dst.max.x, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(empty.min.y, dst.max.y, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(empty.max.x, dst.min.x, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(empty.max.y, dst.min.y, 0.f);
+    ASSERT_VEC2_EQUAL(&dst.max, &empty.min, 0.f);
+    ASSERT_VEC2_EQUAL(&dst.min, &empty.max, 0.f);
 }
 
 static void test_intersects(void)
@@ -154,16 +135,11 @@ static void test_intersection(void)
     struct glug_rect empty = { r1.max, r1.min };
 
     struct glug_rect dst = glug_rect_intersection(&r1, &r2);
-    CU_ASSERT_DOUBLE_EQUAL(dst.min.x, exp.min.x, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.min.y, exp.min.y, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.max.x, exp.max.x, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.max.y, exp.max.y, 0.f);
+    ASSERT_RECT_EQUAL(&dst, &exp, 0.f);
 
     dst = glug_rect_intersection(&empty, &r2);
-    CU_ASSERT_DOUBLE_EQUAL(empty.min.x, r1.max.x, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(empty.min.y, r1.max.y, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(empty.max.x, r1.min.x, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(empty.max.y, r1.min.y, 0.f);
+    ASSERT_VEC2_EQUAL(&r1.max, &empty.min, 0.f);
+    ASSERT_VEC2_EQUAL(&r1.min, &empty.max, 0.f);
 }
 
 static void test_intersect(void)
@@ -174,16 +150,11 @@ static void test_intersect(void)
     struct glug_rect empty = { r2.max, r2.min };
 
     glug_rect_intersect(&dst, &r2);
-    CU_ASSERT_DOUBLE_EQUAL(dst.min.x, exp.min.x, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.min.y, exp.min.y, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.max.x, exp.max.x, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.max.y, exp.max.y, 0.f);
+    ASSERT_RECT_EQUAL(&dst, &exp, 0.f);
 
     glug_rect_intersect(&empty, &r2);
-    CU_ASSERT_DOUBLE_EQUAL(empty.min.x, r2.max.x, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(empty.min.y, r2.max.y, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(empty.max.x, r2.min.x, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(empty.max.y, r2.min.y, 0.f);
+    ASSERT_VEC2_EQUAL(&r2.max, &empty.min, 0.f);
+    ASSERT_VEC2_EQUAL(&r2.min, &empty.max, 0.f);
 }
 
 static void test_union(void)
@@ -194,16 +165,11 @@ static void test_union(void)
     struct glug_rect empty = { r1.max, r1.min };
 
     struct glug_rect dst = glug_rect_union(&r1, &r2);
-    CU_ASSERT_DOUBLE_EQUAL(dst.min.x, exp.min.x, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.min.y, exp.min.y, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.max.x, exp.max.x, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.max.y, exp.max.y, 0.f);
+    ASSERT_RECT_EQUAL(&dst, &exp, 0.f);
 
     dst = glug_rect_union(&empty, &r2);
-    CU_ASSERT_DOUBLE_EQUAL(empty.min.x, r1.max.x, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(empty.min.y, r1.max.y, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(empty.max.x, r1.min.x, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(empty.max.y, r1.min.y, 0.f);
+    ASSERT_VEC2_EQUAL(&r1.max, &empty.min, 0.f);
+    ASSERT_VEC2_EQUAL(&r1.min, &empty.max, 0.f);
 }
 
 static void test_unionize(void)
@@ -214,16 +180,11 @@ static void test_unionize(void)
     struct glug_rect empty = { r2.max, r2.min };
 
     glug_rect_unionize(&dst, &r2);
-    CU_ASSERT_DOUBLE_EQUAL(dst.min.x, exp.min.x, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.min.y, exp.min.y, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.max.x, exp.max.x, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.max.y, exp.max.y, 0.f);
+    ASSERT_RECT_EQUAL(&dst, &exp, 0.f);
 
     glug_rect_unionize(&empty, &r2);
-    CU_ASSERT_DOUBLE_EQUAL(empty.min.x, r2.max.x, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(empty.min.y, r2.max.y, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(empty.max.x, r2.min.x, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(empty.max.y, r2.min.y, 0.f);
+    ASSERT_VEC2_EQUAL(&r2.max, &empty.min, 0.f);
+    ASSERT_VEC2_EQUAL(&r2.min, &empty.max, 0.f);
 }
 
 static void test_clamped(void)
@@ -234,12 +195,10 @@ static void test_clamped(void)
     struct glug_rect empty = { r.max, r.min };
 
     struct glug_vec2 dst = glug_rect_clamped_point(&r, &p);
-    CU_ASSERT_DOUBLE_EQUAL(dst.x, exp.x, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.y, exp.y, 0.f);
+    ASSERT_VEC2_EQUAL(&dst, &exp, 0.f);
 
     dst = glug_rect_clamped_point(&empty, &p);
-    CU_ASSERT_DOUBLE_EQUAL(dst.x, p.x, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.y, p.y, 0.f);
+    ASSERT_VEC2_EQUAL(&dst, &p, 0.f);
 }
 
 static void test_clamp(void)
@@ -250,12 +209,10 @@ static void test_clamp(void)
     struct glug_rect empty = { r.max, r.min };
 
     glug_rect_clamp_point(&r, &dst);
-    CU_ASSERT_DOUBLE_EQUAL(dst.x, exp.x, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.y, exp.y, 0.f);
+    ASSERT_VEC2_EQUAL(&dst, &exp, 0.f);
 
     glug_rect_clamp_point(&empty, &dst);
-    CU_ASSERT_DOUBLE_EQUAL(dst.x, exp.x, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.y, exp.y, 0.f);
+    ASSERT_VEC2_EQUAL(&dst, &exp, 0.f);
 }
 
 CU_pSuite create_rect_suite()

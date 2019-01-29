@@ -2,19 +2,17 @@
 #include <CUnit/Basic.h>
 #include <glug/math/sphere.h>
 #include "add_test.h"
+#include "asserts.h"
 
 static void test_set(void)
 {
     struct glug_sphere cir;
     float r = 1.74f;
     struct glug_vec3 c = { 7.77f, 9.12f, -5.21f };
+    struct glug_sphere exp = { c, r };
 
     glug_sphere_set(&cir, &c, r);
-
-    CU_ASSERT_DOUBLE_EQUAL(cir.radius, r, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(cir.center.x, c.x, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(cir.center.y, c.y, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(cir.center.z, c.z, 0.f);
+    ASSERT_SPHERE_EQUAL(&cir, &exp, 0.f);
 }
 
 static void test_contains_pt(void)
@@ -37,22 +35,14 @@ static void test_expansion(void)
     struct glug_sphere exp = { { 0.5f, 0.5f, 0.5f }, 0.8660f };
 
     struct glug_sphere expanded = glug_sphere_expansion(&c, &p);
-
-    CU_ASSERT_DOUBLE_EQUAL(expanded.center.x, exp.center.x, 0.0001f);
-    CU_ASSERT_DOUBLE_EQUAL(expanded.center.y, exp.center.y, 0.0001f);
-    CU_ASSERT_DOUBLE_EQUAL(expanded.center.z, exp.center.z, 0.0001f);
-    CU_ASSERT_DOUBLE_EQUAL(expanded.radius, exp.radius, 0.0001f);
+    ASSERT_SPHERE_EQUAL(&expanded, &exp, 0.0001f);
 
     c.center.x = exp.center.x = 0.5f;
     c.center.y = exp.center.y = 1.f;
     c.center.z = exp.center.z = 1.5f;
     c.radius = exp.radius = 2.f;
     expanded = glug_sphere_expansion(&c, &p);
-
-    CU_ASSERT_DOUBLE_EQUAL(expanded.center.x, exp.center.x, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(expanded.center.y, exp.center.y, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(expanded.center.z, exp.center.z, 0.0f);
-    CU_ASSERT_DOUBLE_EQUAL(expanded.radius, exp.radius, 0.f);
+    ASSERT_SPHERE_EQUAL(&expanded, &exp, 0.f);
 
     p.x = 5.f;
     p.y = 1.f;
@@ -62,11 +52,7 @@ static void test_expansion(void)
     exp.center.z = 0.3639f;
     exp.radius = 3.8504f;
     expanded = glug_sphere_expansion(&c, &p);
-
-    CU_ASSERT_DOUBLE_EQUAL(expanded.center.x, exp.center.x, 0.0001f);
-    CU_ASSERT_DOUBLE_EQUAL(expanded.center.y, exp.center.y, 0.0001f);
-    CU_ASSERT_DOUBLE_EQUAL(expanded.center.z, exp.center.z, 0.0001f);
-    CU_ASSERT_DOUBLE_EQUAL(expanded.radius, exp.radius, 0.0001f);
+    ASSERT_SPHERE_EQUAL(&expanded, &exp, 0.0001f);
 }
 
 static void test_expand(void)
@@ -76,22 +62,14 @@ static void test_expand(void)
     struct glug_sphere exp = { { 0.5f, 0.5f, 0.5f }, 0.8660f };
 
     glug_sphere_expand_to(&c, &p);
-
-    CU_ASSERT_DOUBLE_EQUAL(c.center.x, exp.center.x, 0.0001f);
-    CU_ASSERT_DOUBLE_EQUAL(c.center.y, exp.center.y, 0.0001f);
-    CU_ASSERT_DOUBLE_EQUAL(c.center.z, exp.center.z, 0.0001f);
-    CU_ASSERT_DOUBLE_EQUAL(c.radius, exp.radius, 0.0001f);
+    ASSERT_SPHERE_EQUAL(&c, &exp, 0.0001f);
 
     c.center.x = exp.center.x = 0.5f;
     c.center.y = exp.center.y = 1.f;
     c.center.z = exp.center.z = 1.5f;
     c.radius = exp.radius = 2.f;
     glug_sphere_expand_to(&c, &p);
-
-    CU_ASSERT_DOUBLE_EQUAL(c.center.x, exp.center.x, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(c.center.y, exp.center.y, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(c.center.z, exp.center.z, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(c.radius, exp.radius, 0.f);
+    ASSERT_SPHERE_EQUAL(&c, &exp, 0.f);
 
     p.x = 5.f;
     p.y = 1.f;
@@ -101,23 +79,19 @@ static void test_expand(void)
     exp.center.z = 0.3639f;
     exp.radius = 3.8504f;
     glug_sphere_expand_to(&c, &p);
-
-    CU_ASSERT_DOUBLE_EQUAL(c.center.x, exp.center.x, 0.0001f);
-    CU_ASSERT_DOUBLE_EQUAL(c.center.y, exp.center.y, 0.0001f);
-    CU_ASSERT_DOUBLE_EQUAL(c.center.z, exp.center.z, 0.0001f);
-    CU_ASSERT_DOUBLE_EQUAL(c.radius, exp.radius, 0.0001f);
+    ASSERT_SPHERE_EQUAL(&c, &exp, 0.0001f);
 
     c.center.x = c.center.y = c.center.z = 0.f;
     c.radius = 1.f;
     p.x = -2.f;
     p.y = 0.f;
     p.z = 0.f;
+    exp.center.x = -0.5f;
+    exp.center.y = 0.f;
+    exp.center.z = 0.f;
+    exp.radius = 1.5f;
     glug_sphere_expand_to(&c, &p);
-
-    CU_ASSERT_DOUBLE_EQUAL(c.center.x, -0.5f, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(c.center.y, 0.f, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(c.center.z, 0.f, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(c.radius, 1.5f, 0.f);
+    ASSERT_SPHERE_EQUAL(&c, &exp, 0.f);
 }
 
 static void test_intersects(void)
@@ -141,10 +115,7 @@ static void test_union(void)
 
     // c1 fully encompassed by c2
     struct glug_sphere dst = glug_sphere_union(&c1, &c2);
-
-    CU_ASSERT_DOUBLE_EQUAL(dst.center.x, exp.center.x, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.center.y, exp.center.y, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.center.z, exp.center.z, 0.f);
+    ASSERT_SPHERE_EQUAL(&dst, &exp, 0.f);
 
     c1.center.x = -0.5f;
     c1.center.y = 1.f;
@@ -159,9 +130,7 @@ static void test_union(void)
     exp.radius = 2.9202f;
 
     dst = glug_sphere_union(&c1, &c2);
-    CU_ASSERT_DOUBLE_EQUAL(dst.center.x, exp.center.x, 0.0001f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.center.y, exp.center.y, 0.0001f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.center.z, exp.center.z, 0.0001f);
+    ASSERT_SPHERE_EQUAL(&dst, &exp, 0.0001f);
 }
 
 static void test_unionize(void)
@@ -173,18 +142,12 @@ static void test_unionize(void)
 
     // dst fully encompasses c1
     glug_sphere_unionize(&dst, &c1);
-
-    CU_ASSERT_DOUBLE_EQUAL(dst.center.x, exp.center.x, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.center.y, exp.center.y, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.center.z, exp.center.z, 0.f);
+    ASSERT_SPHERE_EQUAL(&dst, &exp, 0.f);
 
     // dst fully encompassed by c2
     dst = c1;
     glug_sphere_unionize(&dst, &c2);
-
-    CU_ASSERT_DOUBLE_EQUAL(dst.center.x, exp.center.x, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.center.y, exp.center.y, 0.f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.center.z, exp.center.z, 0.f);
+    ASSERT_SPHERE_EQUAL(&dst, &exp, 0.f);
 
     dst.center.x = -0.5f;
     dst.center.y = 1.f;
@@ -198,9 +161,7 @@ static void test_unionize(void)
     exp.radius = 2.9202f;
 
     glug_sphere_unionize(&dst, &c2);
-    CU_ASSERT_DOUBLE_EQUAL(dst.center.x, exp.center.x, 0.0001f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.center.y, exp.center.y, 0.0001f);
-    CU_ASSERT_DOUBLE_EQUAL(dst.center.z, exp.center.z, 0.0001f);
+    ASSERT_SPHERE_EQUAL(&dst, &exp, 0.0001f);
 }
 
 static void test_clamped(void)
@@ -210,10 +171,7 @@ static void test_clamped(void)
     struct glug_vec3 exp = { 2.914f, 8.242f, -1.010f };
 
     struct glug_vec3 cp = glug_sphere_clamped_point(&c, &p);
-
-    CU_ASSERT_DOUBLE_EQUAL(cp.x, exp.x, 0.001f);
-    CU_ASSERT_DOUBLE_EQUAL(cp.y, exp.y, 0.001f);
-    CU_ASSERT_DOUBLE_EQUAL(cp.z, exp.z, 0.001f);
+    ASSERT_VEC3_EQUAL(&cp, &exp, 0.001f);
 }
 
 static void test_clamp(void)
@@ -223,10 +181,7 @@ static void test_clamp(void)
     struct glug_vec3 exp = { 2.914f, 8.242f, -1.010f };
 
     glug_sphere_clamp_point(&c, &p);
-
-    CU_ASSERT_DOUBLE_EQUAL(p.x, exp.x, 0.001f);
-    CU_ASSERT_DOUBLE_EQUAL(p.y, exp.y, 0.001f);
-    CU_ASSERT_DOUBLE_EQUAL(p.z, exp.z, 0.001f);
+    ASSERT_VEC3_EQUAL(&p, &exp, 0.001f);
 }
 
 CU_pSuite create_sphr_suite()
