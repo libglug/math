@@ -1,0 +1,9 @@
+@PACKAGE_INIT@
+
+get_filename_component(glug_math_CMAKE_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
+
+if(NOT TARGET glug::math)
+    include("${glug_math_CMAKE_DIR}/glug_math-targets.cmake")
+endif()
+
+check_required_components(glug_math)
