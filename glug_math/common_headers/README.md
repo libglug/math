@@ -1,2 +1,2 @@
 # common_headers
-Headers for namespace, extern macros, and .so visibility
+Headers for extern macros, .so visibility, OS detection, etc

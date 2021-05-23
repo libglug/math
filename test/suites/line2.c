@@ -1,10 +1,12 @@
-#include <CUnit/Assert.h>
 #include <CUnit/Basic.h>
-#include <glug/math/line2.h>
-#include "add_test.h"
-#include "asserts.h"
+#include <CUnit/Assert.h>
 
 #include <float.h>
+#include <suites/create_suite.h>
+#include <suites/add_test.h>
+#include <asserts/asserts.h>
+
+#include <glug/math/line2.h>
 
 static void test_from_points(void)
 {
@@ -116,10 +118,10 @@ static void test_project_point(void)
     ASSERT_VEC2_EQUAL(&dst, &exp, 0.00001f);
 }
 
-CU_pSuite create_line2_suite()
+int main(void)
 {
-    CU_pSuite line2_suite = CU_add_suite("line", NULL, NULL);
-    if (!line2_suite) return NULL;
+    CU_pSuite line2_suite = create_suite("line2", NULL, NULL);
+    if (!line2_suite) return CU_get_error();
 
     ADD_TEST(line2_suite, from_points);
     ADD_TEST(line2_suite, from_slope);
@@ -130,5 +132,5 @@ CU_pSuite create_line2_suite()
     ADD_TEST(line2_suite, closest_point);
     ADD_TEST(line2_suite, project_point);
 
-    return line2_suite;
+    return run_tests(CU_BRM_VERBOSE);
 }

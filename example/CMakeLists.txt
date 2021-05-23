@@ -2,9 +2,9 @@ cmake_minimum_required(VERSION 3.7)
 
 project(example)
 
-find_package(glug_timer REQUIRED)
-set(GLUG_TARGET_NAME example-glug_timer)
-set(GLUG_TARGET_NAME++ example-glug_timer_cpp)
+find_package(glug_math REQUIRED)
+set(GLUG_TARGET_NAME example-glug_math)
+set(GLUG_TARGET_NAME++ example-glug_math_cpp)
 
 # create simple example with simple dependencies
 function (add_example)
@@ -30,7 +30,7 @@ add_example(
     SRC
         c/main.c
     LINK_LIBS
-        glug::timer
+        glug::math
 )
 
 add_example(
@@ -39,7 +39,7 @@ add_example(
     SRC
         c++/main.cpp
     LINK_LIBS
-        glug::timer
+        glug::math
 )
 
 target_compile_features(

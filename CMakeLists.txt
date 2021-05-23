@@ -63,4 +63,4 @@ add_custom_command(
 )
 
 enable_testing()
-#include(test/tests.cmake)
+include(test/tests.cmake)

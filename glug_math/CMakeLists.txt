@@ -35,7 +35,6 @@ if (BUILD_STATIC)
     set(LIB_TYPE STATIC)
 endif()
 
-message(=========${COMMON_SOURCE})
 add_library(
     glug_math
     SHARED

@@ -1,8 +1,11 @@
-#include <CUnit/Assert.h>
 #include <CUnit/Basic.h>
+#include <CUnit/Assert.h>
+
+#include <suites/create_suite.h>
+#include <suites/add_test.h>
+#include <asserts/asserts.h>
+
 #include <glug/math/circle.h>
-#include "add_test.h"
-#include "asserts.h"
 
 static void test_set(void)
 {
@@ -170,10 +173,10 @@ static void test_clamp(void)
     ASSERT_VEC2_EQUAL(&p, &exp, 0.001f);
 }
 
-CU_pSuite create_circ_suite()
+int main(void)
 {
-    CU_pSuite circ_suite = CU_add_suite("circle", NULL, NULL);
-    if (!circ_suite) return NULL;
+    CU_pSuite circ_suite = create_suite("circle", NULL, NULL);
+    if (!circ_suite) return CU_get_error();
 
     ADD_TEST(circ_suite, set);
     ADD_TEST(circ_suite, contains_pt);
@@ -185,5 +188,5 @@ CU_pSuite create_circ_suite()
     ADD_TEST(circ_suite, clamped);
     ADD_TEST(circ_suite, clamp);
 
-    return circ_suite;
+    return run_tests(CU_BRM_VERBOSE);
 }
