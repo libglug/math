@@ -1,8 +1,11 @@
-#include <CUnit/Assert.h>
 #include <CUnit/Basic.h>
+#include <CUnit/Assert.h>
+
+#include <suites/create_suite.h>
+#include <suites/add_test.h>
+#include <asserts/asserts.h>
+
 #include <glug/math/plane.h>
-#include "add_test.h"
-#include "asserts.h"
 
 static void test_from_points(void)
 {
@@ -117,10 +120,10 @@ static void test_project_point(void)
     ASSERT_VEC3_EQUAL(&dst, &exp, 0.0001f);
 }
 
-CU_pSuite create_plane_suite()
+int main(void)
 {
-    CU_pSuite plane_suite = CU_add_suite("plane", NULL, NULL);
-    if (!plane_suite) return NULL;
+    CU_pSuite plane_suite = create_suite("plane", NULL, NULL);
+    if (!plane_suite) return CU_get_error();
 
     ADD_TEST(plane_suite, from_points);
     ADD_TEST(plane_suite, from_normal);
@@ -134,5 +137,5 @@ CU_pSuite create_plane_suite()
     ADD_TEST(plane_suite, closest_point);
     ADD_TEST(plane_suite, project_point);
 
-    return plane_suite;
+    return run_tests(CU_BRM_VERBOSE);
 }

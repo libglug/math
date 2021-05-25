@@ -1,8 +1,11 @@
-#include <CUnit/Assert.h>
 #include <CUnit/Basic.h>
+#include <CUnit/Assert.h>
+
+#include <suites/create_suite.h>
+#include <suites/add_test.h>
+#include <asserts/asserts.h>
+
 #include <glug/math/vec4.h>
-#include "add_test.h"
-#include "asserts.h"
 
 static void test_set(void)
 {
@@ -382,10 +385,10 @@ static void test_refract(void)
     ASSERT_VEC4_EQUAL(&dst, &exp, 0.00001f);
 }
 
-CU_pSuite create_vec4_suite()
+int main(void)
 {
-    CU_pSuite vec4_suite = CU_add_suite("vec4f", NULL, NULL);
-    if (!vec4_suite) return NULL;
+    CU_pSuite vec4_suite = create_suite("vec4", NULL, NULL);
+    if (!vec4_suite) return CU_get_error();
 
     ADD_TEST(vec4_suite, set);
     ADD_TEST(vec4_suite, equal);
@@ -424,5 +427,5 @@ CU_pSuite create_vec4_suite()
     ADD_TEST(vec4_suite, reflect);
     ADD_TEST(vec4_suite, refract);
 
-    return vec4_suite;
+    return run_tests(CU_BRM_VERBOSE);
 }

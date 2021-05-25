@@ -1,8 +1,11 @@
-#include <CUnit/Assert.h>
 #include <CUnit/Basic.h>
+#include <CUnit/Assert.h>
+
+#include <suites/create_suite.h>
+#include <suites/add_test.h>
+#include <asserts/asserts.h>
+
 #include <glug/math/rect.h>
-#include "add_test.h"
-#include "asserts.h"
 
 static void test_set(void)
 {
@@ -215,10 +218,10 @@ static void test_clamp(void)
     ASSERT_VEC2_EQUAL(&dst, &exp, 0.f);
 }
 
-CU_pSuite create_rect_suite()
+int main(void)
 {
-    CU_pSuite rect_suite = CU_add_suite("rect", NULL, NULL);
-    if (!rect_suite) return NULL;
+    CU_pSuite rect_suite = create_suite("rect", NULL, NULL);
+    if (!rect_suite) return CU_get_error();
 
     ADD_TEST(rect_suite, set);
     ADD_TEST(rect_suite, equal);
@@ -234,5 +237,5 @@ CU_pSuite create_rect_suite()
     ADD_TEST(rect_suite, clamped);
     ADD_TEST(rect_suite, clamp);
 
-    return rect_suite;
+    return run_tests(CU_BRM_VERBOSE);
 }

@@ -1,8 +1,11 @@
-#include <CUnit/Assert.h>
 #include <CUnit/Basic.h>
+#include <CUnit/Assert.h>
+
+#include <suites/create_suite.h>
+#include <suites/add_test.h>
+#include <asserts/asserts.h>
+
 #include <glug/math/mat2.h>
-#include "add_test.h"
-#include "asserts.h"
 
 static void test_identity(void)
 {
@@ -232,10 +235,10 @@ static void test_mulv(void)
     ASSERT_VEC2_EQUAL(&dst, &exp, 0.f);
 }
 
-CU_pSuite create_mat2_suite()
+int main(void)
 {
-    CU_pSuite mat2_suite = CU_add_suite("mat2", NULL, NULL);
-    if (!mat2_suite) return NULL;
+    CU_pSuite mat2_suite = create_suite("mat2", NULL, NULL);
+    if (!mat2_suite) return CU_get_error();
 
     ADD_TEST(mat2_suite, identity);
     ADD_TEST(mat2_suite, to_identity);
@@ -262,5 +265,5 @@ CU_pSuite create_mat2_suite()
     ADD_TEST(mat2_suite, mulv);
     ADD_TEST(mat2_suite, prodv);
 
-    return mat2_suite;
+    return run_tests(CU_BRM_VERBOSE);
 }

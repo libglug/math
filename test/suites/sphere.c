@@ -1,8 +1,11 @@
-#include <CUnit/Assert.h>
 #include <CUnit/Basic.h>
+#include <CUnit/Assert.h>
+
+#include <suites/create_suite.h>
+#include <suites/add_test.h>
+#include <asserts/asserts.h>
+
 #include <glug/math/sphere.h>
-#include "add_test.h"
-#include "asserts.h"
 
 static void test_set(void)
 {
@@ -184,10 +187,10 @@ static void test_clamp(void)
     ASSERT_VEC3_EQUAL(&p, &exp, 0.001f);
 }
 
-CU_pSuite create_sphr_suite()
+int main(void)
 {
-    CU_pSuite sphr_suite = CU_add_suite("sphere", NULL, NULL);
-    if (!sphr_suite) return NULL;
+    CU_pSuite sphr_suite = create_suite("sphere", NULL, NULL);
+    if (!sphr_suite) return CU_get_error();
 
     ADD_TEST(sphr_suite, set);
     ADD_TEST(sphr_suite, contains_pt);
@@ -199,5 +202,5 @@ CU_pSuite create_sphr_suite()
     ADD_TEST(sphr_suite, clamped);
     ADD_TEST(sphr_suite, clamp);
 
-    return sphr_suite;
+    return run_tests(CU_BRM_VERBOSE);
 }

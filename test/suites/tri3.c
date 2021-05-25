@@ -1,8 +1,11 @@
-#include <CUnit/Assert.h>
 #include <CUnit/Basic.h>
+#include <CUnit/Assert.h>
+
+#include <suites/create_suite.h>
+#include <suites/add_test.h>
+#include <asserts/asserts.h>
+
 #include <glug/math/triangle3.h>
-#include "add_test.h"
-#include "asserts.h"
 
 static void test_set(void)
 {
@@ -201,11 +204,10 @@ static void test_project_point(void)
     ASSERT_VEC3_EQUAL(&dst, &exp, 0.f);
 }
 
-
-CU_pSuite create_tri3_suite()
+int main(void)
 {
-    CU_pSuite tri3_suite = CU_add_suite("triangle3", NULL, NULL);
-    if (!tri3_suite) return NULL;
+    CU_pSuite tri3_suite = create_suite("tri3", NULL, NULL);
+    if (!tri3_suite) return CU_get_error();
 
     ADD_TEST(tri3_suite, set);
     ADD_TEST(tri3_suite, equal);
@@ -221,5 +223,5 @@ CU_pSuite create_tri3_suite()
     ADD_TEST(tri3_suite, closest_point);
     ADD_TEST(tri3_suite, project_point);
 
-    return tri3_suite;
+    return run_tests(CU_BRM_VERBOSE);
 }

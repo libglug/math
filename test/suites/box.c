@@ -1,8 +1,11 @@
-#include <CUnit/Assert.h>
 #include <CUnit/Basic.h>
+#include <CUnit/Assert.h>
+
+#include <suites/create_suite.h>
+#include <suites/add_test.h>
+#include <asserts/asserts.h>
+
 #include <glug/math/box.h>
-#include "add_test.h"
-#include "asserts.h"
 
 static void test_set(void)
 {
@@ -216,10 +219,10 @@ static void test_clamp(void)
     ASSERT_VEC3_EQUAL(&dst, &exp, 0.f);
 }
 
-CU_pSuite create_box_suite()
+int main(void)
 {
-    CU_pSuite box_suite = CU_add_suite("box", NULL, NULL);
-    if (!box_suite) return NULL;
+    CU_pSuite box_suite = create_suite("box", NULL, NULL);
+    if (!box_suite) return CU_get_error();
 
     ADD_TEST(box_suite, set);
     ADD_TEST(box_suite, equal);
@@ -235,5 +238,5 @@ CU_pSuite create_box_suite()
     ADD_TEST(box_suite, clamped);
     ADD_TEST(box_suite, clamp);
 
-    return box_suite;
+    return run_tests(CU_BRM_VERBOSE);
 }
