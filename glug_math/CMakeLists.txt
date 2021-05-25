@@ -25,7 +25,7 @@ detect_os(IS_WIN IS_OSX IS_LIN IS_BSD)
 
 # configure files
 set(CONFIGURED_OUT_ROOT ${CMAKE_CURRENT_BINARY_DIR}/configured)
-#configure_file(include/glug/math/version.h.in ${CONFIGURED_OUT_ROOT}/include/glug/math/version.h)
+configure_file(include/glug/math/version.h.in ${CONFIGURED_OUT_ROOT}/include/glug/math/version.h)
 
 include(common_src.cmake)
 
