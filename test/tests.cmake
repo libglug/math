@@ -57,6 +57,14 @@ function(add_test_by_conf TEST_ROOT TEST_CONF)
         CUnit
     )
 
+    find_library(CMATH m)
+    if (CMATH)
+        target_link_libraries(
+            ${TEST_TARGET}
+            ${CMATH}
+        )
+    endif()
+
     target_compile_definitions(
         ${TEST_TARGET}
         PRIVATE
@@ -89,13 +97,6 @@ function(add_test_by_conf TEST_ROOT TEST_CONF)
     add_test(${TEST_TARGET} ${TEST_TARGET})
     set(TEST_TARGETS ${TEST_TARGETS} PARENT_SCOPE)
 
-    find_library(CMATH m)
-    if (CMATH)
-        target_link_libraries(
-            ${TEST_TARGET}
-            ${CMATH}
-        )
-    endif()
 endfunction()
 
 # unit tests
