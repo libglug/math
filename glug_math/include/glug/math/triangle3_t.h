@@ -9,7 +9,7 @@ struct glug_triangle3
 };
 
 #ifdef GLUG_USE_TYPEDEFS
-    typedef struct glug_triangle3 triangle3;
+    typedef struct glug_triangle3 triangle3_t;
 #endif
 
 #endif // GLUG_TRIANGLE3_T_H

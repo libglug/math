@@ -10,7 +10,7 @@ struct glug_circle
 };
 
 #ifdef GLUG_USE_TYPEDEFS
-    typedef struct glug_circle circle;
+    typedef struct glug_circle circle_t;
 #endif
 
 #endif // GLUG_CIRCLE_T_H

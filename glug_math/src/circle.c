@@ -1,24 +1,24 @@
 #include <glug/math/circle.h>
 #include <glug/math/vec2.h>
 
-void GLUG_LIB_API glug_circle_set(struct glug_circle *dst, const struct glug_vec2 *c, float r)
+void glug_circle_set(struct glug_circle *dst, const struct glug_vec2 *c, float r)
 {
     dst->center = *c;
     dst->radius = r;
 }
 
-int GLUG_LIB_API glug_circle_equal(const struct glug_circle *a, const struct glug_circle *b)
+glug_bool_t glug_circle_equal(const struct glug_circle *a, const struct glug_circle *b)
 {
 
 }
 
-int GLUG_LIB_API glug_circle_contains_point(const struct glug_circle *cir, const struct glug_vec2 *p)
+glug_bool_t glug_circle_contains_point(const struct glug_circle *cir, const struct glug_vec2 *p)
 {
     float rp = glug_vec2_dist_squared(&cir->center, p);
     return rp <= cir->radius * cir->radius;
 }
 
-struct glug_circle GLUG_LIB_API glug_circle_expansion(const struct glug_circle *c, const struct glug_vec2 *p)
+struct glug_circle glug_circle_expansion(const struct glug_circle *c, const struct glug_vec2 *p)
 {
     struct glug_circle dst = *c;
     glug_circle_expand_to(&dst, p);
@@ -26,7 +26,7 @@ struct glug_circle GLUG_LIB_API glug_circle_expansion(const struct glug_circle *
     return dst;
 }
 
-void GLUG_LIB_API glug_circle_expand_to(struct glug_circle *dst, const struct glug_vec2 *p)
+void glug_circle_expand_to(struct glug_circle *dst, const struct glug_vec2 *p)
 {
     // |---r---c---r---|        p
     // |----------------------->p (span)
@@ -51,14 +51,14 @@ void GLUG_LIB_API glug_circle_expand_to(struct glug_circle *dst, const struct gl
     glug_vec2_add(&dst->center, &far);
 }
 
-int GLUG_LIB_API glug_circle_intersects_circle(const struct glug_circle *a, const struct glug_circle *b)
+glug_bool_t glug_circle_intersects_circle(const struct glug_circle *a, const struct glug_circle *b)
 {
     struct glug_vec2 dc = glug_vec2_diff(&a->center, &b->center);
 
     return glug_vec2_len_squared(&dc) <= (a->radius + b->radius) * (a->radius + b->radius);
 }
 
-struct glug_circle GLUG_LIB_API glug_circle_union(const struct glug_circle *a, const struct glug_circle *b)
+struct glug_circle glug_circle_union(const struct glug_circle *a, const struct glug_circle *b)
 {
     struct glug_circle dst = *a;
     glug_circle_unionize(&dst, b);
@@ -66,7 +66,7 @@ struct glug_circle GLUG_LIB_API glug_circle_union(const struct glug_circle *a, c
     return dst;
 }
 
-void GLUG_LIB_API glug_circle_unionize(struct glug_circle *dst, const struct glug_circle *b)
+void glug_circle_unionize(struct glug_circle *dst, const struct glug_circle *b)
 {
     struct glug_vec2 dc = glug_vec2_diff(&b->center, &dst->center);
     struct glug_vec2 r = dc;
@@ -88,7 +88,7 @@ void GLUG_LIB_API glug_circle_unionize(struct glug_circle *dst, const struct glu
 }
 
 
-struct glug_vec2 GLUG_LIB_API glug_circle_clamped_point(const struct glug_circle *c, const struct glug_vec2 *p)
+struct glug_vec2 glug_circle_clamped_point(const struct glug_circle *c, const struct glug_vec2 *p)
 {
     struct glug_vec2 dst = *p;
     glug_circle_clamp_point(c, &dst);
@@ -96,7 +96,7 @@ struct glug_vec2 GLUG_LIB_API glug_circle_clamped_point(const struct glug_circle
     return dst;
 }
 
-void GLUG_LIB_API glug_circle_clamp_point(const struct glug_circle *c, struct glug_vec2 *dst)
+void glug_circle_clamp_point(const struct glug_circle *c, struct glug_vec2 *dst)
 {
     if (glug_circle_contains_point(c, dst)) return;
 

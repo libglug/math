@@ -40,19 +40,19 @@ void glug_plane_set(struct glug_plane *dst, const struct glug_vec3 *n, float d)
     dst->offset = d;
 }
 
-int glug_plane_equal(const struct glug_plane *a, const struct glug_plane *b)
+glug_bool_t glug_plane_equal(const struct glug_plane *a, const struct glug_plane *b)
 {
 
 }
 
-void GLUG_LIB_API glug_plane_normalize(struct glug_plane *dst)
+void glug_plane_normalize(struct glug_plane *dst)
 {
     float l = 1.f / glug_vec3_len(&dst->normal);
     glug_vec3_mul(&dst->normal, l);
     dst->offset *= l;
 }
 
-int glug_plane_contains_point(const struct glug_plane *p, const struct glug_vec3 *r)
+glug_bool_t glug_plane_contains_point(const struct glug_plane *p, const struct glug_vec3 *r)
 {
 //    return p->offset == glug_vec3_dot(&p->normal, r);
 }
@@ -70,7 +70,7 @@ struct glug_vec3 glug_plane_closest_point(const struct glug_plane *p, const stru
     return dst;
 }
 
-void GLUG_LIB_API glug_plane_project_point(const struct glug_plane *p, struct glug_vec3 *dst)
+void glug_plane_project_point(const struct glug_plane *p, struct glug_vec3 *dst)
 {
     struct glug_vec3 cn = p->normal;
 

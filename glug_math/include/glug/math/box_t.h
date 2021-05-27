@@ -9,7 +9,7 @@ struct glug_box
 };
 
 #ifdef GLUG_USE_TYPEDEFS
-    typedef struct glug_box box;
+    typedef struct glug_box box_t;
 #endif
 
 #endif // GLUG_BOX_T_H

@@ -7,7 +7,7 @@ struct glug_mat2
 };
 
 #ifdef GLUG_USE_TYPEDEFS
-    typedef struct glug_mat2 mat2;
+    typedef struct glug_mat2 mat2_t;
 #endif
 
 #endif // GLUG_MAT2_T_H

@@ -1,24 +1,24 @@
 #include <glug/math/sphere.h>
 #include <glug/math/vec3.h>
 
-void GLUG_LIB_API glug_sphere_set(struct glug_sphere *dst, const struct glug_vec3 *c, float r)
+void glug_sphere_set(struct glug_sphere *dst, const struct glug_vec3 *c, float r)
 {
     dst->center = *c;
     dst->radius = r;
 }
 
-int GLUG_LIB_API glug_sphere_equal(const struct glug_sphere *a, const struct glug_sphere *b)
+glug_bool_t glug_sphere_equal(const struct glug_sphere *a, const struct glug_sphere *b)
 {
 
 }
 
-int GLUG_LIB_API glug_sphere_contains_point(const struct glug_sphere *cir, const struct glug_vec3 *p)
+glug_bool_t glug_sphere_contains_point(const struct glug_sphere *cir, const struct glug_vec3 *p)
 {
     float rp = glug_vec3_dist_squared(&cir->center, p);
     return rp <= cir->radius * cir->radius;
 }
 
-struct glug_sphere GLUG_LIB_API glug_sphere_expansion(const struct glug_sphere *c, const struct glug_vec3 *p)
+struct glug_sphere glug_sphere_expansion(const struct glug_sphere *c, const struct glug_vec3 *p)
 {
     struct glug_sphere dst = *c;
     glug_sphere_expand_to(&dst, p);
@@ -26,7 +26,7 @@ struct glug_sphere GLUG_LIB_API glug_sphere_expansion(const struct glug_sphere *
     return dst;
 }
 
-void GLUG_LIB_API glug_sphere_expand_to(struct glug_sphere *dst, const struct glug_vec3 *p)
+void glug_sphere_expand_to(struct glug_sphere *dst, const struct glug_vec3 *p)
 {
     // |---r---c---r---|        p
     // |----------------------->p (span)
@@ -51,14 +51,14 @@ void GLUG_LIB_API glug_sphere_expand_to(struct glug_sphere *dst, const struct gl
     glug_vec3_add(&dst->center, &far);
 }
 
-int GLUG_LIB_API glug_sphere_intersects_sphere(const struct glug_sphere *a, const struct glug_sphere *b)
+glug_bool_t glug_sphere_intersects_sphere(const struct glug_sphere *a, const struct glug_sphere *b)
 {
     struct glug_vec3 dc = glug_vec3_diff(&a->center, &b->center);
 
     return glug_vec3_len_squared(&dc) <= (a->radius + b->radius) * (a->radius + b->radius);
 }
 
-struct glug_sphere GLUG_LIB_API glug_sphere_union(const struct glug_sphere *a, const struct glug_sphere *b)
+struct glug_sphere glug_sphere_union(const struct glug_sphere *a, const struct glug_sphere *b)
 {
     struct glug_sphere dst = *a;
     glug_sphere_unionize(&dst, b);
@@ -66,7 +66,7 @@ struct glug_sphere GLUG_LIB_API glug_sphere_union(const struct glug_sphere *a, c
     return dst;
 }
 
-void GLUG_LIB_API glug_sphere_unionize(struct glug_sphere *dst, const struct glug_sphere *b)
+void glug_sphere_unionize(struct glug_sphere *dst, const struct glug_sphere *b)
 {
     struct glug_vec3 dc = glug_vec3_diff(&b->center, &dst->center);
     struct glug_vec3 r = dc;
@@ -87,7 +87,7 @@ void GLUG_LIB_API glug_sphere_unionize(struct glug_sphere *dst, const struct glu
     glug_vec3_add(&dst->center, &r);
 }
 
-struct glug_vec3 GLUG_LIB_API glug_sphere_clamped_point(const struct glug_sphere *c, const struct glug_vec3 *p)
+struct glug_vec3 glug_sphere_clamped_point(const struct glug_sphere *c, const struct glug_vec3 *p)
 {
     struct glug_vec3 dst = *p;
     glug_sphere_clamp_point(c, &dst);
@@ -95,7 +95,7 @@ struct glug_vec3 GLUG_LIB_API glug_sphere_clamped_point(const struct glug_sphere
     return dst;
 }
 
-void GLUG_LIB_API glug_sphere_clamp_point(const struct glug_sphere *c, struct glug_vec3 *dst)
+void glug_sphere_clamp_point(const struct glug_sphere *c, struct glug_vec3 *dst)
 {
     if (glug_sphere_contains_point(c, dst)) return;
 

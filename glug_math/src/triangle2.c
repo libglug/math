@@ -2,19 +2,19 @@
 #include <glug/math/vec2.h>
 #include <glug/math/vec3.h>
 
-void GLUG_LIB_API glug_triangle2_set(struct glug_triangle2 *dst, const struct glug_vec2 *a, const struct glug_vec2 *b, const struct glug_vec2 *c)
+void glug_triangle2_set(struct glug_triangle2 *dst, const struct glug_vec2 *a, const struct glug_vec2 *b, const struct glug_vec2 *c)
 {
     dst->a = *a;
     dst->b = *b;
     dst->c = *c;
 }
 
-int GLUG_LIB_API glug_triangle2_equal(const struct glug_triangle2 *a, const struct glug_triangle2 *b)
+glug_bool_t glug_triangle2_equal(const struct glug_triangle2 *a, const struct glug_triangle2 *b)
 {
 
 }
 
-struct glug_vec2 GLUG_LIB_API glug_triangle2_barycentric(const struct glug_triangle2 *t, const struct glug_vec3 *bary)
+struct glug_vec2 glug_triangle2_barycentric(const struct glug_triangle2 *t, const struct glug_vec3 *bary)
 {
     struct glug_vec2 dst;
     dst.x = bary->x * t->a.x + bary->y * t->b.x + bary->z * t->c.x;
@@ -23,7 +23,7 @@ struct glug_vec2 GLUG_LIB_API glug_triangle2_barycentric(const struct glug_trian
     return dst;
 }
 
-struct glug_vec2 GLUG_LIB_API glug_triangle2_trilinear(const struct glug_triangle2 *t, const struct glug_vec3 *tril)
+struct glug_vec2 glug_triangle2_trilinear(const struct glug_triangle2 *t, const struct glug_vec3 *tril)
 {
     float ax = glug_vec2_dist(&t->b, &t->c) * tril->x,
           by = glug_vec2_dist(&t->c, &t->a) * tril->y,
@@ -38,7 +38,7 @@ struct glug_vec2 GLUG_LIB_API glug_triangle2_trilinear(const struct glug_triangl
     return dst;
 }
 
-struct glug_vec3 GLUG_LIB_API glug_triangle2_to_barycentric(const struct glug_triangle2 *t, const struct glug_vec2 *p)
+struct glug_vec3 glug_triangle2_to_barycentric(const struct glug_triangle2 *t, const struct glug_vec2 *p)
 {
     struct glug_vec2 p0 = glug_vec2_diff(p, &t->a),
                      p1 = glug_vec2_diff(&t->b, &t->a),
@@ -58,7 +58,7 @@ struct glug_vec3 GLUG_LIB_API glug_triangle2_to_barycentric(const struct glug_tr
     return dst;
 }
 
-struct glug_vec3 GLUG_LIB_API glug_triangle2_to_trilinear(const struct glug_triangle2 *t, const struct glug_vec2 *p)
+struct glug_vec3 glug_triangle2_to_trilinear(const struct glug_triangle2 *t, const struct glug_vec2 *p)
 {
     float a = glug_vec2_dist(&t->b, &t->c),
           b = glug_vec2_dist(&t->c, &t->a),
@@ -73,7 +73,7 @@ struct glug_vec3 GLUG_LIB_API glug_triangle2_to_trilinear(const struct glug_tria
     return dst;
 }
 
-struct glug_vec2 GLUG_LIB_API glug_triangle2_centroid(const struct glug_triangle2 *t)
+struct glug_vec2 glug_triangle2_centroid(const struct glug_triangle2 *t)
 {
     struct glug_vec2 cent = t->a;
     glug_vec2_add(&cent, &t->b);
@@ -83,25 +83,25 @@ struct glug_vec2 GLUG_LIB_API glug_triangle2_centroid(const struct glug_triangle
     return cent;
 }
 
-struct glug_vec2 GLUG_LIB_API glug_triangle2_incenter(const struct glug_triangle2 *t)
+struct glug_vec2 glug_triangle2_incenter(const struct glug_triangle2 *t)
 {
     struct glug_vec3 tril = { 1.f, 1.f, 1.f };
     return glug_triangle2_trilinear(t, &tril);
 }
 
-float GLUG_LIB_API glug_triangle2_distance_to_point(const struct glug_triangle2 *t, const struct glug_vec2 *p)
+float glug_triangle2_distance_to_point(const struct glug_triangle2 *t, const struct glug_vec2 *p)
 {
     struct glug_vec2 close = glug_triangle2_closest_point(t, p);
     return glug_vec2_dist(&close, p);
 }
 
-int GLUG_LIB_API glug_triangle2_contains_point(const struct glug_triangle2 *t, const struct glug_vec2 *p)
+glug_bool_t glug_triangle2_contains_point(const struct glug_triangle2 *t, const struct glug_vec2 *p)
 {
     struct glug_vec3 bary = glug_triangle2_to_barycentric(t, p);
     return !(bary.x < 0 || bary.y < 0 || bary.z < 0);
 }
 
-struct glug_vec2 GLUG_LIB_API glug_triangle2_closest_point(const struct glug_triangle2 *t, const struct glug_vec2 *p)
+struct glug_vec2 glug_triangle2_closest_point(const struct glug_triangle2 *t, const struct glug_vec2 *p)
 {
     struct glug_vec2 dst = *p;
     glug_triangle2_project_point(t, &dst);
@@ -109,7 +109,7 @@ struct glug_vec2 GLUG_LIB_API glug_triangle2_closest_point(const struct glug_tri
     return dst;
 }
 
-void GLUG_LIB_API glug_triangle2_project_point(const struct glug_triangle2 *t, struct glug_vec2 *dst)
+void glug_triangle2_project_point(const struct glug_triangle2 *t, struct glug_vec2 *dst)
 {
     struct glug_vec3 tril = glug_triangle2_to_trilinear(t, dst);
     struct glug_vec3 zero = { 0 };

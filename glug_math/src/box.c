@@ -1,34 +1,34 @@
 #include <glug/math/box.h>
 #include <glug/math/vec3.h>
 
-void GLUG_LIB_API glug_box_set(struct glug_box *dst, const struct glug_vec3 *min, const struct glug_vec3 *max)
+void glug_box_set(struct glug_box *dst, const struct glug_vec3 *min, const struct glug_vec3 *max)
 {
     dst->min = *min;
     dst->max = *max;
 }
 
-int GLUG_LIB_API glug_box_equal(const struct glug_box *a, const struct glug_box *b)
+glug_bool_t glug_box_equal(const struct glug_box *a, const struct glug_box *b)
 {
 
 }
 
-int GLUG_LIB_API glug_box_is_empty(const struct glug_box *b)
+glug_bool_t glug_box_is_empty(const struct glug_box *b)
 {
     struct glug_vec3 dim = glug_vec3_diff(&b->max, &b->min);
 
     return dim.x < 0 || dim.y < 0 || dim.z < 0;
 }
 
-int GLUG_LIB_API glug_box_contains_point(const struct glug_box *b, const struct glug_vec3 *p)
+glug_bool_t glug_box_contains_point(const struct glug_box *b, const struct glug_vec3 *p)
 {
-    if (glug_box_is_empty(b)) return 0;
+    if (glug_box_is_empty(b)) return glug_false;
 
     return b->min.x <= p->x && p->x <= b->max.x &&
            b->min.y <= p->y && p->y <= b->max.y &&
            b->min.z <= p->z && p->z <= b->max.z;
 }
 
-struct glug_box GLUG_LIB_API glug_box_expansion(const struct glug_box *r, const struct glug_vec3 *p)
+struct glug_box glug_box_expansion(const struct glug_box *r, const struct glug_vec3 *p)
 {
     struct glug_box dst = *r;
     glug_box_expand_to(&dst, p);
@@ -36,7 +36,7 @@ struct glug_box GLUG_LIB_API glug_box_expansion(const struct glug_box *r, const 
     return dst;
 }
 
-void GLUG_LIB_API glug_box_expand_to(struct glug_box *dst, const struct glug_vec3 *p)
+void glug_box_expand_to(struct glug_box *dst, const struct glug_vec3 *p)
 {
     if (glug_box_is_empty(dst)) return;
 
@@ -44,11 +44,11 @@ void GLUG_LIB_API glug_box_expand_to(struct glug_box *dst, const struct glug_vec
     glug_vec3_minimize(&dst->min, p);
 }
 
-int GLUG_LIB_API glug_box_intersects_box(const struct glug_box *a, const struct glug_box *b)
+glug_bool_t glug_box_intersects_box(const struct glug_box *a, const struct glug_box *b)
 {
     struct glug_vec3 dmax, dmin;
 
-    if (glug_box_is_empty(a) || glug_box_is_empty(b)) return 0;
+    if (glug_box_is_empty(a) || glug_box_is_empty(b)) return glug_false;
 
     dmax = glug_vec3_diff(&a->max, &b->min);
     dmin = glug_vec3_diff(&a->min, &b->max);
@@ -56,7 +56,7 @@ int GLUG_LIB_API glug_box_intersects_box(const struct glug_box *a, const struct 
     return glug_vec3_dot(&dmax, &dmin) <= 0;
 }
 
-struct glug_box GLUG_LIB_API glug_box_intersection(const struct glug_box *a, const struct glug_box *b)
+struct glug_box glug_box_intersection(const struct glug_box *a, const struct glug_box *b)
 {
     struct glug_box dst = *a;
     glug_box_intersect(&dst, b);
@@ -64,7 +64,7 @@ struct glug_box GLUG_LIB_API glug_box_intersection(const struct glug_box *a, con
     return dst;
 }
 
-void GLUG_LIB_API glug_box_intersect(struct glug_box *dst, const struct glug_box *b)
+void glug_box_intersect(struct glug_box *dst, const struct glug_box *b)
 {
     if (glug_box_is_empty(dst)) return;
 
@@ -72,7 +72,7 @@ void GLUG_LIB_API glug_box_intersect(struct glug_box *dst, const struct glug_box
     glug_vec3_maximize(&dst->min, &b->min);
 }
 
-struct glug_box GLUG_LIB_API glug_box_union(const struct glug_box *a, const struct glug_box *b)
+struct glug_box glug_box_union(const struct glug_box *a, const struct glug_box *b)
 {
     struct glug_box dst = *a;
     glug_box_unionize(&dst, b);
@@ -80,7 +80,7 @@ struct glug_box GLUG_LIB_API glug_box_union(const struct glug_box *a, const stru
     return dst;
 }
 
-void GLUG_LIB_API glug_box_unionize(struct glug_box *dst, const struct glug_box *b)
+void glug_box_unionize(struct glug_box *dst, const struct glug_box *b)
 {
     if (glug_box_is_empty(dst)) return;
 
@@ -88,7 +88,7 @@ void GLUG_LIB_API glug_box_unionize(struct glug_box *dst, const struct glug_box 
     glug_vec3_minimize(&dst->min, &b->min);
 }
 
-struct glug_vec3 GLUG_LIB_API glug_box_clamped_point(const struct glug_box *b, const struct glug_vec3 *p)
+struct glug_vec3 glug_box_clamped_point(const struct glug_box *b, const struct glug_vec3 *p)
 {
     struct glug_vec3 dst = *p;
     glug_box_clamp_point(b, &dst);
@@ -96,7 +96,7 @@ struct glug_vec3 GLUG_LIB_API glug_box_clamped_point(const struct glug_box *b, c
     return dst;
 }
 
-void GLUG_LIB_API glug_box_clamp_point(const struct glug_box *b, struct glug_vec3 *dst)
+void glug_box_clamp_point(const struct glug_box *b, struct glug_vec3 *dst)
 {
     if (glug_box_is_empty(b)) return;
 
