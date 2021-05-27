@@ -10,7 +10,7 @@ void glug_vec4_set(struct glug_vec4 *dst, float x, float y, float z, float w)
     dst->w = w;
 }
 
-int glug_vec4_equal(const struct glug_vec4 *a, const struct glug_vec4 *b)
+glug_bool_t glug_vec4_equal(const struct glug_vec4 *a, const struct glug_vec4 *b)
 {
 
 }
@@ -147,7 +147,7 @@ void glug_vec4_set_len(struct glug_vec4 *v, float length)
     glug_vec4_mul(v, length / glug_vec4_len(v));
 }
 
-int glug_vec4_is_normal(const struct glug_vec4 *v)
+glug_bool_t glug_vec4_is_normal(const struct glug_vec4 *v)
 {
 
 }

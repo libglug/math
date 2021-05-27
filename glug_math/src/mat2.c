@@ -23,7 +23,7 @@ void glug_mat2_set(struct glug_mat2 *dst, float e00, float e01, float e10, float
     dst->els[1][1] = e11;
 }
 
-int glug_mat2_equal(const struct glug_mat2 *a, const struct glug_mat2 *b)
+glug_bool_t glug_mat2_equal(const struct glug_mat2 *a, const struct glug_mat2 *b)
 {
 
 }

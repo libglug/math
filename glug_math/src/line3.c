@@ -24,7 +24,7 @@ void glug_line3_set(struct glug_line3 *dst, const struct glug_vec3 *v, const str
     dst->r0 = *r0;
 }
 
-int glug_line3_equal(const struct glug_line3 *a, const struct glug_line3 *b)
+glug_bool_t glug_line3_equal(const struct glug_line3 *a, const struct glug_line3 *b)
 {
 
 }
@@ -54,7 +54,7 @@ float glug_line3_distance_to_point(const struct glug_line3 *l, const struct glug
     return d;
 }
 
-int glug_line3_contains_point(const struct glug_line3 *l, const struct glug_vec3 *p)
+glug_bool_t glug_line3_contains_point(const struct glug_line3 *l, const struct glug_vec3 *p)
 {
 
 }

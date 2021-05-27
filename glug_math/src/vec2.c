@@ -8,7 +8,7 @@ void glug_vec2_set(struct glug_vec2 *dst, float x, float y)
     dst->y = y;
 }
 
-int glug_vec2_equal(const struct glug_vec2 *v, const struct glug_vec2 *b)
+glug_bool_t glug_vec2_equal(const struct glug_vec2 *v, const struct glug_vec2 *b)
 {
 
 }
@@ -135,7 +135,7 @@ void glug_vec2_set_len(struct glug_vec2 *v, float length)
     glug_vec2_mul(v, length / glug_vec2_len(v));
 }
 
-int glug_vec2_is_normal(const struct glug_vec2 *v)
+glug_bool_t glug_vec2_is_normal(const struct glug_vec2 *v)
 {
 
 }

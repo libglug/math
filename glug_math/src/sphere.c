@@ -7,12 +7,12 @@ void glug_sphere_set(struct glug_sphere *dst, const struct glug_vec3 *c, float r
     dst->radius = r;
 }
 
-int glug_sphere_equal(const struct glug_sphere *a, const struct glug_sphere *b)
+glug_bool_t glug_sphere_equal(const struct glug_sphere *a, const struct glug_sphere *b)
 {
 
 }
 
-int glug_sphere_contains_point(const struct glug_sphere *cir, const struct glug_vec3 *p)
+glug_bool_t glug_sphere_contains_point(const struct glug_sphere *cir, const struct glug_vec3 *p)
 {
     float rp = glug_vec3_dist_squared(&cir->center, p);
     return rp <= cir->radius * cir->radius;
@@ -51,7 +51,7 @@ void glug_sphere_expand_to(struct glug_sphere *dst, const struct glug_vec3 *p)
     glug_vec3_add(&dst->center, &far);
 }
 
-int glug_sphere_intersects_sphere(const struct glug_sphere *a, const struct glug_sphere *b)
+glug_bool_t glug_sphere_intersects_sphere(const struct glug_sphere *a, const struct glug_sphere *b)
 {
     struct glug_vec3 dc = glug_vec3_diff(&a->center, &b->center);
 

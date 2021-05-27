@@ -9,7 +9,7 @@ void glug_triangle3_set(struct glug_triangle3 *dst, const struct glug_vec3 *a, c
     dst->c = *c;
 }
 
-int glug_triangle3_equal(const struct glug_triangle3 *a, const struct glug_triangle3 *b)
+glug_bool_t glug_triangle3_equal(const struct glug_triangle3 *a, const struct glug_triangle3 *b)
 {
 
 }
@@ -107,7 +107,7 @@ float glug_triangle3_distance_to_point(const struct glug_triangle3 *t, const str
     return glug_vec3_dist(&close, p);
 }
 
-int glug_triangle3_contains_point(const struct glug_triangle3 *t, const struct glug_vec3 *p)
+glug_bool_t glug_triangle3_contains_point(const struct glug_triangle3 *t, const struct glug_vec3 *p)
 {
     struct glug_vec3 bary = glug_triangle3_to_barycentric(t, p);
     return !(bary.x < 0 || bary.y < 0 || bary.z < 0);

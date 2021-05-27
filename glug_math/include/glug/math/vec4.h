@@ -2,10 +2,11 @@
 #define GLUG_VEC4_H
 
 #include <glug/import.h>
+#include <glug/bool_t.h>
 #include <glug/math/vec4_t.h>
 
 GLUG_LIB_API void  glug_vec4_set(struct glug_vec4 *dst, float x, float y, float z, float w);
-GLUG_LIB_API int   glug_vec4_equal(const struct glug_vec4 *a, const struct glug_vec4 *b);
+GLUG_LIB_API glug_bool_t glug_vec4_equal(const struct glug_vec4 *a, const struct glug_vec4 *b);
 
 GLUG_LIB_API struct glug_vec4 glug_vec4_sum(const struct glug_vec4 *a, const struct glug_vec4 *b);
 GLUG_LIB_API struct glug_vec4 glug_vec4_diff(const struct glug_vec4 *a, const struct glug_vec4 *b);
@@ -32,7 +33,7 @@ GLUG_LIB_API float glug_vec4_len_squared(const struct glug_vec4 *v);
 GLUG_LIB_API float glug_vec4_len_manhattan(const struct glug_vec4 *v);
 GLUG_LIB_API void  glug_vec4_set_len(struct glug_vec4 *v, float length);
 
-GLUG_LIB_API int   glug_vec4_is_normal(const struct glug_vec4 *v);
+GLUG_LIB_API glug_bool_t glug_vec4_is_normal(const struct glug_vec4 *v);
 GLUG_LIB_API struct glug_vec4 glug_vec4_normal(const struct glug_vec4 *v);
 GLUG_LIB_API void  glug_vec4_normalize(struct glug_vec4 *v);
 

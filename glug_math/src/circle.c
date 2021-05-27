@@ -7,12 +7,12 @@ void glug_circle_set(struct glug_circle *dst, const struct glug_vec2 *c, float r
     dst->radius = r;
 }
 
-int glug_circle_equal(const struct glug_circle *a, const struct glug_circle *b)
+glug_bool_t glug_circle_equal(const struct glug_circle *a, const struct glug_circle *b)
 {
 
 }
 
-int glug_circle_contains_point(const struct glug_circle *cir, const struct glug_vec2 *p)
+glug_bool_t glug_circle_contains_point(const struct glug_circle *cir, const struct glug_vec2 *p)
 {
     float rp = glug_vec2_dist_squared(&cir->center, p);
     return rp <= cir->radius * cir->radius;
@@ -51,7 +51,7 @@ void glug_circle_expand_to(struct glug_circle *dst, const struct glug_vec2 *p)
     glug_vec2_add(&dst->center, &far);
 }
 
-int glug_circle_intersects_circle(const struct glug_circle *a, const struct glug_circle *b)
+glug_bool_t glug_circle_intersects_circle(const struct glug_circle *a, const struct glug_circle *b)
 {
     struct glug_vec2 dc = glug_vec2_diff(&a->center, &b->center);
 

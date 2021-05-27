@@ -9,7 +9,7 @@ void glug_vec3_set(struct glug_vec3 *dst, float x, float y, float z)
     dst->z = z;
 }
 
-int glug_vec3_equal(const struct glug_vec3 *a, const struct glug_vec3 *b)
+glug_bool_t glug_vec3_equal(const struct glug_vec3 *a, const struct glug_vec3 *b)
 {
 
 }
@@ -151,7 +151,7 @@ void glug_vec3_set_len(struct glug_vec3 *v, float length)
     glug_vec3_mul(v, length / glug_vec3_len(v));
 }
 
-int glug_vec3_is_normal(const struct glug_vec3 *v)
+glug_bool_t glug_vec3_is_normal(const struct glug_vec3 *v)
 {
 
 }

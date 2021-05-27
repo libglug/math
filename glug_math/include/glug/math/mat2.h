@@ -2,6 +2,7 @@
 #define GLUG_MAT2_H
 
 #include <glug/import.h>
+#include <glug/bool_t.h>
 #include <glug/math/mat2_t.h>
 #include <glug/math/vec2_t.h>
 
@@ -11,7 +12,7 @@ GLUG_LIB_API struct glug_mat2 glug_mat2_identity();
 GLUG_LIB_API void glug_mat2_to_identity(struct glug_mat2 *dst);
 
 GLUG_LIB_API void glug_mat2_set(struct glug_mat2 *dst, float e00, float e01, float e10, float e11);
-GLUG_LIB_API int  glug_mat2_equal(const struct glug_mat2 *a, const struct glug_mat2 *b);
+GLUG_LIB_API glug_bool_t glug_mat2_equal(const struct glug_mat2 *a, const struct glug_mat2 *b);
 
 GLUG_LIB_API struct glug_mat2 glug_mat2_sum(const struct glug_mat2 *a, const struct glug_mat2 *b);
 GLUG_LIB_API struct glug_mat2 glug_mat2_diff(const struct glug_mat2 *a, const struct glug_mat2 *b);

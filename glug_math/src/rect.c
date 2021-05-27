@@ -7,21 +7,21 @@ void glug_rect_set(struct glug_rect *dst, const struct glug_vec2 *min, const str
     dst->max = *max;
 }
 
-int glug_rect_equal(const struct glug_rect *a, const struct glug_rect *b)
+glug_bool_t glug_rect_equal(const struct glug_rect *a, const struct glug_rect *b)
 {
 
 }
 
-int glug_rect_is_empty(const struct glug_rect *r)
+glug_bool_t glug_rect_is_empty(const struct glug_rect *r)
 {
     struct glug_vec2 dim = glug_vec2_diff(&r->max, &r->min);
 
     return dim.x < 0 || dim.y < 0;
 }
 
-int glug_rect_contains_point(const struct glug_rect *r, const struct glug_vec2 *p)
+glug_bool_t glug_rect_contains_point(const struct glug_rect *r, const struct glug_vec2 *p)
 {
-    if (glug_rect_is_empty(r)) return 0;
+    if (glug_rect_is_empty(r)) return glug_false;
 
     return r->min.x <= p->x && p->x <= r->max.x &&
            r->min.y <= p->y && p->y <= r->max.y;
@@ -43,11 +43,11 @@ void glug_rect_expand_to(struct glug_rect *dst, const struct glug_vec2 *p)
     glug_vec2_minimize(&dst->min, p);
 }
 
-int glug_rect_intersects_rect(const struct glug_rect *a, const struct glug_rect *b)
+glug_bool_t glug_rect_intersects_rect(const struct glug_rect *a, const struct glug_rect *b)
 {
     struct glug_vec2 dmax, dmin;
 
-    if (glug_rect_is_empty(a) || glug_rect_is_empty(b)) return 0;
+    if (glug_rect_is_empty(a) || glug_rect_is_empty(b)) return glug_false;
 
     dmax = glug_vec2_diff(&a->max, &b->min);
     dmin = glug_vec2_diff(&a->min, &b->max);
