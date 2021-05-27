@@ -3,6 +3,6 @@
 
 #include <glug/import.h>
 
-void GLUG_LIB_API glug_float_swap(float *a, float *b);
+GLUG_LIB_API void glug_float_swap(float *a, float *b);
 
 #endif // GLUG_FLOAT_H

@@ -10,7 +10,7 @@ struct glug_plane
 };
 
 #ifdef GLUG_USE_TYPEDEFS
-    typedef struct glug_plane plane;
+    typedef struct glug_plane plane_t;
 #endif
 
 #endif // GLUG_PLANE_T_H

@@ -9,7 +9,7 @@ struct glug_rect
 };
 
 #ifdef GLUG_USE_TYPEDEFS
-    typedef struct glug_rect rect;
+    typedef struct glug_rect rect_t;
 #endif
 
 #endif // GLUG_RECT_T_H

@@ -7,7 +7,7 @@ struct glug_vec2
 };
 
 #ifdef GLUG_USE_TYPEDEFS
-    typedef struct glug_vec2 vec2;
+    typedef struct glug_vec2 vec2_t;
 #endif
 
 #endif // GLUG_VEC2_T_H

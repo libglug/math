@@ -10,7 +10,7 @@ struct glug_sphere
 };
 
 #ifdef GLUG_USE_TYPEDEFS
-    typedef struct glug_sphere sphere;
+    typedef struct glug_sphere sphere_t;
 #endif
 
 #endif // GLUG_SPHERE_T_H

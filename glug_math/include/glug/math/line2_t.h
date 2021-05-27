@@ -9,7 +9,7 @@ struct glug_line2
 };
 
 #ifdef GLUG_USE_TYPEDEFS
-    typedef struct glug_line2 line2;
+    typedef struct glug_line2 line2_t;
 #endif
 
 #endif // GLUG_LINE2_T_H
