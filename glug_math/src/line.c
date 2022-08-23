@@ -8,8 +8,8 @@
 
 void glug_line_from_points(struct glug_line *dst, const struct glug_vec3 *p1, const struct glug_vec3 *p2)
 {    
-    struct glug_vec3 v = *p2;
-    glug_vec3_sub(&v, p1);
+    struct glug_vec3 v;
+    glug_vec3_sub(&v, p2, p1);
     *dst = (struct glug_line){
         .r0 = *p1,
         .v  = v,
@@ -62,8 +62,8 @@ void glug_line_closest_points(const struct glug_line *l1, const struct glug_line
         }};
         glug_mat2_div(&v, det);
 
-        struct glug_vec3 d = l2->r0;
-        glug_vec3_sub(&d, &l1->r0);
+        struct glug_vec3 d;
+        glug_vec3_sub(&d, &l2->r0, &l1->r0);
 
         struct glug_vec2 dr = {
             glug_vec3_dot(&d, &l1->v),
@@ -82,7 +82,7 @@ void glug_line_closest_points(const struct glug_line *l1, const struct glug_line
 
     // lines are parallel
     struct glug_vec3 r1on2 = l1->r0;
-    glug_line_project_point(l2, &r1on2);
+    glug_line_project_point(l2, &r1on2, &r1on2);
 
     *p1 = l1->r0;
     *p2 = r1on2;
@@ -90,17 +90,17 @@ void glug_line_closest_points(const struct glug_line *l1, const struct glug_line
 
 float glug_line_distance_to_point(const struct glug_line *l, const struct glug_vec3 *p)
 {
-    struct glug_vec3 rej = *p;
-    glug_vec3_sub(&rej, &l->r0);
+    struct glug_vec3 rej;
+    glug_vec3_sub(&rej, p, &l->r0);
     glug_vec3_reject(&rej, &rej, &l->v);
 
     return glug_vec3_len(&rej);
 }
 
-void glug_line_project_point(const struct glug_line *l, struct glug_vec3 *dst)
+void glug_line_project_point(const struct glug_line *l, struct glug_vec3 *dst, const struct glug_vec3 *p)
 {
-    struct glug_vec3 proj = *dst;
-    glug_vec3_sub(&proj, &l->r0);
+    struct glug_vec3 proj;
+    glug_vec3_sub(&proj, p, &l->r0);
     glug_vec3_project(&proj, &proj, &l->v);
     glug_vec3_add(&proj, &l->r0);
 

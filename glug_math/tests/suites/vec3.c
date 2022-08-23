@@ -27,7 +27,7 @@ static void test_sub(void)
     struct glug_vec3 v2 = { 8.f, 9.f, 18.697f };
     struct glug_vec3 exp = { 9.17f, 10.8f, 60.303f };
 
-    glug_vec3_sub(&dst, &v2);
+    glug_vec3_sub(&dst, &dst, &v2);
     ASSERT_VEC3_EQUAL(&dst, &exp, 0.001f);
 }
 
@@ -231,8 +231,8 @@ static void test_len_sq(void)
 {
     struct glug_vec3 v = { -5.f, 3.f, -4.f };
     struct glug_vec3 v2 = { 6.f, -10.f, 2.f };
-    float len = glug_vec3_len_squared(&v);
-    float len2 = glug_vec3_len_squared(&v2);
+    float len = glug_vec3_len_sq(&v);
+    float len2 = glug_vec3_len_sq(&v2);
     float exp = 50.f;
     float exp2 = 140.f;
 

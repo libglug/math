@@ -6,9 +6,9 @@ void glug_box_from_size(struct glug_box *dst, const struct glug_vec3 *c, const s
     struct glug_vec3 s2 = *s;
     glug_vec3_mul(&s2, 0.5f);
 
-    struct glug_vec3 max = *c, min = *c;
+    struct glug_vec3 max = *c, min;
     glug_vec3_add(&max, &s2);
-    glug_vec3_sub(&min, &s2);
+    glug_vec3_sub(&min, c, &s2);
 
     *dst = (struct glug_box){
         .max = max,
@@ -23,8 +23,8 @@ glug_bool_t glug_box_equal(const struct glug_box *b1, const struct glug_box *b2)
 
 glug_bool_t glug_box_is_empty(const struct glug_box *b)
 {
-    struct glug_vec3 dim = b->max;
-    glug_vec3_sub(&dim, &b->min);
+    struct glug_vec3 dim;
+    glug_vec3_sub(&dim, &b->max, &b->min);
 
     return dim.x < 0 || dim.y < 0 || dim.z < 0;
 }
@@ -56,12 +56,11 @@ void glug_box_expand_to(struct glug_box *dst, const struct glug_vec3 *p)
 
 glug_bool_t glug_box_intersects_box(const struct glug_box *b1, const struct glug_box *b2)
 {
-    struct glug_vec3 dmax = b1->max, dmin = b1->min;
-
     if (glug_box_is_empty(b1) || glug_box_is_empty(b2)) return glug_false;
 
-    glug_vec3_sub(&dmax, &b2->min);
-    glug_vec3_sub(&dmin, &b2->max);
+    struct glug_vec3 dmax, dmin;
+    glug_vec3_sub(&dmax, &b1->max, &b2->min);
+    glug_vec3_sub(&dmin, &b1->min, &b2->max);
 
     return glug_vec3_dot(&dmax, &dmin) <= 0;
 }

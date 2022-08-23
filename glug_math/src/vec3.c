@@ -18,9 +18,9 @@ void glug_vec3_add(struct glug_vec3 *dst, const struct glug_vec3 *v2)
     *dst = res;
 }
 
-void glug_vec3_sub(struct glug_vec3 *dst, const struct glug_vec3 *v2)
+void glug_vec3_sub(struct glug_vec3 *dst, const struct glug_vec3 *v1, const struct glug_vec3 *v2)
 {
-    struct glug_vec3 res = *dst;
+    struct glug_vec3 res = *v1;
     res.x -= v2->x;
     res.y -= v2->y;
     res.z -= v2->z;
@@ -178,10 +178,10 @@ float glug_vec3_triple_product(const struct glug_vec3 *v1, const struct glug_vec
 
 float glug_vec3_len(const struct glug_vec3 *dst)
 {
-    return sqrtf(glug_vec3_len_squared(dst));
+    return sqrtf(glug_vec3_len_sq(dst));
 }
 
-float glug_vec3_len_squared(const struct glug_vec3 *v)
+float glug_vec3_len_sq(const struct glug_vec3 *v)
 {
     return v->x * v->x + v->y * v->y + v->z * v->z;
 }
@@ -255,19 +255,19 @@ void glug_vec3_project(struct glug_vec3 *dst, const struct glug_vec3 *v, const s
 
 void glug_vec3_reject(struct glug_vec3 *dst, const struct glug_vec3 *v, const struct glug_vec3 *from)
 {
-    struct glug_vec3 res = *v, proj;
+    struct glug_vec3 res,  proj;
     glug_vec3_project(&proj, v, from);
-    glug_vec3_sub(&res, &proj);
+    glug_vec3_sub(&res, v, &proj);
 
     *dst = res;
 }
 
 void glug_vec3_reflect(struct glug_vec3 *dst, const struct glug_vec3 *v2)
 {
-    struct glug_vec3 res = *dst, rej = *dst;
+    struct glug_vec3 res, rej;
     glug_vec3_reject(&rej, dst, v2);
-    glug_vec3_sub(&res, &rej);
-    glug_vec3_sub(&res, &rej);
+    glug_vec3_mul(&rej, 2.f);
+    glug_vec3_sub(&res, dst, &rej);
 
     *dst = res;
 }
@@ -290,6 +290,6 @@ void glug_vec3_refract(struct glug_vec3 *dst, const struct glug_vec3 *n, float i
 
     *dst = norm;
     glug_vec3_mul(dst, -sqrtf(1 - idxratio * idxratio * (1 - incproj * incproj)) + idxratio * incproj);
-    glug_vec3_sub(dst, &inc);
+    glug_vec3_sub(dst, dst, &inc);
     glug_vec3_mul(dst, dstlen);
 }

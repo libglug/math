@@ -18,16 +18,15 @@ void glug_sphere_expand_to(struct glug_sphere *dst, const struct glug_vec3 *p)
     // |----------------------->p (span)
     // |<------c (far)
 
-    struct glug_vec3 far, span;
     if (glug_sphere_contains_point(dst, p)) return;
 
-    span = *p;
-    glug_vec3_sub(&span, &dst->center);
+    struct glug_vec3 far, span;
+    glug_vec3_sub(&span, p, &dst->center);
 
     // far = -direction of span w/ length r
     far = span;
     glug_vec3_set_len(&far, -dst->radius);
-    glug_vec3_sub(&span, &far);
+    glug_vec3_sub(&span, &span, &far);
 
     // new radius = half spanning vector
     glug_vec3_mul(&span, 0.5f);
@@ -40,16 +39,16 @@ void glug_sphere_expand_to(struct glug_sphere *dst, const struct glug_vec3 *p)
 
 glug_bool_t glug_sphere_intersects_sphere(const struct glug_sphere *a, const struct glug_sphere *b)
 {
-    struct glug_vec3 dc = a->center;
-    glug_vec3_sub(&dc, &b->center);
+    struct glug_vec3 dc;
+    glug_vec3_sub(&dc, &a->center, &b->center);
 
-    return glug_vec3_len_squared(&dc) <= (a->radius + b->radius) * (a->radius + b->radius);
+    return glug_vec3_len_sq(&dc) <= (a->radius + b->radius) * (a->radius + b->radius);
 }
 
 void glug_sphere_union(struct glug_sphere *dst, const struct glug_sphere *b)
 {
-    struct glug_vec3 dc = b->center;
-    glug_vec3_sub(&dc, &dst->center);
+    struct glug_vec3 dc;
+    glug_vec3_sub(&dc, &b->center, &dst->center);
     struct glug_vec3 r = dc;
     float cdiff = glug_vec3_len(&dc);
 
@@ -72,7 +71,7 @@ void glug_sphere_clamp_point(const struct glug_sphere *c, struct glug_vec3 *dst)
 {
     if (glug_sphere_contains_point(c, dst)) return;
 
-    glug_vec3_sub(dst, &c->center);
+    glug_vec3_sub(dst, dst, &c->center);
     glug_vec3_set_len(dst, c->radius);
     glug_vec3_add(dst, &c->center);
 }

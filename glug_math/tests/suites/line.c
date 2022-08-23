@@ -93,7 +93,7 @@ static void test_project_point(void)
     struct glug_vec3 p = { 1.f, 2.f, 1.f };
     struct glug_vec3 exp = { 0.f, 2.f, 0.f };
 
-    glug_line_project_point(&l, &p);
+    glug_line_project_point(&l, &p, &p);
     ASSERT_VEC3_EQUAL(&p, &exp, 0.00001f);
 }
 

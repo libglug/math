@@ -18,7 +18,7 @@ GLUG_LIB_API void glug_line_at_t(const struct glug_line *l, float t, struct glug
 GLUG_LIB_API float glug_line_distance_to(const struct glug_line *l1, const struct glug_line *l2);
 GLUG_LIB_API void  glug_line_closest_points(const struct glug_line *l1, const struct glug_line *l2, struct glug_vec3 *p1, struct glug_vec3 *p2);
 GLUG_LIB_API float glug_line_distance_to_point(const struct glug_line *l, const struct glug_vec3 *p);
-GLUG_LIB_API void  glug_line_project_point(const struct glug_line *l, struct glug_vec3 *dst);
+GLUG_LIB_API void  glug_line_project_point(const struct glug_line *l, struct glug_vec3 *dst, const struct glug_vec3 *p);
 
 GLUG_EXTERN_END
 

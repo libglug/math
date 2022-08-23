@@ -120,19 +120,37 @@ static void test_normal(void)
 static void test_centroid(void)
 {
     struct glug_triangle t = { { -0.5f, -0.5f, -0.5f }, { 0.75f, -0.5f, 1.f }, { 0.1f, 0.8f, 2.f } };
-    struct glug_vec3 exp = { 0.11666f, -0.06666f, 0.83333f };
-    struct glug_vec3 c = glug_triangle_centroid(&t);
+    struct glug_vec3 c, exp = { 0.11666f, -0.06666f, 0.83333f };
 
+    c = glug_triangle_centroid(&t);
     ASSERT_VEC3_EQUAL(&c, &exp, 0.00001f);
 }
 
 static void test_incenter(void)
 {
-    struct glug_triangle t = { { -0.5f, -0.5f, -0.5f }, { 0.5f, -0.5f, 0.5f }, { 0.f, 0.5f, 0.5f } };
-    struct glug_vec3 exp = { 0.04736f, -0.14927f, 0.22272f };
-    struct glug_vec3 c = glug_triangle_incenter(&t);
+    struct glug_triangle t = { { 1.f, 0.f, 2.f }, { 5.f, 4.f, 3.f }, { -2.f, 7.f, 4.f } };
+    struct glug_vec3 c, exp = { 1.6696f, 3.3666f, 2.9091f };
 
-    ASSERT_VEC3_EQUAL(&c, &exp, 0.00001f);
+    c = glug_triangle_incenter(&t);
+    ASSERT_VEC3_EQUAL(&c, &exp, 0.0001f);
+}
+
+static void test_orthocenter(void)
+{
+    struct glug_triangle t = { { 0.f, 0.f, 4.5f }, { 4.5f, 0.f, 0.f }, { 0.f, 9.f, 0.f } };
+    struct glug_vec3 c, exp = { 2.f, 1.f, 2.f };
+
+    glug_triangle_orthocenter(&t, &c);
+    ASSERT_VEC3_EQUAL(&c, &exp, 0.0001f);
+}
+
+static void test_circumcenter(void)
+{
+    struct glug_triangle t = { { 0.f, 0.f, 4.5f }, { 4.5f, 0.f, 0.f }, { 0.f, 9.f, 0.f } };
+    struct glug_vec3 c, exp = { 2.f, 1.f, 2.f };
+
+    glug_triangle_circumcenter(&t, &c);
+//    ASSERT_VEC3_EQUAL(&c, &exp, 0.0001f);
 }
 
 static void test_contains_point(void)
@@ -192,6 +210,8 @@ int main(void)
     ADD_TEST(triangle_suite, normal);
     ADD_TEST(triangle_suite, centroid);
     ADD_TEST(triangle_suite, incenter);
+    ADD_TEST(triangle_suite, orthocenter);
+    ADD_TEST(triangle_suite, circumcenter);
     ADD_TEST(triangle_suite, contains_point);
     ADD_TEST(triangle_suite, distance);
     ADD_TEST(triangle_suite, project_point);

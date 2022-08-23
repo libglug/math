@@ -3,10 +3,10 @@
 
 void glug_plane_from_points(struct glug_plane *dst, const struct glug_vec3 *a, const struct glug_vec3 *b, const struct glug_vec3 *c)
 {
-    struct glug_vec3 ab = *b;
-    glug_vec3_sub(&ab, a);
-    struct glug_vec3 ac = *c;
-    glug_vec3_sub(&ac, a);
+    struct glug_vec3 ab;
+    glug_vec3_sub(&ab, b, a);
+    struct glug_vec3 ac;
+    glug_vec3_sub(&ac, c, a);
     struct glug_vec3 norm;
     glug_vec3_cross(&norm, &ab, &ac);
     glug_vec3_normalize(&norm);

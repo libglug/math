@@ -6,8 +6,10 @@ list(
     APPEND
     TEST_LIB_SOURCE
     triangle.c
-    vec3.c
     float.c
+    line.c
+    mat2.c
+    vec3.c
 )
 
 list(
