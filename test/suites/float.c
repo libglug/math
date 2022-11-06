@@ -5,6 +5,20 @@
 
 #include <glug/math/float.h>
 
+static void test_next(void)
+{
+    CU_ASSERT_TRUE(glug_float_next(0.f)  > 0.f);
+    CU_ASSERT_TRUE(glug_float_next(1.f)  > 1.f);
+    CU_ASSERT_TRUE(glug_float_next(-1.f) > -1.f);
+}
+
+static void test_prev(void)
+{
+    CU_ASSERT_TRUE(glug_float_prev(0.f)  < 0.f);
+    CU_ASSERT_TRUE(glug_float_prev(1.f)  < 1.f);
+    CU_ASSERT_TRUE(glug_float_prev(-1.f) < -1.f);
+}
+
 static void test_swap(void)
 {
     float f1 = 1.f, f2 = 2.f;
@@ -24,18 +38,28 @@ static void test_sign(void)
     CU_ASSERT_EQUAL(glug_float_sign(-0.f), 0.f);
 }
 
-static void test_next(void)
+static void test_min(void)
 {
-    CU_ASSERT_TRUE(glug_float_next(0.f)  > 0.f);
-    CU_ASSERT_TRUE(glug_float_next(1.f)  > 1.f);
-    CU_ASSERT_TRUE(glug_float_next(-1.f) > -1.f);
+    CU_ASSERT_EQUAL(glug_float_min(1.f, 2.f), 1.f);
+    CU_ASSERT_EQUAL(glug_float_min(0.f, 1.f), 0.f);
+    CU_ASSERT_EQUAL(glug_float_min(-1.f, 2.f), -1.f);
+    CU_ASSERT_EQUAL(glug_float_min(-1.f, -2.f), -2.f);
 }
 
-static void test_prev(void)
+static void test_max(void)
 {
-    CU_ASSERT_TRUE(glug_float_prev(0.f)  < 0.f);
-    CU_ASSERT_TRUE(glug_float_prev(1.f)  < 1.f);
-    CU_ASSERT_TRUE(glug_float_prev(-1.f) < -1.f);
+    CU_ASSERT_EQUAL(glug_float_max(1.f, 2.f), 2.f);
+    CU_ASSERT_EQUAL(glug_float_max(0.f, 1.f), 1.f);
+    CU_ASSERT_EQUAL(glug_float_max(-1.f, 2.f), 2.f);
+    CU_ASSERT_EQUAL(glug_float_max(-1.f, -2.f), -1.f);
+}
+
+static void test_clamp(void)
+{
+    CU_ASSERT_EQUAL(glug_float_clamp(1.f, 0.f, 2.f), 1.f);
+    CU_ASSERT_EQUAL(glug_float_clamp(0.f, 1.f, 2.f), 1.f);
+    CU_ASSERT_EQUAL(glug_float_clamp(-1.f, 0.f, 2.f), 0.f);
+    CU_ASSERT_EQUAL(glug_float_clamp(-1.f, -3.f, -2.f), -2.f);
 }
 
 static void test_equal(void)
@@ -89,10 +113,13 @@ int main(void)
     CU_pSuite float_suite = create_suite("float", NULL, NULL);
     if (!float_suite) return CU_get_error();
 
-    ADD_TEST(float_suite, sign);
-    ADD_TEST(float_suite, swap);
     ADD_TEST(float_suite, next);
     ADD_TEST(float_suite, prev);
+    ADD_TEST(float_suite, swap);
+    ADD_TEST(float_suite, sign);
+    ADD_TEST(float_suite, min);
+    ADD_TEST(float_suite, max);
+    ADD_TEST(float_suite, clamp);
     ADD_TEST(float_suite, equal);
     ADD_TEST(float_suite, equal_approx);
     ADD_TEST(float_suite, equal_ulps);
