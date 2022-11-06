@@ -1,12 +1,16 @@
 #ifndef GLUG_MAT2_H
 #define GLUG_MAT2_H
 
+#include <stddef.h>
+
+#include <glug/extern.h>
 #include <glug/import.h>
 #include <glug/bool_t.h>
+
 #include <glug/math/mat2_t.h>
 #include <glug/math/vec2_t.h>
 
-#include <stddef.h>
+GLUG_EXTERN_START
 
 GLUG_LIB_API struct glug_mat2 glug_mat2_identity();
 GLUG_LIB_API void glug_mat2_to_identity(struct glug_mat2 *dst);
@@ -38,5 +42,7 @@ GLUG_LIB_API void glug_mat2_invert(struct glug_mat2 *dst);
 
 GLUG_LIB_API struct glug_vec2 glug_mat2_prodv(const struct glug_mat2 *m, const struct glug_vec2 *v);
 GLUG_LIB_API void glug_mat2_mulv(const struct glug_mat2 *m, struct glug_vec2 *dst);
+
+GLUG_EXTERN_END
 
 #endif // GLUG_MAT2_H

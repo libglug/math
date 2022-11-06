@@ -1,9 +1,13 @@
 #ifndef GLUG_VEC4_H
 #define GLUG_VEC4_H
 
+#include <glug/extern.h>
 #include <glug/import.h>
 #include <glug/bool_t.h>
+
 #include <glug/math/vec4_t.h>
+
+GLUG_EXTERN_START
 
 GLUG_LIB_API void  glug_vec4_set(struct glug_vec4 *dst, float x, float y, float z, float w);
 GLUG_LIB_API glug_bool_t glug_vec4_equal(const struct glug_vec4 *a, const struct glug_vec4 *b);
@@ -52,5 +56,7 @@ GLUG_LIB_API void glug_vec4_project(struct glug_vec4 *dst, const struct glug_vec
 GLUG_LIB_API void glug_vec4_reject(struct glug_vec4 *dst, const struct glug_vec4 *b);
 GLUG_LIB_API void glug_vec4_reflect(struct glug_vec4 *dst, const struct glug_vec4 *b);
 GLUG_LIB_API void glug_vec4_refract(struct glug_vec4 *dst, const struct glug_vec4 *n, float incidx, float tranidx);
+
+GLUG_EXTERN_END
 
 #endif // GLUG_VEC4_H

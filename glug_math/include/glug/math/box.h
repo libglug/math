@@ -1,9 +1,13 @@
 #ifndef GLUG_BOX_H
 #define GLUG_BOX_H
 
+#include <glug/extern.h>
 #include <glug/import.h>
 #include <glug/bool_t.h>
+
 #include <glug/math/box_t.h>
+
+GLUG_EXTERN_START
 
 GLUG_LIB_API void glug_box_set(struct glug_box *dst, const struct glug_vec3 *min, const struct glug_vec3 *max);
 GLUG_LIB_API glug_bool_t glug_box_equal(const struct glug_box *a, const struct glug_box *b);
@@ -24,5 +28,7 @@ GLUG_LIB_API void glug_box_unionize(struct glug_box *dst, const struct glug_box 
 // TODO: move out of the box header
 GLUG_LIB_API struct glug_vec3 glug_box_clamped_point(const struct glug_box *r, const struct glug_vec3 *p);
 GLUG_LIB_API void glug_box_clamp_point(const struct glug_box *r, struct glug_vec3 *dst);
+
+GLUG_EXTERN_END
 
 #endif // GLUG_BOX_H

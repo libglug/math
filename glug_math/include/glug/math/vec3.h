@@ -1,9 +1,13 @@
 #ifndef GLUG_VEC3_H
 #define GLUG_VEC3_H
 
+#include <glug/extern.h>
 #include <glug/import.h>
 #include <glug/bool_t.h>
+
 #include <glug/math/vec3_t.h>
+
+GLUG_EXTERN_START
 
 GLUG_LIB_API void  glug_vec3_set(struct glug_vec3 *dst, float x, float y, float z);
 GLUG_LIB_API glug_bool_t glug_vec3_equal(const struct glug_vec3 *a, const struct glug_vec3 *b);
@@ -53,5 +57,7 @@ GLUG_LIB_API void glug_vec3_project(struct glug_vec3 *dst, const struct glug_vec
 GLUG_LIB_API void glug_vec3_reject(struct glug_vec3 *dst, const struct glug_vec3 *b);
 GLUG_LIB_API void glug_vec3_reflect(struct glug_vec3 *dst, const struct glug_vec3 *b);
 GLUG_LIB_API void glug_vec3_refract(struct glug_vec3 *dst, const struct glug_vec3 *n, float incidx, float tranidx);
+
+GLUG_EXTERN_END
 
 #endif // GLUG_VEC3_H
