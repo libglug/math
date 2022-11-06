@@ -15,6 +15,15 @@ static void test_swap(void)
     CU_ASSERT_EQUAL(f2, 1.f);
 }
 
+static void test_sign(void)
+{
+    CU_ASSERT_TRUE(glug_float_sign(2.f) > 0.f);
+    CU_ASSERT_TRUE(glug_float_sign(-2.f) < 0.f);
+
+    CU_ASSERT_EQUAL(glug_float_sign(0.f), 0.f);
+    CU_ASSERT_EQUAL(glug_float_sign(-0.f), 0.f);
+}
+
 static void test_next(void)
 {
     CU_ASSERT_TRUE(glug_float_next(0.f)  > 0.f);
@@ -58,6 +67,8 @@ static void test_equal_ulps(void)
     CU_ASSERT_TRUE(glug_float_equal_ulps(1.f, next, 3));
     CU_ASSERT_TRUE(glug_float_equal_ulps(1.f, prev, 3));
 
+    CU_ASSERT_FALSE(glug_float_equal_ulps(-1.f, next, 3));
+
     next = glug_float_next(-1.f);
     prev = glug_float_prev(-1.f);
     CU_ASSERT_TRUE(glug_float_equal_ulps(-1.f, next, 1));
@@ -69,6 +80,8 @@ static void test_equal_ulps(void)
     CU_ASSERT_FALSE(glug_float_equal_ulps(-1.f, prev, 2));
     CU_ASSERT_TRUE(glug_float_equal_ulps(-1.f, next, 3));
     CU_ASSERT_TRUE(glug_float_equal_ulps(-1.f, prev, 3));
+
+    CU_ASSERT_FALSE(glug_float_equal_ulps(1.f, prev, 3));
 }
 
 int main(void)
@@ -76,6 +89,7 @@ int main(void)
     CU_pSuite float_suite = create_suite("float", NULL, NULL);
     if (!float_suite) return CU_get_error();
 
+    ADD_TEST(float_suite, sign);
     ADD_TEST(float_suite, swap);
     ADD_TEST(float_suite, next);
     ADD_TEST(float_suite, prev);
