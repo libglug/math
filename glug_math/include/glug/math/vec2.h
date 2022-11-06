@@ -30,7 +30,7 @@ GLUG_LIB_API float glug_vec2_dot(const struct glug_vec2 *v, const struct glug_ve
 
 GLUG_LIB_API float glug_vec2_len(const struct glug_vec2 *v);
 GLUG_LIB_API float glug_vec2_len_squared(const struct glug_vec2 *v);
-GLUG_LIB_API float glug_vec2_len_manhattan(const struct glug_vec2 *v);
+GLUG_LIB_API float glug_vec2_len_taxi(const struct glug_vec2 *v);
 GLUG_LIB_API void  glug_vec2_set_len(struct glug_vec2 *v, float length);
 
 GLUG_LIB_API glug_bool_t glug_vec2_is_normal(const struct glug_vec2 *v);
@@ -39,7 +39,7 @@ GLUG_LIB_API void  glug_vec2_normalize(struct glug_vec2 *v);
 
 GLUG_LIB_API float glug_vec2_dist(const struct glug_vec2 *a, const struct glug_vec2 *b);
 GLUG_LIB_API float glug_vec2_dist_squared(const struct glug_vec2 *a, const struct glug_vec2 *b);
-GLUG_LIB_API float glug_vec2_dist_manhattan(const struct glug_vec2 *a, const struct glug_vec2 *b);
+GLUG_LIB_API float glug_vec2_dist_taxi(const struct glug_vec2 *a, const struct glug_vec2 *b);
 
 GLUG_LIB_API float glug_vec2_angle_btw(const struct glug_vec2 *a, const struct glug_vec2 *b);
 

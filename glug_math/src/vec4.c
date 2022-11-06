@@ -137,7 +137,7 @@ float glug_vec4_len_squared(const struct glug_vec4 *v)
     return v->x * v->x + v->y * v->y + v->z * v->z + v->w * v->w;
 }
 
-float glug_vec4_len_manhattan(const struct glug_vec4 *v)
+float glug_vec4_len_taxi(const struct glug_vec4 *v)
 {
     return fabsf(v->x) + fabsf(v->y) + fabsf(v->z) + fabsf(v->w);
 }
@@ -180,7 +180,7 @@ float glug_vec4_dist_squared(const struct glug_vec4 *a, const struct glug_vec4 *
     return dx * dx + dy * dy + dz * dz + dw * dw;
 }
 
-float glug_vec4_dist_manhattan(const struct glug_vec4 *a, const struct glug_vec4 *b)
+float glug_vec4_dist_taxi(const struct glug_vec4 *a, const struct glug_vec4 *b)
 {
     float dx = fabsf(b->x - a->x);
     float dy = fabsf(b->y - a->y);
