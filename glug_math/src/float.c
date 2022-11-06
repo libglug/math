@@ -1,8 +1,42 @@
 #include <glug/math/float.h>
+#include <math.h>
 
-void glug_float_swap(float *a, float *b)
+void glug_float_swap(float *f1, float *f2)
 {
-    float tmp = *a;
-    *a = *b;
-    *b = tmp;
+    float tmp = *f1;
+    *f1 = *f2;
+    *f2 = tmp;
+}
+
+float glug_float_next(float f)
+{
+    return nextafterf(f, INFINITY);
+}
+
+float glug_float_prev(float f)
+{
+    return nextafterf(f, -INFINITY);
+}
+
+glug_bool_t glug_float_equal_strict(float f1, float f2)
+{
+    return f1 == f2;
+}
+
+glug_bool_t glug_float_equal_approx(float f1, float f2, float diff)
+{
+    return fabsf(f1 - f2) <= diff;
+}
+
+glug_bool_t glug_float_equal_ulps(float f1, float f2, uint32_t ulps)
+{
+    f1 = fabs(f1);
+    f2 = fabs(f2);
+    float smaller = (f1 < f2) * f1 + (f2 <= f1) * f2;
+    float larger = (f1 > f2) * f1 + (f2 >= f1) * f2;
+
+    for (; ulps-- && smaller <= larger; )
+        smaller = nextafterf(smaller, INFINITY);
+
+    return larger <= smaller;
 }

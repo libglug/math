@@ -107,6 +107,7 @@ list(
 
 add_test_by_conf(${CMAKE_CURRENT_LIST_DIR} confs/box.cmake)
 add_test_by_conf(${CMAKE_CURRENT_LIST_DIR} confs/circle.cmake)
+add_test_by_conf(${CMAKE_CURRENT_LIST_DIR} confs/float.cmake)
 add_test_by_conf(${CMAKE_CURRENT_LIST_DIR} confs/line2.cmake)
 add_test_by_conf(${CMAKE_CURRENT_LIST_DIR} confs/line3.cmake)
 add_test_by_conf(${CMAKE_CURRENT_LIST_DIR} confs/mat2.cmake)

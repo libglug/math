@@ -1,8 +1,18 @@
 #ifndef GLUG_FLOAT_H
 #define GLUG_FLOAT_H
 
-#include <glug/import.h>
+#include <stdint.h>
 
-GLUG_LIB_API void glug_float_swap(float *a, float *b);
+#include <glug/import.h>
+#include <glug/bool_t.h>
+
+GLUG_LIB_API void glug_float_swap(float *f1, float *f2);
+
+GLUG_LIB_API float glug_float_next(float f);
+GLUG_LIB_API float glug_float_prev(float f);
+
+GLUG_LIB_API glug_bool_t glug_float_equal_strict(float f1, float f2);
+GLUG_LIB_API glug_bool_t glug_float_equal_approx(float f1, float f2, float diff);
+GLUG_LIB_API glug_bool_t glug_float_equal_ulps(float f1, float f2, uint32_t ulps);
 
 #endif // GLUG_FLOAT_H
