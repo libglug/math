@@ -8,6 +8,8 @@
 
 GLUG_LIB_API void glug_float_swap(float *f1, float *f2);
 
+GLUG_LIB_API float glug_float_sign(float f);
+
 GLUG_LIB_API float glug_float_next(float f);
 GLUG_LIB_API float glug_float_prev(float f);
 
