@@ -236,8 +236,8 @@ static void test_len_mh(void)
 {
     struct glug_vec3 v = { -5.f, 3.f, -4.f };
     struct glug_vec3 v2 = { 6.f, -10.f, 2.f };
-    float len = glug_vec3_len_manhattan(&v);
-    float len2 = glug_vec3_len_manhattan(&v2);
+    float len = glug_vec3_len_taxi(&v);
+    float len2 = glug_vec3_len_taxi(&v2);
     float exp = 12.f;
     float exp2 = 18.f;
 
@@ -305,7 +305,7 @@ static void test_dist_mh(void)
 {
     struct glug_vec3 a = { -1.2f, 1.9f, -0.5f };
     struct glug_vec3 b = { -0.8f, 1.f, -0.3f };
-    float dist = glug_vec3_dist_manhattan(&a, &b);
+    float dist = glug_vec3_dist_taxi(&a, &b);
     float exp = 1.5f;
 
     CU_ASSERT_DOUBLE_EQUAL(dist, exp, 0.0001f);
