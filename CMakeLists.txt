@@ -61,6 +61,3 @@ add_custom_command(
         ${CMAKE_COMMAND} -E copy_if_different
             $<TARGET_FILE:glug::math> ${CMAKE_INSTALL_PREFIX}/examples/$<TARGET_FILE_NAME:glug_math>
 )
-
-enable_testing()
-include(test/tests.cmake)

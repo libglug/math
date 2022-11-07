@@ -138,3 +138,6 @@ export(
 )
 
 export(PACKAGE glug_math)
+
+enable_testing()
+add_subdirectory(tests)
