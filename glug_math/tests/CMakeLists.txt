@@ -1,20 +1,15 @@
-add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/cunit/CUnit EXCLUDE_FROM_ALL)
+add_subdirectory(cunit/CUnit EXCLUDE_FROM_ALL)
 
 find_package(glug_math REQUIRED)
 
-set(LIB_SRC_ROOT ${CMAKE_SOURCE_DIR}/glug_math/src)
-set(LIB_INC_ROOT ${CMAKE_SOURCE_DIR}/glug_math/include)
+set(LIB_ROOT ${CMAKE_CURRENT_LIST_DIR}/..)
+set(LIB_SRC_ROOT ${LIB_ROOT}/src)
+set(LIB_INC_ROOT ${LIB_ROOT}/include)
 
-function(add_test_by_conf TEST_ROOT TEST_CONF)
-    include(${TEST_ROOT}/${TEST_CONF})
+
+function(add_test_by_conf TEST_CONF)
+    include(${TEST_CONF})
     set(TEST_TARGET "test-${TEST_TARGET}")
-
-    list(
-        TRANSFORM
-            TEST_SOURCE
-        PREPEND
-            ${TEST_ROOT}/
-    )
 
     list(
         TRANSFORM
@@ -23,30 +18,24 @@ function(add_test_by_conf TEST_ROOT TEST_CONF)
             ${LIB_SRC_ROOT}/
     )
 
-    list(
-        TRANSFORM
-            TEST_MOCK_SOURCE
-        PREPEND
-            ${TEST_ROOT}/utils/
-    )
-
     add_executable(
         ${TEST_TARGET}
         EXCLUDE_FROM_ALL
         ${TEST_SOURCE}
         ${TEST_LIB_SOURCE}
-        ${TEST_MOCK_SOURCE}
-        ${TEST_ROOT}/utils/suites/create_suite.h
-        ${TEST_ROOT}/utils/suites/create_suite.c
-        ${TEST_ROOT}/utils/asserts/asserts.h
-        ${TEST_ROOT}/utils/asserts/asserts.c
+        suites/add_test.h
+        suites/create_suite.h
+        suites/create_suite.c
+        asserts/asserts.h
+        asserts/asserts.c
     )
 
     target_include_directories(
         ${TEST_TARGET}
         PRIVATE
-            ${TEST_ROOT}/utils
-            ${TEST_ROOT}/utils/mocks
+            ${LIB_ROOT}
+            .
+            mocks
             ${LIB_SRC_ROOT}
             ${LIB_INC_ROOT}
             ${TEST_INCLUDE_DIRS}
@@ -96,7 +85,6 @@ function(add_test_by_conf TEST_ROOT TEST_CONF)
 
     add_test(${TEST_TARGET} ${TEST_TARGET})
     set(TEST_TARGETS ${TEST_TARGETS} PARENT_SCOPE)
-
 endfunction()
 
 # unit tests
@@ -105,20 +93,20 @@ list(
     TEST_TARGETS
 )
 
-add_test_by_conf(${CMAKE_CURRENT_LIST_DIR} confs/box.cmake)
-add_test_by_conf(${CMAKE_CURRENT_LIST_DIR} confs/circle.cmake)
-add_test_by_conf(${CMAKE_CURRENT_LIST_DIR} confs/float.cmake)
-add_test_by_conf(${CMAKE_CURRENT_LIST_DIR} confs/line2.cmake)
-add_test_by_conf(${CMAKE_CURRENT_LIST_DIR} confs/line3.cmake)
-add_test_by_conf(${CMAKE_CURRENT_LIST_DIR} confs/mat2.cmake)
-add_test_by_conf(${CMAKE_CURRENT_LIST_DIR} confs/plane.cmake)
-add_test_by_conf(${CMAKE_CURRENT_LIST_DIR} confs/rect.cmake)
-add_test_by_conf(${CMAKE_CURRENT_LIST_DIR} confs/sphere.cmake)
-add_test_by_conf(${CMAKE_CURRENT_LIST_DIR} confs/tri2.cmake)
-add_test_by_conf(${CMAKE_CURRENT_LIST_DIR} confs/tri3.cmake)
-add_test_by_conf(${CMAKE_CURRENT_LIST_DIR} confs/vec2.cmake)
-add_test_by_conf(${CMAKE_CURRENT_LIST_DIR} confs/vec3.cmake)
-add_test_by_conf(${CMAKE_CURRENT_LIST_DIR} confs/vec4.cmake)
+add_test_by_conf(confs/box.cmake)
+add_test_by_conf(confs/circle.cmake)
+add_test_by_conf(confs/float.cmake)
+add_test_by_conf(confs/line2.cmake)
+add_test_by_conf(confs/line3.cmake)
+add_test_by_conf(confs/mat2.cmake)
+add_test_by_conf(confs/plane.cmake)
+add_test_by_conf(confs/rect.cmake)
+add_test_by_conf(confs/sphere.cmake)
+add_test_by_conf(confs/tri2.cmake)
+add_test_by_conf(confs/tri3.cmake)
+add_test_by_conf(confs/vec2.cmake)
+add_test_by_conf(confs/vec3.cmake)
+add_test_by_conf(confs/vec4.cmake)
 
 foreach(TEST_TARGET IN LISTS TEST_TARGETS)
     add_custom_command(
