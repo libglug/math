@@ -2,6 +2,6 @@
 	path = glug_math/common_headers
 	url = https://github.com/libglug/common_headers.git
 [submodule "test/cunit"]
-        path = test/cunit
+	path = glug_math/tests/cunit
         url = https://github.com/libglug/cunit.git
 
