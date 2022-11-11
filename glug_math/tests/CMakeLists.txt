@@ -23,7 +23,6 @@ function(add_test_by_conf TEST_CONF)
         EXCLUDE_FROM_ALL
         ${TEST_SOURCE}
         ${TEST_LIB_SOURCE}
-        suites/add_test.h
         suites/create_suite.h
         suites/create_suite.c
         asserts/asserts.h

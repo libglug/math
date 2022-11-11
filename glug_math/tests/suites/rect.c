@@ -2,21 +2,9 @@
 #include <CUnit/Assert.h>
 
 #include <suites/create_suite.h>
-#include <suites/add_test.h>
 #include <asserts/asserts.h>
 
 #include <glug/math/rect.h>
-
-static void test_set(void)
-{
-    struct glug_rect r = { { 1.5, 1.5f }, { 4.f, 3.f } };
-    struct glug_vec2 min = { 0.5f, 0.3f };
-    struct glug_vec2 max = { 3.14f, 2.718f };
-    struct glug_rect exp = { min, max };
-
-    glug_rect_set(&r, &min, &max);
-    ASSERT_RECT_EQUAL(&r, &exp, 0.f);
-}
 
 static void test_equal(void)
 {
@@ -53,25 +41,6 @@ static void test_contains_pt(void)
     intersect = glug_rect_contains_point(&empty, &p);
 
     CU_ASSERT_FALSE(intersect);
-}
-
-static void test_expansion(void)
-{
-    struct glug_rect r = { { 1.f, 2.f }, { 2.f, 3.f } };
-    struct glug_vec2 p = { 0.f, 0.f };
-    struct glug_rect exp = { { 0.f, 0.f }, { 2.f, 3.f } };
-    struct glug_rect empty = { r.max, r.min };
-
-    struct glug_rect dst = glug_rect_expansion(&r, &p);
-    ASSERT_RECT_EQUAL(&dst, &exp, 0.f);
-
-    p.x = exp.min.x = -2.f;
-    p.y = exp.max.y = 5.f;
-    dst = glug_rect_expansion(&dst, &p);
-    ASSERT_RECT_EQUAL(&dst, &exp, 0.f);
-
-    dst = glug_rect_expansion(&empty, &p);
-    ASSERT_RECT_EQUAL(&dst, &empty, 0.f);
 }
 
 static void test_expand(void)
@@ -130,21 +99,6 @@ static void test_intersects(void)
     CU_ASSERT_FALSE(intersect);
 }
 
-static void test_intersection(void)
-{
-    struct glug_rect r1 = { { 1.f, 2.f }, { 5.f, 6.f } };
-    struct glug_rect r2 = { { -2.f, -1.f }, { 3.f, 4.f } };
-    struct glug_rect exp = { { 1.f, 2.f }, { 3.f, 4.f } };
-    struct glug_rect empty = { r1.max, r1.min };
-
-    struct glug_rect dst = glug_rect_intersection(&r1, &r2);
-    ASSERT_RECT_EQUAL(&dst, &exp, 0.f);
-
-    dst = glug_rect_intersection(&empty, &r2);
-    ASSERT_VEC2_EQUAL(&r1.max, &empty.min, 0.f);
-    ASSERT_VEC2_EQUAL(&r1.min, &empty.max, 0.f);
-}
-
 static void test_intersect(void)
 {
     struct glug_rect dst = { { 1.f, 2.f }, { 5.f, 6.f } };
@@ -162,46 +116,17 @@ static void test_intersect(void)
 
 static void test_union(void)
 {
-    struct glug_rect r1 = { { 3.f, 4.f }, { 5.f, 6.f } };
-    struct glug_rect r2 = { { -2.f, -1.f }, { 1.f, 2.f } };
-    struct glug_rect exp = { { -2.f, -1.f }, { 5.f, 6.f } };
-    struct glug_rect empty = { r1.max, r1.min };
-
-    struct glug_rect dst = glug_rect_union(&r1, &r2);
-    ASSERT_RECT_EQUAL(&dst, &exp, 0.f);
-
-    dst = glug_rect_union(&empty, &r2);
-    ASSERT_VEC2_EQUAL(&r1.max, &empty.min, 0.f);
-    ASSERT_VEC2_EQUAL(&r1.min, &empty.max, 0.f);
-}
-
-static void test_unionize(void)
-{
     struct glug_rect dst = { { 3.f, 4.f }, { 5.f, 6.f } };
     struct glug_rect r2 = { { -2.f, -1.f }, { 1.f, 2.f } };
     struct glug_rect exp = { { -2.f, -1.f }, { 5.f, 6.f } };
     struct glug_rect empty = { r2.max, r2.min };
 
-    glug_rect_unionize(&dst, &r2);
+    glug_rect_union(&dst, &r2);
     ASSERT_RECT_EQUAL(&dst, &exp, 0.f);
 
-    glug_rect_unionize(&empty, &r2);
+    glug_rect_union(&empty, &r2);
     ASSERT_VEC2_EQUAL(&r2.max, &empty.min, 0.f);
     ASSERT_VEC2_EQUAL(&r2.min, &empty.max, 0.f);
-}
-
-static void test_clamped(void)
-{
-    struct glug_rect r = { { 1.f, 2.f }, { 2.f, 3.f } };
-    struct glug_vec2 p = { 0.f, 0.f };
-    struct glug_vec2 exp = r.min;
-    struct glug_rect empty = { r.max, r.min };
-
-    struct glug_vec2 dst = glug_rect_clamped_point(&r, &p);
-    ASSERT_VEC2_EQUAL(&dst, &exp, 0.f);
-
-    dst = glug_rect_clamped_point(&empty, &p);
-    ASSERT_VEC2_EQUAL(&dst, &p, 0.f);
 }
 
 static void test_clamp(void)
@@ -223,18 +148,13 @@ int main(void)
     CU_pSuite rect_suite = create_suite("rect", NULL, NULL);
     if (!rect_suite) return CU_get_error();
 
-    ADD_TEST(rect_suite, set);
     ADD_TEST(rect_suite, equal);
     ADD_TEST(rect_suite, is_empty);
     ADD_TEST(rect_suite, contains_pt);
-    ADD_TEST(rect_suite, expansion);
     ADD_TEST(rect_suite, expand);
     ADD_TEST(rect_suite, intersects);
-    ADD_TEST(rect_suite, intersection);
     ADD_TEST(rect_suite, intersect);
     ADD_TEST(rect_suite, union);
-    ADD_TEST(rect_suite, unionize);
-    ADD_TEST(rect_suite, clamped);
     ADD_TEST(rect_suite, clamp);
 
     return run_tests(CU_BRM_VERBOSE);

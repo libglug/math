@@ -2,13 +2,6 @@
 #include <glug/math/vec3.h>
 #include <glug/math/line2.h>
 
-void glug_triangle3_set(struct glug_triangle3 *dst, const struct glug_vec3 *a, const struct glug_vec3 *b, const struct glug_vec3 *c)
-{
-    dst->a = *a;
-    dst->b = *b;
-    dst->c = *c;
-}
-
 glug_bool_t glug_triangle3_equal(const struct glug_triangle3 *a, const struct glug_triangle3 *b)
 {
 
@@ -42,9 +35,13 @@ struct glug_vec3 glug_triangle3_trilinear(const struct glug_triangle3 *t, const 
 
 struct glug_vec3 glug_triangle3_to_barycentric(const struct glug_triangle3 *t, const struct glug_vec3 *p)
 {
-    struct glug_vec3 p0 = glug_vec3_diff(p, &t->a),
-                     p1 = glug_vec3_diff(&t->b, &t->a),
-                     p2 = glug_vec3_diff(&t->c, &t->a);
+    struct glug_vec3 p0 = *p,
+                     p1 = t->b,
+                     p2 = t->c;
+    glug_vec3_sub(&p0, &t->a);
+    glug_vec3_sub(&p1, &t->a);
+    glug_vec3_sub(&p2, &t->a);
+
     float p01 = glug_vec3_dot(&p0, &p1),
           p02 = glug_vec3_dot(&p0, &p2),
           p11 = glug_vec3_dot(&p1, &p1),
@@ -77,9 +74,11 @@ struct glug_vec3 glug_triangle3_to_trilinear(const struct glug_triangle3 *t, con
 
 struct glug_vec3 glug_triangle3_normal(const struct glug_triangle3 *t)
 {
-    struct glug_vec3 ab = glug_vec3_diff(&t->b, &t->a),
-                     ac = glug_vec3_diff(&t->c, &t->a);
-    struct glug_vec3 n = glug_vec3_cross(&ab, &ac);
+    struct glug_vec3 ab = t->b, ac = t->c;
+    glug_vec3_sub(&ab, &t->a),
+    glug_vec3_sub(&ac, &t->a);
+    struct glug_vec3 n;
+    glug_vec3_cross(&n, &ab, &ac);
 
     glug_vec3_normalize(&n);
     return n;
@@ -103,7 +102,8 @@ struct glug_vec3 glug_triangle3_incenter(const struct glug_triangle3 *t)
 
 float glug_triangle3_distance_to_point(const struct glug_triangle3 *t, const struct glug_vec3 *p)
 {
-    struct glug_vec3 close = glug_triangle3_closest_point(t, p);
+    struct glug_vec3 close = *p;
+    glug_triangle3_project_point(t, &close);
     return glug_vec3_dist(&close, p);
 }
 
@@ -113,14 +113,6 @@ glug_bool_t glug_triangle3_contains_point(const struct glug_triangle3 *t, const 
     return !(bary.x < 0 || bary.y < 0 || bary.z < 0);
 }
 
-struct glug_vec3 glug_triangle3_closest_point(const struct glug_triangle3 *t, const struct glug_vec3 *p)
-{
-    struct glug_vec3 dst = *p;
-    glug_triangle3_project_point(t, &dst);
-
-    return dst;
-}
-
 void glug_triangle3_project_point(const struct glug_triangle3 *t, struct glug_vec3 *dst)
 {
     struct glug_vec3 tril = glug_triangle3_to_trilinear(t, dst);
@@ -128,6 +120,6 @@ void glug_triangle3_project_point(const struct glug_triangle3 *t, struct glug_ve
 
     if (tril.x > 0 && tril.y > 0 && tril.z > 0) return;
 
-    glug_vec3_maximize(&tril, &zero);
+    glug_vec3_max(&tril, &zero);
     *dst = glug_triangle3_trilinear(t, &tril);
 }
