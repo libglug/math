@@ -28,12 +28,12 @@ float glug_float_sign(float f)
 
 float glug_float_min(float f1, float f2)
 {
-    return (f1 < f2) * f1 + (f1 >= f2) * f2;
+    return fminf(f1, f2);
 }
 
 float glug_float_max(float f1, float f2)
 {
-    return (f1 > f2) * f1 + (f1 <= f2) * f2;
+    return fmaxf(f1, f2);
 }
 
 float glug_float_clamp(float f, float min, float max)

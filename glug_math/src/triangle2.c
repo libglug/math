@@ -2,13 +2,6 @@
 #include <glug/math/vec2.h>
 #include <glug/math/vec3.h>
 
-void glug_triangle2_set(struct glug_triangle2 *dst, const struct glug_vec2 *a, const struct glug_vec2 *b, const struct glug_vec2 *c)
-{
-    dst->a = *a;
-    dst->b = *b;
-    dst->c = *c;
-}
-
 glug_bool_t glug_triangle2_equal(const struct glug_triangle2 *a, const struct glug_triangle2 *b)
 {
 
@@ -40,9 +33,12 @@ struct glug_vec2 glug_triangle2_trilinear(const struct glug_triangle2 *t, const 
 
 struct glug_vec3 glug_triangle2_to_barycentric(const struct glug_triangle2 *t, const struct glug_vec2 *p)
 {
-    struct glug_vec2 p0 = glug_vec2_diff(p, &t->a),
-                     p1 = glug_vec2_diff(&t->b, &t->a),
-                     p2 = glug_vec2_diff(&t->c, &t->a);
+    struct glug_vec2 p0 = *p,
+                     p1 = t->b,
+                     p2 = t->c;
+    glug_vec2_sub(&p0, &t->a);
+    glug_vec2_sub(&p1, &t->a);
+    glug_vec2_sub(&p2, &t->a);
     float p01 = glug_vec2_dot(&p0, &p1),
           p02 = glug_vec2_dot(&p0, &p2),
           p11 = glug_vec2_dot(&p1, &p1),
@@ -91,7 +87,8 @@ struct glug_vec2 glug_triangle2_incenter(const struct glug_triangle2 *t)
 
 float glug_triangle2_distance_to_point(const struct glug_triangle2 *t, const struct glug_vec2 *p)
 {
-    struct glug_vec2 close = glug_triangle2_closest_point(t, p);
+    struct glug_vec2 close = *p;
+    glug_triangle2_project_point(t, &close);
     return glug_vec2_dist(&close, p);
 }
 
@@ -101,14 +98,6 @@ glug_bool_t glug_triangle2_contains_point(const struct glug_triangle2 *t, const 
     return !(bary.x < 0 || bary.y < 0 || bary.z < 0);
 }
 
-struct glug_vec2 glug_triangle2_closest_point(const struct glug_triangle2 *t, const struct glug_vec2 *p)
-{
-    struct glug_vec2 dst = *p;
-    glug_triangle2_project_point(t, &dst);
-
-    return dst;
-}
-
 void glug_triangle2_project_point(const struct glug_triangle2 *t, struct glug_vec2 *dst)
 {
     struct glug_vec3 tril = glug_triangle2_to_trilinear(t, dst);
@@ -116,6 +105,6 @@ void glug_triangle2_project_point(const struct glug_triangle2 *t, struct glug_ve
 
     if (tril.x > 0 && tril.y > 0 && tril.z > 0) return;
 
-    glug_vec3_maximize(&tril, &zero);
+    glug_vec3_max(&tril, &zero);
     *dst = glug_triangle2_trilinear(t, &tril);
 }

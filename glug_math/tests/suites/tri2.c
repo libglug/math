@@ -2,20 +2,9 @@
 #include <CUnit/Assert.h>
 
 #include <suites/create_suite.h>
-#include <suites/add_test.h>
 #include <asserts/asserts.h>
 
 #include <glug/math/triangle2.h>
-
-static void test_set(void)
-{
-    struct glug_triangle2 dst;
-    struct glug_vec2 a = { -0.5f, -0.5f }, b = { 0.5f, -0.5f }, c = { 0.f, 0.5f };
-    struct glug_triangle2 exp = { a, b, c };
-
-    glug_triangle2_set(&dst, &a, &b, &c);
-    ASSERT_TRI2_EQUAL(&dst, &exp, 0.f);
-}
 
 static void test_equal(void)
 {
@@ -163,22 +152,6 @@ static void test_distance(void)
     CU_ASSERT_DOUBLE_EQUAL(dist, exp, 0.f);
 }
 
-static void test_closest_point(void)
-{
-    struct glug_triangle2 t = { { -1.f, 1.f }, { -1.f, 2.f }, { -2.f, 1.f } };
-    struct glug_vec2 p = { -3.f, 1.f };
-    struct glug_vec2 exp = { -2.f, 1.f };
-
-    struct glug_vec2 dst = glug_triangle2_closest_point(&t, &p);
-    ASSERT_VEC2_EQUAL(&dst, &exp, 0.f);
-
-    p.x = -1.2f;
-    p.y =  1.2f;
-    exp = p;
-    dst = glug_triangle2_closest_point(&t, &p);
-    ASSERT_VEC2_EQUAL(&dst, &exp, 0.f);
-}
-
 static void test_project_point(void)
 {
     struct glug_triangle2 t = { { -1.f, 1.f }, { -1.f, 2.f }, { -2.f, 1.f } };
@@ -194,7 +167,6 @@ int main(void)
     CU_pSuite tri2_suite = create_suite("tri2", NULL, NULL);
     if (!tri2_suite) return CU_get_error();
 
-    ADD_TEST(tri2_suite, set);
     ADD_TEST(tri2_suite, equal);
     ADD_TEST(tri2_suite, from_barycentric);
     ADD_TEST(tri2_suite, from_trilinear);
@@ -204,7 +176,6 @@ int main(void)
     ADD_TEST(tri2_suite, centroid);
     ADD_TEST(tri2_suite, incenter);
     ADD_TEST(tri2_suite, contains_point);
-    ADD_TEST(tri2_suite, closest_point);
     ADD_TEST(tri2_suite, project_point);
 
     return run_tests(CU_BRM_VERBOSE);

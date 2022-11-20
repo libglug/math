@@ -1,43 +1,27 @@
 #include <glug/math/plane.h>
 #include <glug/math/vec3.h>
 
-struct glug_plane glug_plane_from_points(const struct glug_vec3 *a, const struct glug_vec3 *b, const struct glug_vec3 *c)
+void glug_plane_from_points(struct glug_plane *dst, const struct glug_vec3 *a, const struct glug_vec3 *b, const struct glug_vec3 *c)
 {
-    struct glug_plane dst;
-    glug_plane_set_by_points(&dst, a, b, c);
-
-    return dst;
-}
-
-struct glug_plane glug_plane_from_normal(const struct glug_vec3 *n, const struct glug_vec3 *r)
-{
-    struct glug_plane dst;
-    glug_plane_set_by_normal(&dst, n, r);
-
-    return dst;
-}
-
-void glug_plane_set_by_points(struct glug_plane *dst, const struct glug_vec3 *a, const struct glug_vec3 *b, const struct glug_vec3 *c)
-{
-    struct glug_vec3 ab = glug_vec3_diff(b, a);
-    struct glug_vec3 ac = glug_vec3_diff(c, a);
-    struct glug_vec3 norm = glug_vec3_cross(&ab, &ac);
+    struct glug_vec3 ab = *b;
+    glug_vec3_sub(&ab, a);
+    struct glug_vec3 ac = *c;
+    glug_vec3_sub(&ac, a);
+    struct glug_vec3 norm;
+    glug_vec3_cross(&norm, &ab, &ac);
     glug_vec3_normalize(&norm);
 
-    glug_plane_set(dst, &norm, glug_vec3_dot(&norm, a));
-
+    dst->normal = norm;
+    dst->offset = glug_vec3_dot(&norm, a);
 }
 
-void glug_plane_set_by_normal(struct glug_plane *dst, const struct glug_vec3 *n, const struct glug_vec3 *r)
+void glug_plane_from_normal(struct glug_plane *dst, const struct glug_vec3 *n, const struct glug_vec3 *p)
 {
-    struct glug_vec3 norm = glug_vec3_normal(n);
-    glug_plane_set(dst, &norm, glug_vec3_dot(&norm, r));
-}
+    struct glug_vec3 norm = *n;
+    glug_vec3_normalize(&norm);
 
-void glug_plane_set(struct glug_plane *dst, const struct glug_vec3 *n, float d)
-{
-    dst->normal = *n;
-    dst->offset = d;
+    dst->normal = norm;
+    dst->offset = glug_vec3_dot(&norm, p);
 }
 
 glug_bool_t glug_plane_equal(const struct glug_plane *a, const struct glug_plane *b)
@@ -60,14 +44,6 @@ glug_bool_t glug_plane_contains_point(const struct glug_plane *p, const struct g
 float glug_plane_distance_to_point(const struct glug_plane *p, const struct glug_vec3 *r)
 {
     return glug_vec3_dot(&p->normal, r) - p->offset;
-}
-
-struct glug_vec3 glug_plane_closest_point(const struct glug_plane *p, const struct glug_vec3 *r)
-{
-    struct glug_vec3 dst = *r;
-    glug_plane_project_point(p, &dst);
-
-    return dst;
 }
 
 void glug_plane_project_point(const struct glug_plane *p, struct glug_vec3 *dst)
