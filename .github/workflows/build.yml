@@ -32,7 +32,7 @@ jobs:
 
     - name: Build
       working-directory: ${{github.workspace}}/build
-      run: cmake --build . --target examples check install install-examples --config ${{env.BUILD_TYPE}}
+      run: cmake --build . --target glug_math examples check install install-examples --config ${{env.BUILD_TYPE}}
 
     - name: Test
       working-directory: ${{github.workspace}}/build
