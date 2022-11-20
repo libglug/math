@@ -1,12 +1,11 @@
-set(TEST_TARGET "tri2")
+set(TEST_TARGET "line")
 
-set(TEST_SOURCE suites/tri2.c)
+set(TEST_SOURCE suites/line.c)
 
 list(
     APPEND
     TEST_LIB_SOURCE
-    triangle2.c
-    vec2.c
+    line.c
     vec3.c
 )
 

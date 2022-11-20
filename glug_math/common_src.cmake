@@ -16,17 +16,9 @@ set(
     include/glug/math/box.h
     src/box.c
 
-    include/glug/math/circle_t.h
-    include/glug/math/circle.h
-    src/circle.c
-
-    include/glug/math/line2_t.h
-    include/glug/math/line2.h
-    src/line2.c
-
-    include/glug/math/line3_t.h
-    include/glug/math/line3.h
-    src/line3.c
+    include/glug/math/line_t.h
+    include/glug/math/line.h
+    src/line.c
 
     include/glug/math/mat2_t.h
     include/glug/math/mat2.h
@@ -36,21 +28,14 @@ set(
     include/glug/math/plane.h
     src/plane.c
 
-    include/glug/math/rect_t.h
-    include/glug/math/rect.h
-    src/rect.c
 
     include/glug/math/sphere_t.h
     include/glug/math/sphere.h
     src/sphere.c
 
-    include/glug/math/triangle2_t.h
-    include/glug/math/triangle2.h
-    src/triangle2.c
-
-    include/glug/math/triangle3_t.h
-    include/glug/math/triangle3.h
-    src/triangle3.c
+    include/glug/math/triangle_t.h
+    include/glug/math/triangle.h
+    src/triangle.c
 
     include/glug/math/vec2_t.h
     include/glug/math/vec2.h
