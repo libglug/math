@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.7)
 project(glug_math_suite)
 
 # add the library subproject
+enable_testing()
 add_subdirectory(glug_math)
 
 # add the "examples" target to build all examples
