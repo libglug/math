@@ -1,12 +1,12 @@
-set(TEST_TARGET "circle")
+set(TEST_TARGET "triangle")
 
-set(TEST_SOURCE suites/circle.c)
+set(TEST_SOURCE suites/triangle.c)
 
 list(
     APPEND
     TEST_LIB_SOURCE
-    circle.c
-    vec2.c
+    triangle.c
+    vec3.c
 )
 
 list(
