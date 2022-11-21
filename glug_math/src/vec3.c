@@ -43,6 +43,24 @@ void glug_vec3_div(struct glug_vec3 *dst, float scalar)
     glug_vec3_mul(dst, 1.f / scalar);
 }
 
+void glug_vec3_mul_cw(struct glug_vec3 *dst, const struct glug_vec3 *v, const struct glug_vec3 *v2)
+{
+    *dst = (struct glug_vec3){
+        .x = v->x * v2->x,
+        .y = v->y * v2->y,
+        .z = v->z * v2->z,
+    };
+}
+
+void glug_vec3_div_cw(struct glug_vec3 *dst, const struct glug_vec3 *v, const struct glug_vec3 *v2)
+{
+    *dst = (struct glug_vec3){
+        .x = v->x / v2->x,
+        .y = v->y / v2->y,
+        .z = v->z / v2->z,
+    };
+}
+
 void glug_vec3_sign(struct glug_vec3 *dst, const struct glug_vec3 *v)
 {
     *dst = (struct glug_vec3){
@@ -148,6 +166,14 @@ void glug_vec3_cross(struct glug_vec3 *dst, const struct glug_vec3 *v1, const st
     res.z = v1->x * v2->y - v1->y * v2->x;
 
     *dst = res;
+}
+
+float glug_vec3_triple_product(const struct glug_vec3 *v1, const struct glug_vec3 *v2, const struct glug_vec3 *v3)
+{
+    struct glug_vec3 cross;
+    glug_vec3_cross(&cross, v1, v2);
+
+    return glug_vec3_dot(&cross, v3);
 }
 
 float glug_vec3_len(const struct glug_vec3 *dst)

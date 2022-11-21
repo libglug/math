@@ -51,6 +51,28 @@ static void test_div(void)
     ASSERT_VEC3_EQUAL(&dst, &exp, 0.000001f);
 }
 
+static void test_mul_cw(void)
+{
+    struct glug_vec3 v1 = { 1.5f, 2.f, 4.f };
+    struct glug_vec3 v2 = { 2.f, 1.f, 0.25f };
+    struct glug_vec3 exp;
+
+    glug_vec3_mul_cw(&v1, &v1, &v2);
+    exp = (struct glug_vec3){ 3.f, 2.f, 1.f };
+    ASSERT_VEC3_EQUAL(&v1, &exp, 0.0001f);
+}
+
+static void test_div_cw(void)
+{
+    struct glug_vec3 v1 = { 3.f, 2.f, 9.f };
+    struct glug_vec3 v2 = { 1.5f, 1.f, 3.f };
+    struct glug_vec3 exp;
+
+    glug_vec3_div_cw(&v1, &v1, &v2);
+    exp = (struct glug_vec3){ 2.f, 2.f, 3.f };
+    ASSERT_VEC3_EQUAL(&v1, &exp, 0.0001f);
+}
+
 static void test_sign(void)
 {
     struct glug_vec3 dst = { -13.7123f, 0.f, 5.2972f };
@@ -180,6 +202,16 @@ static void test_cross(void)
     exp.z = 0.f;
     glug_vec3_cross(&a, &c, &b);
     ASSERT_VEC3_EQUAL(&a, &exp, 0.f);
+}
+
+static void test_triple_product(void)
+{
+    struct glug_vec3 v1 = { -2.f, 3.f, 1.f };
+    struct glug_vec3 v2 = {  0.f, 4.f, 0.f };
+    struct glug_vec3 v3 = { -1.f, 3.f, 3.f };
+
+    float tp = glug_vec3_triple_product(&v1, &v2, &v3);
+    CU_ASSERT_DOUBLE_EQUAL(tp, -20, 0.0001f);
 }
 
 static void test_len(void)
@@ -351,6 +383,8 @@ int main(void)
     ADD_TEST(vec3_suite, sub);
     ADD_TEST(vec3_suite, mul);
     ADD_TEST(vec3_suite, div);
+    ADD_TEST(vec3_suite, mul_cw);
+    ADD_TEST(vec3_suite, div_cw);
     ADD_TEST(vec3_suite, sign);
     ADD_TEST(vec3_suite, integral);
     ADD_TEST(vec3_suite, frac);
@@ -363,6 +397,7 @@ int main(void)
     ADD_TEST(vec3_suite, round_zero);
     ADD_TEST(vec3_suite, dot);
     ADD_TEST(vec3_suite, cross);
+    ADD_TEST(vec3_suite, triple_product);
     ADD_TEST(vec3_suite, len_sq);
     ADD_TEST(vec3_suite, len_taxi);
     ADD_TEST(vec3_suite, set_len);

@@ -15,6 +15,8 @@ GLUG_LIB_API void glug_vec3_add(struct glug_vec3 *dst, const struct glug_vec3 *v
 GLUG_LIB_API void glug_vec3_sub(struct glug_vec3 *dst, const struct glug_vec3 *v2);
 GLUG_LIB_API void glug_vec3_mul(struct glug_vec3 *dst, float scalar);
 GLUG_LIB_API void glug_vec3_div(struct glug_vec3 *dst, float scalar);
+GLUG_LIB_API void glug_vec3_mul_cw(struct glug_vec3 *dst, const struct glug_vec3 *v, const struct glug_vec3 *v2);
+GLUG_LIB_API void glug_vec3_div_cw(struct glug_vec3 *dst, const struct glug_vec3 *v, const struct glug_vec3 *v2);
 
 GLUG_LIB_API void glug_vec3_sign(struct glug_vec3 *dst, const struct glug_vec3 *v);
 GLUG_LIB_API void glug_vec3_integral(struct glug_vec3 *dst, const struct glug_vec3 *v);
@@ -31,6 +33,7 @@ GLUG_LIB_API void glug_vec3_round_zero(struct glug_vec3 *dst, const struct glug_
 
 GLUG_LIB_API float glug_vec3_dot(const struct glug_vec3 *v1, const struct glug_vec3 *v2);
 GLUG_LIB_API void glug_vec3_cross(struct glug_vec3 *dst, const struct glug_vec3 *v1, const struct glug_vec3 *v2);
+GLUG_LIB_API float glug_vec3_triple_product(const struct glug_vec3 *v1, const struct glug_vec3 *v2, const struct glug_vec3 *v3);
 
 GLUG_LIB_API float glug_vec3_len(const struct glug_vec3 *v);
 GLUG_LIB_API float glug_vec3_len_squared(const struct glug_vec3 *v);
