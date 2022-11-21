@@ -15,10 +15,21 @@ GLUG_LIB_API void  glug_vec4_add(struct glug_vec4 *dst, const struct glug_vec4 *
 GLUG_LIB_API void  glug_vec4_sub(struct glug_vec4 *dst, const struct glug_vec4 *v2);
 GLUG_LIB_API void  glug_vec4_mul(struct glug_vec4 *dst, float scalar);
 GLUG_LIB_API void  glug_vec4_div(struct glug_vec4 *dst, float scalar);
+GLUG_LIB_API void glug_vec4_mul_cw(struct glug_vec4 *dst, const struct glug_vec4 *v, const struct glug_vec4 *v2);
+GLUG_LIB_API void glug_vec4_div_cw(struct glug_vec4 *dst, const struct glug_vec4 *v, const struct glug_vec4 *v2);
+
+GLUG_LIB_API void glug_vec4_sign(struct glug_vec4 *dst, const struct glug_vec4 *v);
+GLUG_LIB_API void glug_vec4_integral(struct glug_vec4 *dst, const struct glug_vec4 *v);
+GLUG_LIB_API void glug_vec4_frac(struct glug_vec4 *dst, const struct glug_vec4 *v);
 
 GLUG_LIB_API void glug_vec4_max(struct glug_vec4 *dst, const struct glug_vec4 *v2);
 GLUG_LIB_API void glug_vec4_min(struct glug_vec4 *dst, const struct glug_vec4 *v2);
 GLUG_LIB_API void glug_vec4_clamp(struct glug_vec4 *dst, const struct glug_vec4 *min, const struct glug_vec4 *max);
+
+GLUG_LIB_API void glug_vec4_floor(struct glug_vec4 *dst, const struct glug_vec4 *v);
+GLUG_LIB_API void glug_vec4_ceil(struct glug_vec4 *dst, const struct glug_vec4 *v);
+GLUG_LIB_API void glug_vec4_round(struct glug_vec4 *dst, const struct glug_vec4 *v);
+GLUG_LIB_API void glug_vec4_round_zero(struct glug_vec4 *dst, const struct glug_vec4 *v);
 
 GLUG_LIB_API float glug_vec4_dot(const struct glug_vec4 *v1, const struct glug_vec4 *v2);
 
@@ -26,6 +37,7 @@ GLUG_LIB_API float glug_vec4_len(const struct glug_vec4 *v);
 GLUG_LIB_API float glug_vec4_len_squared(const struct glug_vec4 *v);
 GLUG_LIB_API float glug_vec4_len_taxi(const struct glug_vec4 *v);
 GLUG_LIB_API void  glug_vec4_set_len(struct glug_vec4 *v, float length);
+GLUG_LIB_API void  glug_vec4_clamp_len(struct glug_vec4 *v, float min, float max);
 
 GLUG_LIB_API glug_bool_t glug_vec4_is_normal(const struct glug_vec4 *v);
 GLUG_LIB_API void  glug_vec4_normalize(struct glug_vec4 *v);

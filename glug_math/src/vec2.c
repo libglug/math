@@ -1,4 +1,5 @@
 #include <glug/math/vec2.h>
+#include <glug/math/float.h>
 
 #include <math.h>
 
@@ -39,11 +40,51 @@ void glug_vec2_div(struct glug_vec2 *dst, float scalar)
     glug_vec2_mul(dst, 1.f / scalar);
 }
 
+void glug_vec2_mul_cw(struct glug_vec2 *dst, const struct glug_vec2 *v, const struct glug_vec2 *v2)
+{
+    *dst = (struct glug_vec2){
+        .x = v->x * v2->x,
+        .y = v->y * v2->y,
+    };
+}
+
+void glug_vec2_div_cw(struct glug_vec2 *dst, const struct glug_vec2 *v, const struct glug_vec2 *v2)
+{
+    *dst = (struct glug_vec2){
+        .x = v->x / v2->x,
+        .y = v->y / v2->y,
+    };
+}
+
+void glug_vec2_sign(struct glug_vec2 *dst, const struct glug_vec2 *v)
+{
+    *dst = (struct glug_vec2){
+        .x = glug_float_sign(v->x),
+        .y = glug_float_sign(v->y),
+    };
+}
+
+void glug_vec2_integral(struct glug_vec2 *dst, const struct glug_vec2 *v)
+{
+    *dst = (struct glug_vec2){
+        .x = glug_float_integral(v->x),
+        .y = glug_float_integral(v->y),
+    };
+}
+
+void glug_vec2_frac(struct glug_vec2 *dst, const struct glug_vec2 *v)
+{
+    *dst = (struct glug_vec2){
+        .x = glug_float_frac(v->x),
+        .y = glug_float_frac(v->y),
+    };
+}
+
 void glug_vec2_max(struct glug_vec2 *dst, const struct glug_vec2 *v2)
 {
     struct glug_vec2 res = *dst;
-    res.x = fmaxf(dst->x, v2->x);
-    res.y = fmaxf(dst->y, v2->y);
+    res.x = glug_float_max(dst->x, v2->x);
+    res.y = glug_float_max(dst->y, v2->y);
 
     *dst = res;
 }
@@ -51,8 +92,8 @@ void glug_vec2_max(struct glug_vec2 *dst, const struct glug_vec2 *v2)
 void glug_vec2_min(struct glug_vec2 *dst, const struct glug_vec2 *v2)
 {
     struct glug_vec2 res = *dst;
-    res.x = fminf(dst->x, v2->x);
-    res.y = fminf(dst->y, v2->y);
+    res.x = glug_float_min(dst->x, v2->x);
+    res.y = glug_float_min(dst->y, v2->y);
 
     *dst = res;
 }
@@ -64,6 +105,38 @@ void glug_vec2_clamp(struct glug_vec2 *dst, const struct glug_vec2 *min, const s
     glug_vec2_min(&res, max);
 
     *dst = res;
+}
+
+void glug_vec2_floor(struct glug_vec2 *dst, const struct glug_vec2 *v)
+{
+    *dst = (struct glug_vec2){
+        .x = glug_float_floor(v->x),
+        .y = glug_float_floor(v->y),
+    };
+}
+
+void glug_vec2_ceil(struct glug_vec2 *dst, const struct glug_vec2 *v)
+{
+    *dst = (struct glug_vec2){
+        .x = glug_float_ceil(v->x),
+        .y = glug_float_ceil(v->y),
+    };
+}
+
+void glug_vec2_round(struct glug_vec2 *dst, const struct glug_vec2 *v)
+{
+    *dst = (struct glug_vec2){
+        .x = glug_float_round(v->x),
+        .y = glug_float_round(v->y),
+    };
+}
+
+void glug_vec2_round_zero(struct glug_vec2 *dst, const struct glug_vec2 *v)
+{
+    *dst = (struct glug_vec2){
+        .x = glug_float_round_zero(v->x),
+        .y = glug_float_round_zero(v->y),
+    };
 }
 
 float glug_vec2_dot(const struct glug_vec2 *v1, const struct glug_vec2 *v2)
@@ -89,6 +162,14 @@ float glug_vec2_len_taxi(const struct glug_vec2 *v)
 void glug_vec2_set_len(struct glug_vec2 *v, float length)
 {
     glug_vec2_mul(v, length / glug_vec2_len(v));
+}
+
+void glug_vec2_clamp_len(struct glug_vec2 *v, float min, float max)
+{
+    float l = glug_vec2_len(v);
+    float clamped = glug_float_clamp(l, min, max);
+
+    glug_vec2_mul(v, clamped / l);
 }
 
 glug_bool_t glug_vec2_is_normal(const struct glug_vec2 *v)

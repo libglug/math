@@ -6,6 +6,7 @@ list(
     APPEND
     TEST_LIB_SOURCE
     vec4.c
+    float.c
 )
 
 list(
