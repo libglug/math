@@ -13,7 +13,6 @@ cmake --build . --target glug_math
 ```
 mkdir build && cd build
 cmake [path/to/repo]
-cmake --build . --target glug_math_tests
-cd test
-./glug_math_tests
+cmake --build . --target check
+ctest -V
 ```
