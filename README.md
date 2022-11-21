@@ -1,4 +1,4 @@
-![](https://ci.appveyor.com/api/projects/status/github/libglug/math?branch=master&svg=true)
+![](https://github.com/libglug/math/actions/workflows/build.yml/badge.svg)
 # math
 3d maths
 
