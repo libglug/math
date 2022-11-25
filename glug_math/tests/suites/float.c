@@ -1,7 +1,6 @@
 #include <CUnit/Assert.h>
 
 #include <suites/create_suite.h>
-
 #include <glug/math/float.h>
 
 static void test_equal(void)

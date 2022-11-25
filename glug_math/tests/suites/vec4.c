@@ -51,7 +51,34 @@ static void test_div(void)
     ASSERT_VEC4_EQUAL(&dst, &exp, 0.000001f);
 }
 
-static void test_maximize(void)
+static void test_sign(void)
+{
+    struct glug_vec4 dst = { -13.7123f, 0.f, 5.2972f, 1.4142f };
+    struct glug_vec4 exp = { -1.f, 0.f, 1.f, 1.f };
+
+    glug_vec4_sign(&dst, &dst);
+    ASSERT_VEC4_EQUAL(&dst, &exp, 0.f);
+}
+
+static void test_integral(void)
+{
+    struct glug_vec4 dst = { -13.7123f, 0.f, 5.2972f, 1.4142f };
+    struct glug_vec4 exp = { -13.f, 0.f, 5.f, 1.f };
+
+    glug_vec4_integral(&dst, &dst);
+    ASSERT_VEC4_EQUAL(&dst, &exp, 0.f);
+}
+
+static void test_frac(void)
+{
+    struct glug_vec4 dst = { -13.7123f, 0.f, 5.2972f, 1.4142f };
+    struct glug_vec4 exp = { -0.7123f,  0.f, 0.2972f, 0.4142f };
+
+    glug_vec4_frac(&dst, &dst);
+    ASSERT_VEC4_EQUAL(&dst, &exp, 0.00001f);
+}
+
+static void test_max(void)
 {
     struct glug_vec4 v1 = { -2.f, 2.f, -2.f, 2.f };
     struct glug_vec4 v2 = { 1.f, -1.f, 1.f, -1.f };
@@ -66,7 +93,7 @@ static void test_maximize(void)
     ASSERT_VEC4_EQUAL(&dst, &exp, 0.f);
 }
 
-static void test_minimize(void)
+static void test_min(void)
 {
     struct glug_vec4 v1 = { -2.f, 2.f, -2.f, 2.f };
     struct glug_vec4 v2 = { 1.f, -1.f, 1.f, -1.f };
@@ -90,6 +117,42 @@ static void test_clamp(void)
 
     glug_vec4_clamp(&dst, &min, &max);
     ASSERT_VEC4_EQUAL(&dst, &exp, 0.f);
+}
+
+static void test_floor(void)
+{
+    struct glug_vec4 dst = { -13.7123f, 0.f, 5.2972f, 1.4142f };
+    struct glug_vec4 exp = { -14.f, 0.f, 5.f, 1.f };
+
+    glug_vec4_floor(&dst, &dst);
+    ASSERT_VEC4_EQUAL(&dst, &exp, 0.f);
+}
+
+static void test_ceil(void)
+{
+    struct glug_vec4 dst = { -13.7123f, 0.f, 5.2972f, 1.4142f };
+    struct glug_vec4 exp = { -13.f, 0.f, 6.f, 2.f };
+
+    glug_vec4_ceil(&dst, &dst);
+    ASSERT_VEC4_EQUAL(&dst, &exp, 0.00001f);
+}
+
+static void test_round(void)
+{
+    struct glug_vec4 dst = { -13.7123f, 0.f, 5.2972f, 1.4142f };
+    struct glug_vec4 exp = { -14.f, 0.f, 5.f, 1.f };
+
+    glug_vec4_round(&dst, &dst);
+    ASSERT_VEC4_EQUAL(&dst, &exp, 0.00001f);
+}
+
+static void test_round_zero(void)
+{
+    struct glug_vec4 dst = { -13.7123f, 0.f, 5.2972f, 1.4142f };
+    struct glug_vec4 exp = { -13.f, 0.f, 5.f, 1.f };
+
+    glug_vec4_round_zero(&dst, &dst);
+    ASSERT_VEC4_EQUAL(&dst, &exp, 0.00001f);
 }
 
 static void test_dot(void)
@@ -150,6 +213,20 @@ static void test_set_len(void)
     glug_vec4_set_len(&v, newlen);
     ASSERT_VEC4_EQUAL(&v, &exp, 0.001f);
     CU_ASSERT_DOUBLE_EQUAL(glug_vec4_len(&v), newlen, 0.001f);
+}
+
+static void test_clamp_len(void)
+{
+    struct glug_vec4 v = { 1.5f, -1.5f, 1.5f, -1.5f };
+
+    glug_vec4_clamp_len(&v, 1.f, 5.f);
+    CU_ASSERT_DOUBLE_EQUAL(glug_vec4_len(&v), 3.f, 0.0001f);
+
+    glug_vec4_clamp_len(&v, 1.f, 2.f);
+    CU_ASSERT_DOUBLE_EQUAL(glug_vec4_len(&v), 2.f, 0.0001f);
+
+    glug_vec4_clamp_len(&v, 5.f, 10.f);
+    CU_ASSERT_DOUBLE_EQUAL(glug_vec4_len(&v), 5.f, 0.0001f);
 }
 
 static void test_is_norm(void)
@@ -258,14 +335,22 @@ int main(void)
     ADD_TEST(vec4_suite, sub);
     ADD_TEST(vec4_suite, mul);
     ADD_TEST(vec4_suite, div);
-    ADD_TEST(vec4_suite, maximize);
-    ADD_TEST(vec4_suite, minimize);
+    ADD_TEST(vec4_suite, sign);
+    ADD_TEST(vec4_suite, integral);
+    ADD_TEST(vec4_suite, frac);
+    ADD_TEST(vec4_suite, max);
+    ADD_TEST(vec4_suite, min);
     ADD_TEST(vec4_suite, clamp);
+    ADD_TEST(vec4_suite, floor);
+    ADD_TEST(vec4_suite, ceil);
+    ADD_TEST(vec4_suite, round);
+    ADD_TEST(vec4_suite, round_zero);
     ADD_TEST(vec4_suite, dot);
     ADD_TEST(vec4_suite, len);
     ADD_TEST(vec4_suite, len_sq);
     ADD_TEST(vec4_suite, len_taxi);
     ADD_TEST(vec4_suite, set_len);
+    ADD_TEST(vec4_suite, clamp_len);
     ADD_TEST(vec4_suite, is_norm);
     ADD_TEST(vec4_suite, normalize);
     ADD_TEST(vec4_suite, dist);

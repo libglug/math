@@ -7,6 +7,7 @@ list(
     TEST_LIB_SOURCE
     triangle.c
     vec3.c
+    float.c
 )
 
 list(
