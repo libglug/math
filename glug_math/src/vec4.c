@@ -46,6 +46,26 @@ void glug_vec4_div(struct glug_vec4 *dst, float scalar)
     glug_vec4_mul(dst, 1.f / scalar);
 }
 
+void glug_vec4_mul_cw(struct glug_vec4 *dst, const struct glug_vec4 *v, const struct glug_vec4 *v2)
+{
+    *dst = (struct glug_vec4){
+        .x = v->x * v2->x,
+        .y = v->y * v2->y,
+        .z = v->z * v2->z,
+        .w = v->w * v2->w,
+    };
+}
+
+void glug_vec4_div_cw(struct glug_vec4 *dst, const struct glug_vec4 *v, const struct glug_vec4 *v2)
+{
+    *dst = (struct glug_vec4){
+        .x = v->x / v2->x,
+        .y = v->y / v2->y,
+        .z = v->z / v2->z,
+        .w = v->w / v2->w,
+    };
+}
+
 void glug_vec4_sign(struct glug_vec4 *dst, const struct glug_vec4 *v)
 {
     *dst = (struct glug_vec4){

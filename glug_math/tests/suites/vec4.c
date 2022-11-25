@@ -51,6 +51,28 @@ static void test_div(void)
     ASSERT_VEC4_EQUAL(&dst, &exp, 0.000001f);
 }
 
+static void test_mul_cw(void)
+{
+    struct glug_vec4 v1 = { 1.5f, 2.f, 4.f, 0.5f };
+    struct glug_vec4 v2 = { 2.f, 1.f, 0.25f, 4.f };
+    struct glug_vec4 exp;
+
+    glug_vec4_mul_cw(&v1, &v1, &v2);
+    exp = (struct glug_vec4){ 3.f, 2.f, 1.f, 2.f };
+    ASSERT_VEC4_EQUAL(&v1, &exp, 0.0001f);
+}
+
+static void test_div_cw(void)
+{
+    struct glug_vec4 v1 = { 3.f, 2.f, 9.f, 6.f };
+    struct glug_vec4 v2 = { 1.5f, 1.f, 3.f, 3.f };
+    struct glug_vec4 exp;
+
+    glug_vec4_div_cw(&v1, &v1, &v2);
+    exp = (struct glug_vec4){ 2.f, 2.f, 3.f, 2.f };
+    ASSERT_VEC4_EQUAL(&v1, &exp, 0.0001f);
+}
+
 static void test_sign(void)
 {
     struct glug_vec4 dst = { -13.7123f, 0.f, 5.2972f, 1.4142f };
@@ -335,6 +357,8 @@ int main(void)
     ADD_TEST(vec4_suite, sub);
     ADD_TEST(vec4_suite, mul);
     ADD_TEST(vec4_suite, div);
+    ADD_TEST(vec4_suite, mul_cw);
+    ADD_TEST(vec4_suite, div_cw);
     ADD_TEST(vec4_suite, sign);
     ADD_TEST(vec4_suite, integral);
     ADD_TEST(vec4_suite, frac);

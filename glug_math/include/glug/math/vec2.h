@@ -15,6 +15,8 @@ GLUG_LIB_API void glug_vec2_add(struct glug_vec2 *dst, const struct glug_vec2 *v
 GLUG_LIB_API void glug_vec2_sub(struct glug_vec2 *dst, const struct glug_vec2 *v2);
 GLUG_LIB_API void glug_vec2_mul(struct glug_vec2 *dst, float scalar);
 GLUG_LIB_API void glug_vec2_div(struct glug_vec2 *dst, float scalar);
+GLUG_LIB_API void glug_vec2_mul_cw(struct glug_vec2 *dst, const struct glug_vec2 *v, const struct glug_vec2 *v2);
+GLUG_LIB_API void glug_vec2_div_cw(struct glug_vec2 *dst, const struct glug_vec2 *v, const struct glug_vec2 *v2);
 
 GLUG_LIB_API void glug_vec2_sign(struct glug_vec2 *dst, const struct glug_vec2 *v);
 GLUG_LIB_API void glug_vec2_integral(struct glug_vec2 *dst, const struct glug_vec2 *v);
