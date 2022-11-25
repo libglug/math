@@ -104,6 +104,11 @@ float glug_float_clamp(float f, float min, float max)
     return glug_float_max(min, glug_float_min(f, max));
 }
 
+float glug_float_rescale(float f, float old_min, float old_max, float new_min, float new_max)
+{
+    return (f - old_min) / (old_max - old_min) * (new_max - new_min) + new_min;
+}
+
 float glug_float_floor(float f)
 {
     return floorf(f);

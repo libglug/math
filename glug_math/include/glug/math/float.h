@@ -27,6 +27,7 @@ GLUG_LIB_API float glug_float_mod(float num, float div);
 GLUG_LIB_API float glug_float_min(float f1, float f2);
 GLUG_LIB_API float glug_float_max(float f1, float f2);
 GLUG_LIB_API float glug_float_clamp(float f, float min, float max);
+GLUG_LIB_API float glug_float_rescale(float f, float old_min, float old_max, float new_min, float new_max);
 
 GLUG_LIB_API float glug_float_floor(float f);
 GLUG_LIB_API float glug_float_ceil(float f);

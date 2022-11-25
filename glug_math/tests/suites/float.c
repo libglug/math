@@ -150,6 +150,14 @@ static void test_clamp(void)
     CU_ASSERT_EQUAL(glug_float_clamp(-1.f, -3.f, -2.f), -2.f);
 }
 
+static void test_rescale(void)
+{
+    CU_ASSERT_DOUBLE_EQUAL(glug_float_rescale(2.f, 1.f, 5.f, -1.f, 1.f), -0.5f, 0.0001f);
+    CU_ASSERT_DOUBLE_EQUAL(glug_float_rescale(4.f, 1.f, 4.f, 0.f, 1.f), 1.f, 0.00001f);
+    CU_ASSERT_DOUBLE_EQUAL(glug_float_rescale(2.f, 2.f, 10.f, 0.f, 5.f), 0.f, 0.00001f);
+    CU_ASSERT_DOUBLE_EQUAL(glug_float_rescale(2.f, 0.f, 1.f, -1.f, 1.f), 3.f, 0.00001f);
+}
+
 static void test_floor(void)
 {
     CU_ASSERT_EQUAL(glug_float_floor(22.3f), 22.f);
@@ -207,6 +215,7 @@ int main(void)
     ADD_TEST(float_suite, min);
     ADD_TEST(float_suite, max);
     ADD_TEST(float_suite, clamp);
+    ADD_TEST(float_suite, rescale);
     ADD_TEST(float_suite, floor);
     ADD_TEST(float_suite, ceil);
     ADD_TEST(float_suite, round);
