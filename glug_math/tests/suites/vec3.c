@@ -335,22 +335,22 @@ static void test_angle_to(void)
 
 static void test_project(void)
 {
-    struct glug_vec3 dst = { 3.f, 3.f, 3.f };
-    struct glug_vec3 b = { 1.f, -2.f, 0.f };
-    struct glug_vec3 exp = { -0.6f, 1.2f, 0.f };
+    struct glug_vec3 v = { 3.f, 6.f, -4.f };
+    struct glug_vec3 onto = { 2.f, -3.f, 5.f };
+    struct glug_vec3 exp = { -1.6842f, 2.5263f, -4.2105f };
 
-    glug_vec3_project(&dst, &b);
-    ASSERT_VEC3_EQUAL(&dst, &exp, 0.00001f);
+    glug_vec3_project(&v, &v, &onto);
+    ASSERT_VEC3_EQUAL(&v, &exp, 0.0001f);
 }
 
 static void test_reject(void)
 {
-    struct glug_vec3 dst = { 3.f, 3.f, 3.f };
-    struct glug_vec3 b = { 1.f, -2.f, 0.f };
-    struct glug_vec3 exp = { 3.6f, 1.8f, 3.f };
+    struct glug_vec3 v = { 3.f, 6.f, -4.f };
+    struct glug_vec3 from = { 2.f, -3.f, 5.f };
+    struct glug_vec3 exp = { 4.6842f, 3.4737f, 0.2105f };
 
-    glug_vec3_reject(&dst, &b);
-    ASSERT_VEC3_EQUAL(&dst, &exp, 0.00001f);
+    glug_vec3_reject(&v, &v, &from);
+    ASSERT_VEC3_EQUAL(&v, &exp, 0.0001f);
 }
 
 static void test_reflect(void)

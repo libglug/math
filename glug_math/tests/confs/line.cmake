@@ -7,6 +7,7 @@ list(
     TEST_LIB_SOURCE
     line.c
     vec3.c
+    mat2.c
     float.c
 )
 

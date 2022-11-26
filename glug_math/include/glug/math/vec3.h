@@ -50,8 +50,8 @@ GLUG_LIB_API float glug_vec3_dist_taxi(const struct glug_vec3 *v1, const struct 
 
 GLUG_LIB_API float glug_vec3_angle_btw(const struct glug_vec3 *v1, const struct glug_vec3 *v2);
 
-GLUG_LIB_API void glug_vec3_project(struct glug_vec3 *dst, const struct glug_vec3 *v2);
-GLUG_LIB_API void glug_vec3_reject(struct glug_vec3 *dst, const struct glug_vec3 *v2);
+GLUG_LIB_API void glug_vec3_project(struct glug_vec3 *dst, const struct glug_vec3 *v, const struct glug_vec3 *onto);
+GLUG_LIB_API void glug_vec3_reject(struct glug_vec3 *dst, const struct glug_vec3 *v, const struct glug_vec3 *from);
 GLUG_LIB_API void glug_vec3_reflect(struct glug_vec3 *dst, const struct glug_vec3 *v2);
 GLUG_LIB_API void glug_vec3_refract(struct glug_vec3 *dst, const struct glug_vec3 *n, float incidx, float tranidx);
 

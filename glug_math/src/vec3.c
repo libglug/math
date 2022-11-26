@@ -242,20 +242,21 @@ float glug_vec3_angle_btw(const struct glug_vec3 *v1, const struct glug_vec3 *v2
     return acosf(glug_vec3_dot(v1, v2) / glug_vec3_len(v1) / glug_vec3_len(v2));
 }
 
-void glug_vec3_project(struct glug_vec3 *dst, const struct glug_vec3 *v2)
+void glug_vec3_project(struct glug_vec3 *dst, const struct glug_vec3 *v, const struct glug_vec3 *onto)
 {
-    struct glug_vec3 res = *v2;
+    struct glug_vec3 res = *onto;
+
     glug_vec3_normalize(&res);
-    float proj_len = glug_vec3_dot(dst, &res);
+    float proj_len = glug_vec3_dot(&res, v);
     glug_vec3_mul(&res, proj_len);
 
     *dst = res;
 }
 
-void glug_vec3_reject(struct glug_vec3 *dst, const struct glug_vec3 *v2)
+void glug_vec3_reject(struct glug_vec3 *dst, const struct glug_vec3 *v, const struct glug_vec3 *from)
 {
-    struct glug_vec3 res = *dst, proj = *dst;
-    glug_vec3_project(&proj, v2);
+    struct glug_vec3 res = *v, proj;
+    glug_vec3_project(&proj, v, from);
     glug_vec3_sub(&res, &proj);
 
     *dst = res;
@@ -264,7 +265,7 @@ void glug_vec3_reject(struct glug_vec3 *dst, const struct glug_vec3 *v2)
 void glug_vec3_reflect(struct glug_vec3 *dst, const struct glug_vec3 *v2)
 {
     struct glug_vec3 res = *dst, rej = *dst;
-    glug_vec3_reject(&rej, v2);
+    glug_vec3_reject(&rej, dst, v2);
     glug_vec3_sub(&res, &rej);
     glug_vec3_sub(&res, &rej);
 

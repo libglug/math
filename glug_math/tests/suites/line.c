@@ -45,24 +45,56 @@ static void test_at_t(void)
     ASSERT_VEC3_EQUAL(&r, &exp, 0.f);
 }
 
-static void test_distance(void)
+static void test_distance_to(void)
 {
-    struct glug_line l = { { 1.f, 2.f, -1.f }, { 0.f, 1.f, 1.f } };
-    struct glug_vec3 p = { 1.f, 1.f, 1.f };
-    float exp = 0.91287f;
-    float dist = glug_line_distance_to_point(&l, &p);
+    struct glug_line l1 = { .v = { 8.f, 3.f, 4.f }, .r0 = { 1.f, 2.f, 3.f } };
+    struct glug_line l2 = { .v = { 5.f, 4.f, 3.f }, .r0 = { 2.f, 3.f, 4.f } };
 
-    CU_ASSERT_DOUBLE_EQUAL(dist, exp, 0.00001f);
+    float d = glug_line_distance_to(&l1, &l2);
+    CU_ASSERT_DOUBLE_EQUAL(d, 0.31889, 0.0001f);
+
+    l1.v = (struct glug_vec3){ 5.f, 4.f, 3.f };
+    d = glug_line_distance_to(&l1, &l2);
+    CU_ASSERT_DOUBLE_EQUAL(d, 0.3464f, 0.0001f);
+}
+
+static void test_closests_pts(void)
+{
+    struct glug_line l1 = { .v = { 8.f, 3.f, 4.f }, .r0 = { 1.f, 2.f, 3.f } };
+    struct glug_line l2 = { .v = { 5.f, 4.f, 3.f }, .r0 = { 2.f, 3.f, 4.f } };
+    struct glug_vec3 p1, p2, exp;
+
+    glug_line_closest_points(&l1, &l2, &p1, &p2);
+    exp = (struct glug_vec3){ 0.5932f, 1.8474f, 2.7966f };
+    ASSERT_VEC3_EQUAL(&p1, &exp, 0.0001f);
+    exp = (struct glug_vec3){ 0.4745f, 1.7796f, 3.0847f };
+    ASSERT_VEC3_EQUAL(&p2, &exp, 0.0001f);
+
+    l1.v = (struct glug_vec3){ 5.f, 4.f, 3.f };
+    glug_line_closest_points(&l1, &l2, &p1, &p2);
+    ASSERT_VEC3_EQUAL(&p1, &l1.r0, 0.0001f);
+    exp = (struct glug_vec3){ 0.7999f, 2.0399, 3.2799f };
+    ASSERT_VEC3_EQUAL(&p2, &exp, 0.0001f);
+}
+
+static void test_distance_to_pt(void)
+{
+    struct glug_line l = { { 0.f, 1.f, 0.f }, { 0.f, 0.f, 0.f } };
+    struct glug_vec3 p = { 1.f, 2.f, 1.f };
+    struct glug_vec3 exp = { 0.f, 2.f, 0.f };
+
+    float d = glug_line_distance_to_point(&l, &p);
+    CU_ASSERT_DOUBLE_EQUAL(d, sqrtf(2), 0.00001f);
 }
 
 static void test_project_point(void)
 {
-    struct glug_line l = { { 1.f, 2.f, -1.f }, { 0.f, 1.f, 1.f } };
-    struct glug_vec3 dst = { 1.f, 1.f, 1.f };
-    struct glug_vec3 exp = { 0.15214f, 1.30429f, 0.84785f };
+    struct glug_line l = { { 0.f, 1.f, 0.f }, { 0.f, 0.f, 0.f } };
+    struct glug_vec3 p = { 1.f, 2.f, 1.f };
+    struct glug_vec3 exp = { 0.f, 2.f, 0.f };
 
-    glug_line_project_point(&l, &dst);
-    ASSERT_VEC3_EQUAL(&dst, &exp, 0.00001f);
+    glug_line_project_point(&l, &p);
+    ASSERT_VEC3_EQUAL(&p, &exp, 0.00001f);
 }
 
 int main(void)
@@ -72,7 +104,9 @@ int main(void)
 
     ADD_TEST(line_suite, from_points);
     ADD_TEST(line_suite, at_t);
-    ADD_TEST(line_suite, distance);
+    ADD_TEST(line_suite, distance_to);
+    ADD_TEST(line_suite, closests_pts);
+    ADD_TEST(line_suite, distance_to_pt);
     ADD_TEST(line_suite, project_point);
 
     return run_tests(CU_BRM_VERBOSE);
