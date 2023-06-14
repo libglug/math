@@ -35,6 +35,11 @@ if (BUILD_STATIC)
     set(LIB_TYPE STATIC)
 endif()
 
+if (${IS_LIN})
+    set(PLATFORM_LIBS
+        bsd)
+endif()
+
 add_library(
     glug_math
     SHARED
