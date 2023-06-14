@@ -3,6 +3,18 @@
 #include <suites/create_suite.h>
 #include <glug/math/float.h>
 
+static void test_consts(void)
+{
+    CU_ASSERT_DOUBLE_EQUAL(glug_float_pi(), (float)M_PI, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(glug_float_π(), (float)M_PI, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(glug_float_e(), (float)M_E, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(glug_float_sqrt2(), sqrtf(2), 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(glug_float_log2(), log10f(2), 0.f);
+    CU_ASSERT_TRUE(isinf(glug_float_inf()));
+    CU_ASSERT_TRUE(glug_float_inf() > 0);
+    CU_ASSERT_TRUE(isnan(glug_float_nan()));
+}
+
 static void test_equal(void)
 {
     CU_ASSERT_TRUE(glug_float_equal_strict(1.f, 1.f));
@@ -82,6 +94,71 @@ static void test_swap(void)
 
     CU_ASSERT_EQUAL(f1, 2.f);
     CU_ASSERT_EQUAL(f2, 1.f);
+}
+
+static void test_is_pow2(void)
+{
+    CU_ASSERT_TRUE(glug_float_is_pow2(0.f));
+    CU_ASSERT_TRUE(glug_float_is_pow2(-0.f));
+    CU_ASSERT_TRUE(glug_float_is_pow2(0.5f));
+    CU_ASSERT_TRUE(glug_float_is_pow2(2.f));
+    CU_ASSERT_TRUE(glug_float_is_pow2(4.f));
+    CU_ASSERT_TRUE(glug_float_is_pow2(-128.f));
+    CU_ASSERT_TRUE(glug_float_is_pow2(-0.5f));
+
+    CU_ASSERT_FALSE(glug_float_is_pow2(3.f));
+    CU_ASSERT_FALSE(glug_float_is_pow2(-116.f));
+    CU_ASSERT_FALSE(glug_float_is_pow2(NAN));
+    CU_ASSERT_FALSE(glug_float_is_pow2(INFINITY));
+    CU_ASSERT_FALSE(glug_float_is_pow2(-INFINITY));
+}
+
+static void test_next_pow2(void)
+{
+    CU_ASSERT_DOUBLE_EQUAL(glug_float_next_pow2(0.25f), 0.5f, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(glug_float_next_pow2(0.5f), 1.f, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(glug_float_next_pow2(1.f), 2.f, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(glug_float_next_pow2(5.f), 8.f, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(glug_float_next_pow2(7.f), 8.f, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(glug_float_next_pow2(100.f), 128.f, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(glug_float_next_pow2(128.f), 256.f, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(glug_float_next_pow2(-100.f), -64.f, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(glug_float_next_pow2(-2.f), -1.f, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(glug_float_next_pow2(-1.f), -0.5f, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(glug_float_next_pow2(-0.5f), -0.25f, 0.f);
+
+    CU_ASSERT_DOUBLE_EQUAL(glug_float_next_pow2(0.f), 0.f, 0.f);
+    CU_ASSERT_TRUE(isnan(glug_float_next_pow2(NAN)));
+    CU_ASSERT_TRUE(isinf(glug_float_next_pow2(-INFINITY)));
+    CU_ASSERT_TRUE(isinf(glug_float_next_pow2(INFINITY)));
+}
+
+static void test_prev_pow2(void)
+{
+    CU_ASSERT_DOUBLE_EQUAL(glug_float_prev_pow2(0.5f), 0.25f, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(glug_float_prev_pow2(1.f), 0.5f, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(glug_float_prev_pow2(2.f), 1.f, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(glug_float_prev_pow2(5.f), 4.f, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(glug_float_prev_pow2(7.f), 4.f, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(glug_float_prev_pow2(8.f), 4.f, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(glug_float_prev_pow2(100.f), 64.f, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(glug_float_prev_pow2(128.f), 64.f, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(glug_float_prev_pow2(-100.f), -128.f, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(glug_float_prev_pow2(-1.0f), -2.f, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(glug_float_prev_pow2(-0.5f), -1.f, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(glug_float_prev_pow2(-0.25f), -0.5f, 0.f);
+
+    CU_ASSERT_DOUBLE_EQUAL(glug_float_prev_pow2(0.f), 0.f, 0.f);
+    CU_ASSERT_TRUE(isnan(glug_float_prev_pow2(NAN)));
+    CU_ASSERT_TRUE(isinf(glug_float_prev_pow2(-INFINITY)));
+    CU_ASSERT_TRUE(isinf(glug_float_prev_pow2(INFINITY)));
+}
+
+static void test_lg(void)
+{
+    CU_ASSERT_DOUBLE_EQUAL(glug_float_lg(2), 1.f, 0.f);
+    CU_ASSERT_DOUBLE_EQUAL(glug_float_lg(4), 2.f, 0.f);
+    CU_ASSERT_TRUE(isnan(glug_float_lg(-2)));
 }
 
 static void test_sign(void)
@@ -200,6 +277,7 @@ int main(void)
     CU_pSuite float_suite = create_suite("float", NULL, NULL);
     if (!float_suite) return CU_get_error();
 
+    ADD_TEST(float_suite, consts);
     ADD_TEST(float_suite, equal);
     ADD_TEST(float_suite, equal_approx);
     ADD_TEST(float_suite, equal_ulps);
@@ -207,6 +285,10 @@ int main(void)
     ADD_TEST(float_suite, prev);
     ADD_TEST(float_suite, rand);
     ADD_TEST(float_suite, swap);
+    ADD_TEST(float_suite, is_pow2);
+    ADD_TEST(float_suite, next_pow2);
+    ADD_TEST(float_suite, prev_pow2);
+    ADD_TEST(float_suite, lg);
     ADD_TEST(float_suite, sign);
     ADD_TEST(float_suite, integral);
     ADD_TEST(float_suite, frac);
