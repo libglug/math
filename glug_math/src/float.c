@@ -1,8 +1,40 @@
 #include <glug/math/float.h>
+#define _USE_MATH_DEFINES
 #include <math.h>
-
 #include <time.h>
 #include <stdlib.h>
+
+#define LOG2 0.3010299956639812
+
+float glug_float_inf(void)
+{
+    return INFINITY;
+}
+
+float glug_float_nan(void)
+{
+    return (float)NAN;
+}
+
+float glug_float_pi(void)
+{
+    return (float)M_PI;
+}
+
+float glug_float_e(void)
+{
+    return (float)M_E;
+}
+
+float glug_float_sqrt2(void)
+{
+    return (float)M_SQRT2;
+}
+
+float glug_float_log2(void)
+{
+    return (float)LOG2;
+}
 
 glug_bool_t glug_float_equal_strict(float f1, float f2)
 {
@@ -19,7 +51,7 @@ glug_bool_t glug_float_equal_ulps(float f1, float f2, uint32_t ulps)
     float min = glug_float_min(f1, f2);
     float max = glug_float_max(f1, f2);
 
-    for (; ulps-- && min <= max;)
+    while (ulps-- && min <= max)
         min = glug_float_next(min);
 
     return max <= min;
@@ -54,13 +86,52 @@ void glug_float_swap(float *f1, float *f2)
     *f2 = tmp;
 }
 
+glug_bool_t glug_float_is_pow2(float f)
+{
+    int exp;
+    float coeff = frexpf(f, &exp);
+
+    // if `coeff` is 0.5f, then f was a power of 2 resulting from `1/2 * 2^exp`
+    return coeff == glug_float_sign(f) * 0.5f;
+}
+
+float glug_float_next_pow2(float f)
+{
+    if (f < 0.f) return -glug_float_prev_pow2(-f);
+
+    int exp;
+    float coeff = frexpf(f, &exp);
+
+    if (isinf(coeff) || isnan(coeff) || coeff == 0.f) return coeff;
+
+    return glug_float_sign(f) * exp2f((float)exp);
+}
+
+float glug_float_prev_pow2(float f)
+{
+    if (f < 0.f) return -glug_float_next_pow2(-f);
+
+    int exp;
+    float coeff = frexpf(f, &exp);
+
+    if (isinf(coeff) || isnan(coeff) || coeff == 0.f) return coeff;
+
+    // shift the exponent by -1 so that we get the previous power of 2 but...
+    // if `coeff` (returned by frexp) is 0.5f, it's "added an extra power of 2" to `exp` already so we have to take it back out
+    int expshift = -1 + (coeff == 0.5f) * -1;
+    return glug_float_sign(f) * exp2f(exp + expshift);
+}
+float glug_float_lg(float f)
+{
+    return log2f(f);
+}
+
 float glug_float_integral(float f)
 {
     float i, frac;
     glug_float_decomp(f, &i, &frac);
 
     return i;
-
 }
 
 float glug_float_frac(float f)
