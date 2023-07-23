@@ -199,3 +199,23 @@ float glug_float_round_zero(float f)
 {
     return f - glug_float_frac(f);
 }
+
+void glug_float_quadratic_roots(struct quadratic_soln *soln, float x0, float x1, float x2)
+{
+    struct quadratic_soln res;
+    float discriminant = x1 * x1 - 4 * x2 * x0;
+    res.nroots = (discriminant == 0) + (discriminant > 0) * 2;
+
+    if (res.nroots == 1)
+    {
+        res.roots[0] = 0.5f * -x1 / x2;;
+    }
+    if (res.nroots == 2)
+    {
+        float discroot = sqrtf(discriminant);
+        res.roots[0] = 0.5f * (-x1 + discroot) / x2;
+        res.roots[1] = 0.5f * (-x1 - discroot) / x2;
+    }
+
+    *soln = res;
+}

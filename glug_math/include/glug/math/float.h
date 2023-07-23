@@ -9,6 +9,13 @@
 
 GLUG_EXTERN_START
 
+    struct quadratic_soln
+{
+    float roots[2];
+    int nroots;
+};
+
+
 GLUG_LIB_API float glug_float_inf(void);
 GLUG_LIB_API float glug_float_nan(void);
 GLUG_LIB_API float glug_float_pi(void);
@@ -45,6 +52,8 @@ GLUG_LIB_API float glug_float_floor(float f);
 GLUG_LIB_API float glug_float_ceil(float f);
 GLUG_LIB_API float glug_float_round(float f);
 GLUG_LIB_API float glug_float_round_zero(float f);
+
+GLUG_LIB_API void glug_float_quadratic_roots(struct quadratic_soln *soln, float x0, float x1, float x2);
 
 GLUG_EXTERN_END
 

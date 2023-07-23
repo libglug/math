@@ -274,6 +274,27 @@ static void test_round_zero(void)
     CU_ASSERT_EQUAL(glug_float_round_zero(0.f), 0.f);
 }
 
+static void test_quadratic_roots(void)
+{
+    struct quadratic_soln soln;
+
+    // 2 roots
+    glug_float_quadratic_roots(&soln, -4, 4, 2);
+    CU_ASSERT_EQUAL(soln.nroots, 2);
+    CU_ASSERT_DOUBLE_EQUAL(soln.roots[0], -1 + sqrtf(3), 0.000001f);
+    CU_ASSERT_DOUBLE_EQUAL(soln.roots[1], -1 - sqrt(3),  0.000001f);
+
+    // 1 root
+    glug_float_quadratic_roots(&soln, -9, 12, -4);
+    CU_ASSERT_EQUAL(soln.nroots, 1);
+    CU_ASSERT_DOUBLE_EQUAL(soln.roots[0], 1.5f, 0.000001f);
+
+    // 0 roots
+    glug_float_quadratic_roots(&soln, 1, 2, 5);
+    CU_ASSERT_EQUAL(soln.nroots, 0);
+
+}
+
 int main(void)
 {
     CU_pSuite float_suite = create_suite("float", NULL, NULL);
@@ -304,6 +325,7 @@ int main(void)
     ADD_TEST(float_suite, ceil);
     ADD_TEST(float_suite, round);
     ADD_TEST(float_suite, round_zero);
+    ADD_TEST(float_suite, quadratic_roots);
 
     return run_tests(CU_BRM_VERBOSE);
 }
