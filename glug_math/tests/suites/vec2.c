@@ -13,173 +13,183 @@ static void test_equal(void)
 
 static void test_add(void)
 {
-    struct glug_vec2 dst = { 1.f, 8.9f };
+    struct glug_vec2 dst;
+    struct glug_vec2 v1 = { 1.f, 8.9f };
     struct glug_vec2 v2 = { -1.01f, -5.5f };
     struct glug_vec2 exp = { -0.01f, 3.4f };
 
-    glug_vec2_add(&dst, &v2);
+    glug_vec2_add(&dst, &v1, &v2);
     ASSERT_VEC2_EQUAL(&dst, &exp, 0.001f);
 }
 
 static void test_sub(void)
 {
-    struct glug_vec2 dst = { 17.17f, 19.8f };
+    struct glug_vec2 dst;
+    struct glug_vec2 v1 = { 17.17f, 19.8f };
     struct glug_vec2 v2 = { 8.f, 9.f };
     struct glug_vec2 exp = { 9.17f, 10.8f };
 
-    glug_vec2_sub(&dst, &v2);
+    glug_vec2_sub(&dst, &v1, &v2);
     ASSERT_VEC2_EQUAL(&dst, &exp, 0.001f);
 }
 
 static void test_mul(void)
 {
-    struct glug_vec2 dst = { 4.f, 5.f };
+    struct glug_vec2 dst;
+    struct glug_vec2 v1 = { 4.f, 5.f };
     float scalar = 4.1f;
     struct glug_vec2 exp = { 16.4f, 20.5f };
 
-    glug_vec2_mul(&dst, scalar);
+    glug_vec2_mul(&dst, &v1, scalar);
     ASSERT_VEC2_EQUAL(&dst, &exp, 0.01f);
 }
 
 static void test_div(void)
 {
-    struct glug_vec2 dst = { 3.142f, 2.718f };
+    struct glug_vec2 dst;
+    struct glug_vec2 v = { 3.142f, 2.718f };
     float scalar = 1.414f;
     struct glug_vec2 exp = { 2.222065f, 1.922206f };
 
-    glug_vec2_div(&dst, scalar);
+    glug_vec2_div(&dst, &v, scalar);
     ASSERT_VEC2_EQUAL(&dst, &exp, 0.000001f);
 }
 
 static void test_mul_cw(void)
 {
+    struct glug_vec2 dst;
     struct glug_vec2 v1 = { 1.5f, 2.f };
     struct glug_vec2 v2 = { 2.f, 1.f };
-    struct glug_vec2 exp;
+    struct glug_vec2 exp = { 3.f, 2.f };
 
-    glug_vec2_mul_cw(&v1, &v1, &v2);
-    exp = (struct glug_vec2){ 3.f, 2.f };
-    ASSERT_VEC2_EQUAL(&v1, &exp, 0.0001f);
+    glug_vec2_mul_cw(&dst, &v1, &v2);
+    ASSERT_VEC2_EQUAL(&dst, &exp, 0.0001f);
 }
 
 static void test_div_cw(void)
 {
+    struct glug_vec2 dst;
     struct glug_vec2 v1 = { 3.f, 2.f };
     struct glug_vec2 v2 = { 1.5f, 1.f };
-    struct glug_vec2 exp;
+    struct glug_vec2 exp = { 2.f, 2.f };
 
-    glug_vec2_div_cw(&v1, &v1, &v2);
-    exp = (struct glug_vec2){ 2.f, 2.f };
-    ASSERT_VEC2_EQUAL(&v1, &exp, 0.0001f);
+    glug_vec2_div_cw(&dst, &v1, &v2);
+    ASSERT_VEC2_EQUAL(&dst, &exp, 0.0001f);
 }
 
 static void test_sign(void)
 {
-    struct glug_vec2 dst = { -13.7123f, 5.2972f };
+    struct glug_vec2 dst;
+    struct glug_vec2 v = { -13.7123f, 5.2972f };
     struct glug_vec2 exp = { -1.f, 1.f };
 
-    glug_vec2_sign(&dst, &dst);
+    glug_vec2_sign(&dst, &v);
     ASSERT_VEC2_EQUAL(&dst, &exp, 0.f);
 
-    dst.x = 0.f;
+    v.x = 0.f;
     exp.x = 0.f;
 
-    glug_vec2_sign(&dst, &dst);
+    glug_vec2_sign(&dst, &v);
     ASSERT_VEC2_EQUAL(&dst, &exp, 0.f);
 }
 
 static void test_integral(void)
 {
-    struct glug_vec2 dst = { -13.7123f, 5.2972f };
+    struct glug_vec2 dst;
+    struct glug_vec2 v = { -13.7123f, 5.2972f };
     struct glug_vec2 exp = { -13.f, 5.f };
 
-    glug_vec2_integral(&dst, &dst);
+    glug_vec2_integral(&dst, &v);
     ASSERT_VEC2_EQUAL(&dst, &exp, 0.f);
 }
 
 static void test_frac(void)
 {
-    struct glug_vec2 dst = { -13.7123f, 5.2972f };
+    struct glug_vec2 dst;
+    struct glug_vec2 v = { -13.7123f, 5.2972f };
     struct glug_vec2 exp = { -0.7123f,  0.2972f };
 
-    glug_vec2_frac(&dst, &dst);
+    glug_vec2_frac(&dst, &v);
     ASSERT_VEC2_EQUAL(&dst, &exp, 0.00001f);
 }
 
 static void test_max(void)
 {
+    struct glug_vec2 dst;
     struct glug_vec2 v1 = { -2.f, 2.f };
     struct glug_vec2 v2 = { 1.f, -1.f };
-    struct glug_vec2 dst = v1;
     struct glug_vec2 exp = { 1.f, 2.f };
 
-    glug_vec2_max(&dst, &v2);
+    glug_vec2_max(&dst, &v1, &v2);
     ASSERT_VEC2_EQUAL(&dst, &exp, 0.f);
 
-    dst = v2;
-    glug_vec2_max(&dst, &v1);
+    glug_vec2_max(&dst, &v2, &v1);
     ASSERT_VEC2_EQUAL(&dst, &exp, 0.f);
 }
 
 static void test_min(void)
 {
+    struct glug_vec2 dst;
     struct glug_vec2 v1 = { -2.f, 2.f };
     struct glug_vec2 v2 = { 1.f, -1.f };
-    struct glug_vec2 dst = v1;
     struct glug_vec2 exp = { -2.f, -1.f };
 
-    glug_vec2_min(&dst, &v2);
+    glug_vec2_min(&dst, &v1, &v2);
     ASSERT_VEC2_EQUAL(&dst, &exp, 0.f);
 
-    dst = v2;
-    glug_vec2_min(&dst, &v1);
+    glug_vec2_min(&dst, &v2, &v1);
     ASSERT_VEC2_EQUAL(&dst, &exp, 0.f);
 }
 
 static void test_clamp(void)
 {
-    struct glug_vec2 dst = { -2.f, 2.f };
+    struct glug_vec2 dst;
+    struct glug_vec2 v = { -2.f, 2.f };
     struct glug_vec2 min = { -1.f, -1.f };
     struct glug_vec2 max = { 1.f, 1.f };
     struct glug_vec2 exp = { -1.f, 1.f };
 
-    glug_vec2_clamp(&dst, &min, &max);
+    glug_vec2_clamp(&dst, &v, &min, &max);
     ASSERT_VEC2_EQUAL(&dst, &exp, 0.f);
 }
 
 static void test_floor(void)
 {
-    struct glug_vec2 dst = { -13.7123f, 5.2972f };
+    struct glug_vec2 dst;
+    struct glug_vec2 v = { -13.7123f, 5.2972f };
     struct glug_vec2 exp = { -14.f, 5.f };
 
-    glug_vec2_floor(&dst, &dst);
+    glug_vec2_floor(&dst, &v);
     ASSERT_VEC2_EQUAL(&dst, &exp, 0.f);
 }
 
 static void test_ceil(void)
 {
-    struct glug_vec2 dst = { -13.7123f, 5.2972f };
+    struct glug_vec2 dst;
+    struct glug_vec2 v = { -13.7123f, 5.2972f };
     struct glug_vec2 exp = { -13.f, 6.f };
 
-    glug_vec2_ceil(&dst, &dst);
+    glug_vec2_ceil(&dst, &v);
     ASSERT_VEC2_EQUAL(&dst, &exp, 0.00001f);
 }
 
 static void test_round(void)
 {
-    struct glug_vec2 dst = { -13.7123f, 5.2972f };
+    struct glug_vec2 dst;
+    struct glug_vec2 v = { -13.7123f, 5.2972f };
     struct glug_vec2 exp = { -14.f, 5.f };
 
-    glug_vec2_round(&dst, &dst);
+    glug_vec2_round(&dst, &v);
     ASSERT_VEC2_EQUAL(&dst, &exp, 0.00001f);
 }
 
 static void test_round_zero(void)
 {
-    struct glug_vec2 dst = { -13.7123f, 5.2972f };
+    struct glug_vec2 dst;
+    struct glug_vec2 v = { -13.7123f, 5.2972f };
     struct glug_vec2 exp = { -13.f, 5.f };
 
-    glug_vec2_round_zero(&dst, &dst);
+    glug_vec2_round_zero(&dst, &v);
     ASSERT_VEC2_EQUAL(&dst, &exp, 0.00001f);
 }
 
@@ -238,7 +248,7 @@ static void test_set_len(void)
     float newlen = 2.3f;
     struct glug_vec2 exp = { 1.436f, -1.795f };
 
-    glug_vec2_set_len(&v, newlen);
+    glug_vec2_set_len(&v, &v, newlen);
     ASSERT_VEC2_EQUAL(&v, &exp, 0.001f);
 }
 
@@ -246,13 +256,13 @@ static void test_clamp_len(void)
 {
     struct glug_vec2 v = { 2.f, -2.f };
 
-    glug_vec2_clamp_len(&v, 1.f, 5.f);
+    glug_vec2_clamp_len(&v, &v, 1.f, 5.f);
     CU_ASSERT_DOUBLE_EQUAL(glug_vec2_len(&v), sqrtf(8.f), 0.0001f);
 
-    glug_vec2_clamp_len(&v, 1.f, 2.f);
+    glug_vec2_clamp_len(&v, &v, 1.f, 2.f);
     CU_ASSERT_DOUBLE_EQUAL(glug_vec2_len(&v), 2.f, 0.0001f);
 
-    glug_vec2_clamp_len(&v, 5.f, 10.f);
+    glug_vec2_clamp_len(&v, &v, 5.f, 10.f);
     CU_ASSERT_DOUBLE_EQUAL(glug_vec2_len(&v), 5.f, 0.0001f);
 }
 
@@ -263,10 +273,11 @@ static void test_is_norm(void)
 
 static void test_normalize(void)
 {
-    struct glug_vec2 dst = { 3.f, 3.f };
+    struct glug_vec2 dst;
+    struct glug_vec2 v = { 3.f, 3.f };
     struct glug_vec2 exp = { 0.7071f, 0.7071f };
 
-    glug_vec2_normalize(&dst);
+    glug_vec2_normalize(&dst, &v);
     CU_ASSERT_DOUBLE_EQUAL(glug_vec2_len(&dst), 1.f, 0.0001f);
     ASSERT_VEC2_EQUAL(&dst, &exp, 0.00001f);
 }
@@ -301,7 +312,7 @@ static void test_dist_taxi(void)
     CU_ASSERT_DOUBLE_EQUAL(dist, exp, 0.0001f);
 }
 
-static void test_angle_to(void)
+static void test_angle_btw(void)
 {
     struct glug_vec2 a = { -1.0f, 0.f };
     struct glug_vec2 b = { 0.f, 1.f };
@@ -313,41 +324,45 @@ static void test_angle_to(void)
 
 static void test_project(void)
 {
-    struct glug_vec2 dst = { 3.f, 3.f };
-    struct glug_vec2 b = { 1.f, -2.f };
+    struct glug_vec2 dst;
+    struct glug_vec2 v = { 3.f, 3.f };
+    struct glug_vec2 onto = { 1.f, -2.f };
     struct glug_vec2 exp = { -0.6f, 1.2f };
 
-    glug_vec2_project(&dst, &b);
+    glug_vec2_project(&dst, &v, &onto);
     ASSERT_VEC2_EQUAL(&dst, &exp, 0.00001f);
 }
 
 static void test_reject(void)
 {
-    struct glug_vec2 dst = { 3.f, 3.f };
-    struct glug_vec2 b = { 1.f, -2.f };
+    struct glug_vec2 dst;
+    struct glug_vec2 v = { 3.f, 3.f };
+    struct glug_vec2 from = { 1.f, -2.f };
     struct glug_vec2 exp = { 3.6f, 1.8f };
 
-    glug_vec2_reject(&dst, &b);
+    glug_vec2_reject(&dst, &v, &from);
     ASSERT_VEC2_EQUAL(&dst, &exp, 0.00001f);
 }
 
 static void test_reflect(void)
 {
-    struct glug_vec2 dst = { 3.f, 3.f };
-    struct glug_vec2 b = { 1.f, -2.f };
+    struct glug_vec2 dst;
+    struct glug_vec2 v = { 3.f, 3.f };
+    struct glug_vec2 about = { 1.f, -2.f };
     struct glug_vec2 exp = { -4.2f, -0.6f };
 
-    glug_vec2_reflect(&dst, &b);
+    glug_vec2_reflect(&dst, &v, &about);
     ASSERT_VEC2_EQUAL(&dst, &exp, 0.00001f);
 }
 
 static void test_refract(void)
 {
-    struct glug_vec2 dst = { 3.f, 3.f };
+    struct glug_vec2 dst;
+    struct glug_vec2 v = { 3.f, 3.f };
     struct glug_vec2 n = { 1.f, -2.f };
-    struct glug_vec2 exp = { 0.12967f, 4.24065f };
+    struct glug_vec2 exp = { 0.06483f, 2.12032f };
 
-    glug_vec2_refract(&dst, &n, 1.f, 2.f);
+    glug_vec2_refract(&dst, &v, &n, 1.f / 2.f);
     ASSERT_VEC2_EQUAL(&dst, &exp, 0.00001f);
 }
 
@@ -384,7 +399,7 @@ int main(void)
     ADD_TEST(vec2_suite, dist);
     ADD_TEST(vec2_suite, dist_sq);
     ADD_TEST(vec2_suite, dist_taxi);
-    ADD_TEST(vec2_suite, angle_to);
+    ADD_TEST(vec2_suite, angle_btw);
     ADD_TEST(vec2_suite, project);
     ADD_TEST(vec2_suite, reject);
     ADD_TEST(vec2_suite, reflect);
