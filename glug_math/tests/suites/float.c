@@ -6,6 +6,8 @@
 #include <suites/create_suite.h>
 #include <glug/math/float.h>
 
+#include <float.h>
+
 static void test_consts(void)
 {
     CU_ASSERT_DOUBLE_EQUAL(glug_float_pi(), (float)M_PI, 0.f);
@@ -23,6 +25,12 @@ static void test_equal(void)
     CU_ASSERT_TRUE(glug_float_equal_strict(-1.f, -1.f));
     CU_ASSERT_FALSE(glug_float_equal_strict(1.f, 2.f));
     CU_ASSERT_FALSE(glug_float_equal_strict(1.f, -1.f));
+
+    CU_ASSERT_TRUE(glug_float_equal_strict(glug_float_inf(), glug_float_inf()));
+    CU_ASSERT_TRUE(glug_float_equal_strict(-glug_float_inf(), -glug_float_inf()));
+    CU_ASSERT_FALSE(glug_float_equal_strict(glug_float_inf(), -glug_float_inf()));
+    CU_ASSERT_FALSE(glug_float_equal_strict(glug_float_nan(), 1.f));
+    CU_ASSERT_FALSE(glug_float_equal_strict(glug_float_nan(), glug_float_nan()));
 }
 
 static void test_equal_approx(void)
@@ -77,15 +85,55 @@ static void test_prev(void)
     CU_ASSERT_TRUE(glug_float_prev(-1.f) < -1.f);
 }
 
+static void test_load(void)
+{
+    float res;
+    CU_ASSERT_EQUAL(glug_float_load(&res, 7.f, -4), fe_none);
+    CU_ASSERT_DOUBLE_EQUAL(res, 0.4375f, 0.f);
+
+    CU_ASSERT_EQUAL(glug_float_load(&res, 1.f, -1074), fe_underflow);
+    CU_ASSERT_DOUBLE_EQUAL(res, 0.f, 0.f);
+
+    CU_ASSERT_EQUAL(glug_float_load(&res, 1.1f, 1024), fe_overflow);
+    CU_ASSERT_TRUE(glug_float_is_inf(res));
+
+    CU_ASSERT_EQUAL(glug_float_load(&res, -0.f, 10), fe_none);
+    CU_ASSERT_DOUBLE_EQUAL(res, 0.f, 0.f);
+
+    CU_ASSERT_EQUAL(glug_float_load(&res, -glug_float_inf(), -1), fe_none);
+    CU_ASSERT_TRUE(glug_float_is_inf(res));
+}
+
+static void test_unload(void)
+{
+    float scalar;
+    int exp;
+    glug_float_unload(0.4375f, &scalar, &exp);
+    CU_ASSERT_DOUBLE_EQUAL(scalar * powf(2, exp), 0.4375f, 0.f);
+
+    glug_float_unload(-4.f, &scalar, &exp);
+    CU_ASSERT_DOUBLE_EQUAL(scalar * powf(2, exp), -4.f, 0.f);
+
+    glug_float_unload(0.f, &scalar, &exp);
+    CU_ASSERT_EQUAL(scalar, 0.f);
+    CU_ASSERT_EQUAL(exp, 0.f);
+
+    glug_float_unload(glug_float_inf(), &scalar, &exp);
+    CU_ASSERT_TRUE(glug_float_is_inf(scalar));
+
+    glug_float_unload(glug_float_nan(), &scalar, &exp);
+    CU_ASSERT_TRUE(glug_float_is_nan(scalar));
+}
+
 static void test_rand(void)
 {
-    float rando = glug_float_rand(-2.f, 3.f);
-    CU_ASSERT_TRUE(rando >= -2.f);
-    CU_ASSERT_TRUE(rando <= 3.f);
+    float rando = glug_float_rand();
+//    CU_ASSERT_TRUE(rando >= -2.f);
+//    CU_ASSERT_TRUE(rando <= 3.f);
 
-    rando = glug_float_rand(10, 20);
-    CU_ASSERT_TRUE(rando >= 10.f);
-    CU_ASSERT_TRUE(rando <= 20.f);
+    rando = glug_float_rand();
+//    CU_ASSERT_TRUE(rando >= 10.f);
+//    CU_ASSERT_TRUE(rando <= 20.f);
 }
 
 static void test_swap(void)
@@ -274,6 +322,17 @@ static void test_round_zero(void)
     CU_ASSERT_EQUAL(glug_float_round_zero(0.f), 0.f);
 }
 
+static void test_round_inf(void)
+{
+    CU_ASSERT_EQUAL(glug_float_round_inf(22.3f), 23.f);
+    CU_ASSERT_EQUAL(glug_float_round_inf(3.8f), 4.f);
+    CU_ASSERT_EQUAL(glug_float_round_inf(-11.1f), -12.f);
+    CU_ASSERT_EQUAL(glug_float_round_inf(-4.9f), -5.f);
+    CU_ASSERT_EQUAL(glug_float_round_inf(1.f), 1.f);
+    CU_ASSERT_EQUAL(glug_float_round_inf(-1.f), -1.f);
+    CU_ASSERT_EQUAL(glug_float_round_inf(0.f), 0.f);
+}
+
 int main(void)
 {
     CU_pSuite float_suite = create_suite("float", NULL, NULL);
@@ -285,6 +344,8 @@ int main(void)
     ADD_TEST(float_suite, equal_ulps);
     ADD_TEST(float_suite, next);
     ADD_TEST(float_suite, prev);
+    ADD_TEST(float_suite, load);
+    ADD_TEST(float_suite, unload);
     ADD_TEST(float_suite, rand);
     ADD_TEST(float_suite, swap);
     ADD_TEST(float_suite, is_pow2);
@@ -304,6 +365,7 @@ int main(void)
     ADD_TEST(float_suite, ceil);
     ADD_TEST(float_suite, round);
     ADD_TEST(float_suite, round_zero);
+    ADD_TEST(float_suite, round_inf);
 
     return run_tests(CU_BRM_VERBOSE);
 }

@@ -4,6 +4,9 @@
 #include <time.h>
 #include <stdlib.h>
 
+#include <fenv.h>
+#include <stdio.h>
+
 #define LOG2 0.3010299956639812
 
 float glug_float_inf(void)
@@ -36,17 +39,32 @@ float glug_float_log2(void)
     return (float)LOG2;
 }
 
-glug_bool_t glug_float_equal_strict(float f1, float f2)
+bool glug_float_is_inf(float f)
 {
-    return f1 == f2;
+    return isinf(f);
 }
 
-glug_bool_t glug_float_equal_approx(float f1, float f2, float diff)
+bool glug_float_is_nan(float f)
+{
+    return isnan(f);
+}
+
+bool glug_float_equal_strict(float f1, float f2)
+{
+    return (
+        (!glug_float_is_nan(f1) && !glug_float_is_nan(f2)) && (
+            (glug_float_is_inf(f1) && glug_float_is_inf(f2) && glug_float_sign(f1) == glug_float_sign(f2)) ||
+            (f1 == f2)
+        )
+    );
+}
+
+bool glug_float_equal_approx(float f1, float f2, float diff)
 {
     return fabsf(f1 - f2) <= diff;
 }
 
-glug_bool_t glug_float_equal_ulps(float f1, float f2, uint32_t ulps)
+bool glug_float_equal_ulps(float f1, float f2, uint32_t ulps)
 {
     float min = glug_float_min(f1, f2);
     float max = glug_float_max(f1, f2);
@@ -67,16 +85,41 @@ float glug_float_prev(float f)
     return nextafterf(f, -INFINITY);
 }
 
-float glug_float_rand(float min, float max)
+enum float_error glug_float_load(float *res, float scalar, int exp)
+{
+    feclearexcept(FE_ALL_EXCEPT);
+
+    *res = ldexpf(scalar, exp);
+
+    enum float_error err = fe_none;
+    if (fetestexcept(FE_OVERFLOW))
+    {
+        printf("overflow");
+        err = fe_overflow;
+    }
+
+    if (fetestexcept(FE_UNDERFLOW))
+    {
+        printf("underflow");
+        err = fe_underflow;
+    }
+
+    return err;
+}
+
+void glug_float_unload(float f, float *scalar, int *exp)
+{
+    *scalar = frexpf(f, exp);
+}
+
+float glug_float_rand()
 {
     srand(time(NULL));
     int r = rand();
 
     // normalize r to [0, 1]
     double nrand = (double)r / RAND_MAX;
-    // scale to the range of [min, max]
-    float range = max - min;
-    return (float)(nrand * range + min);
+    return (float)nrand;
 }
 
 void glug_float_swap(float *f1, float *f2)
@@ -86,7 +129,7 @@ void glug_float_swap(float *f1, float *f2)
     *f2 = tmp;
 }
 
-glug_bool_t glug_float_is_pow2(float f)
+bool glug_float_is_pow2(float f)
 {
     int exp;
     float coeff = frexpf(f, &exp);
@@ -160,6 +203,10 @@ float glug_float_sign(float f)
     return 1.f * (pos - neg);
 }
 
+float glug_float_abs(float f) {
+    return fabsf(f);
+}
+
 float glug_float_min(float f1, float f2)
 {
     return fminf(f1, f2);
@@ -198,4 +245,12 @@ float glug_float_round(float f)
 float glug_float_round_zero(float f)
 {
     return f - glug_float_frac(f);
+}
+
+float glug_float_round_inf(float f)
+{
+    float sign = glug_float_sign(f);
+    float rounded = glug_float_ceil(glug_float_abs(f));
+
+    return sign * rounded;
 }
